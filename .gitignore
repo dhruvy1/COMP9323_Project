@@ -170,3 +170,6 @@ freeline_project_description.json
 
 ### Android Patch ###
 gen-external-apklibs
+
+# IDE
+.idea*
