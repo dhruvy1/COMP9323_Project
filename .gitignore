@@ -173,3 +173,4 @@ gen-external-apklibs
 
 # IDE
 .idea*
+*/migrations/*

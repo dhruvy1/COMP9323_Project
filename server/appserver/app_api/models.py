@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
+class MobileUser(models.Model):
+    username = models.CharField(max_length=200)
+    device_id = models.CharField(max_length=200)
