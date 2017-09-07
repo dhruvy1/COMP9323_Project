@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'mobile_user_detail/(?P<pk>[0-9]+)/$', MobileUserDetailAPIView.as_view(), name='detail'),
     url(r'mobile_user_detail/(?P<pk>[0-9]+)/edit/$', MobileUserUpdateAPIView.as_view(), name='update'),
     url(r'mobile_user_detail/(?P<pk>[0-9]+)/delete/$', MobileUserDestroyAPIView.as_view(), name='delete'),
+    url(r'event/create/$', EventCreateAPIView.as_view(), name='create'),
 
 ]
