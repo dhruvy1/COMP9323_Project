@@ -173,3 +173,7 @@ gen-external-apklibs
 # IDE
 .idea*
 */migrations/*
+
+server/appserver/app_api/migrations/__init__.py
+
+server/appserver/app_api/migrations/0001_initial.py

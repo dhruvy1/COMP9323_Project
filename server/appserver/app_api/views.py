@@ -38,3 +38,9 @@ class MobileUserUpdateAPIView(UpdateAPIView):
 class MobileUserDestroyAPIView(DestroyAPIView):
     queryset = MobileUser.objects.all()
     serializer_class = MobileUserSerializer
+
+
+@permission_classes((AllowAny,))
+class EventCreateAPIView(CreateAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
