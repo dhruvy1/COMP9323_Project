@@ -9,18 +9,12 @@ class MobileUser(models.Model):
 class Event(models.Model):
     name = models.CharField(max_length=500)
     description = models.TextField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     start_time = models.TimeField()
     facebook_id = models.CharField(max_length=50)
     end_time = models.TimeField()
-    place = models.ForeignKey('Place')
-
-
-class Place(models.Model):
-    name = models.CharField(max_length=200)
-    location = models.ForeignKey('Location')
-
-
-class Location(models.Model):
+    place_name = models.CharField(max_length=200)
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     latitude = models.CharField(max_length=100)

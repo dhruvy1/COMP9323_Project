@@ -17,19 +17,12 @@ class MobileUserSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'start_time', 'facebook_id', 'end_time', 'place']
+        fields = ['id', 'name', 'description', 'start_time', 'facebook_id', 'start_date', 'end_date', 'end_time',
+                  'place_name', 'city', 'country', 'latitude', 'longitude', 'state', 'street', 'zip']
 
-        depth = 2
 
-
-class PlaceSerializer(serializers.ModelSerializer):
+class EventCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Place
-        fields = ['name', 'location']
-        depth = 2
-
-
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields = ['city', 'country', 'latitude', 'longitude', 'state', 'street', 'zip']
+        model = Event
+        fields = ['name', 'description', 'start_time', 'facebook_id', 'start_date', 'end_date', 'end_time',
+                  'place_name', 'city', 'country', 'latitude', 'longitude', 'state', 'street', 'zip']
