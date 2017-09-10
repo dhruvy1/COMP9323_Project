@@ -61,7 +61,7 @@ def getFacebookEvents(page_name, result_limit):
 
 
 def postToRestServer(event):
-    url = "http://52.65.129.3:8000/api/events/create"
+    url = "http://52.65.129.3:8000/api/events/create/"
     payload = {
         "facebook_id": event.facebook_id,
         "name": event.name,
@@ -84,6 +84,3 @@ def postToRestServer(event):
     headers = {"Content-Type": "application/json",
                "Accept": "application/json"}
     response = requests.post(url, data=json.dumps(payload), headers=headers)
-    print(response)
-    print(headers)
-    print(json.dumps(payload))
