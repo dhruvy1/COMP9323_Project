@@ -18,11 +18,11 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['id', 'name', 'description', 'start_time', 'facebook_id', 'start_date', 'end_date', 'end_time',
-                  'place_name', 'city', 'country', 'latitude', 'longitude', 'state', 'street', 'zip']
+                  'place_name', 'city', 'country', 'latitude', 'longitude', 'state', 'street', 'zip', 'cover_id', 'source_url']
 
 
 class EventCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['name', 'description', 'start_time', 'facebook_id', 'start_date', 'end_date', 'end_time',
-                  'place_name', 'city', 'country', 'latitude', 'longitude', 'state', 'street', 'zip']
+                  'place_name', 'city', 'country', 'latitude', 'longitude', 'state', 'street', 'zip', 'cover_id', 'source_url']
