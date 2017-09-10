@@ -3,8 +3,7 @@ from .facebook import getFacebookEvents
 
 # Create your tests here.
 
-page_events = getFacebookEvents("ArcUNSW", 10)
-print(str(page_events))
+getFacebookEvents("ArcUNSW", 1)
 
 # class FacebookTestCase(TestCase):
 #     def Should_ReturnAllPageEvents_Given_PageName(self):

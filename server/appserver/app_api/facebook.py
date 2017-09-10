@@ -1,10 +1,12 @@
 import facebook
 import re
+import requests
+import json
 from .models import *
 
 
 def getFacebookEvents(page_name, result_limit):
-    if not page_name.strip():
+    if not page_name.strip() or result_limit < 1:
         return
 
     # set access token and version of fb api
@@ -17,7 +19,6 @@ def getFacebookEvents(page_name, result_limit):
     page_events = graph.get_connections(
         id=page_name, fields=event_fields, connection_name="events", limit=result_limit)
 
-    my_event_list = []
     for fb_event in page_events["data"]:
         my_event = Event()  # create default constructed event object
         my_event.facebook_id = fb_event["id"]
@@ -56,6 +57,33 @@ def getFacebookEvents(page_name, result_limit):
             my_event.cover_id = fb_event["cover"]["id"]
             my_event.source_url = fb_event["cover"]["source"]
 
-        my_event_list.append(my_event)
+        postToRestServer(my_event)
 
-    return my_event_list  # returns a list of event objects
+
+def postToRestServer(event):
+    url = "http://52.65.129.3:8000/api/events/create"
+    payload = {
+        "facebook_id": event.facebook_id,
+        "name": event.name,
+        "description": event.description,
+        "start_date": str(event.start_date),
+        "end_date": str(event.end_date),
+        "start_time": str(event.start_time),
+        "end_time": str(event.end_time),
+        "place_name": event.place_name,
+        "city": event.city,
+        "country": event.country,
+        "latitude": str(event.latitude),
+        "longitude": str(event.longitude),
+        "state": event.state,
+        "street": event.street,
+        "zip": str(event.zip),
+        "cover_id": event.cover_id,
+        "source_url": event.source_url
+    }
+    headers = {"Content-Type": "application/json",
+               "Accept": "application/json"}
+    response = requests.post(url, data=json.dumps(payload), headers=headers)
+    print(response)
+    print(headers)
+    print(json.dumps(payload))
