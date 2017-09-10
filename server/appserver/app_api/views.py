@@ -7,7 +7,6 @@ from .serializers import *
 from rest_framework.response import Response
 from django.http import Http404
 
-
 def index(request):
     return HttpResponse("Hello, world.")
 
@@ -71,4 +70,3 @@ class EventDetailAPIView(RetrieveAPIView):
 class EventDestroyAPIView(DestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-
