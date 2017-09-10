@@ -22,3 +22,5 @@ class Event(models.Model):
     state = models.CharField(max_length=100)
     street = models.CharField(max_length=200)
     zip = models.CharField(max_length=5)
+    cover_id = models.CharField(max_length=50)
+    source_url = models.CharField(max_length=200)
