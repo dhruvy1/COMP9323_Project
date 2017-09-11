@@ -28,3 +28,11 @@ class Event(models.Model):
     # cover photo
     cover_id = models.CharField(max_length=50, blank=True, default='')
     source_url = models.CharField(max_length=200, blank=True, default='')
+
+
+class FoodDeal(models.Model):
+    post_id = models.CharField(max_length=100)
+    message = models.TextField()
+    updated_time = models.TimeField()
+    photo_link = models.CharField(max_length=400, blank=True, default='')
+    event_link = models.CharField(max_length=400, blank=True, default='')

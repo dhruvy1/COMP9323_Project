@@ -70,3 +70,34 @@ class EventDetailAPIView(RetrieveAPIView):
 class EventDestroyAPIView(DestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+
+
+# Food Deals
+@permission_classes((AllowAny,))
+class FoodDealListAPIView(ListAPIView):
+    queryset = FoodDeal.objects.all()
+    serializer_class = FoodDealSerializer
+
+
+@permission_classes((AllowAny,))
+class FoodDealCreateAPIView(CreateAPIView):
+    queryset = FoodDeal.objects.all()
+    serializer_class = FoodDealCreateUpdateSerializer
+
+
+@permission_classes((AllowAny,))
+class FoodDealUpdateAPIView(UpdateAPIView):
+    queryset = FoodDeal.objects.all()
+    serializer_class = FoodDealCreateUpdateSerializer
+
+
+@permission_classes((AllowAny,))
+class FoodDealDetailAPIView(RetrieveAPIView):
+    queryset = FoodDeal.objects.all()
+    serializer_class = FoodDealSerializer
+
+
+@permission_classes((AllowAny,))
+class FoodDealDestroyAPIView(DestroyAPIView):
+    queryset = FoodDeal.objects.all()
+    serializer_class = FoodDealSerializer

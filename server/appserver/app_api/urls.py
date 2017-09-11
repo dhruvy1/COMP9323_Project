@@ -17,8 +17,14 @@ urlpatterns = [
     url(r'mobile_users/(?P<pk>[0-9]+)/$', MobileUserDestroyAPIView.as_view(), name='destroy'),
     # Event urls
     url(r'events/$', EventListAPIView.as_view(), name='list'),
-    url(r'events/(?P<pk>[0-9]+)/$', EventDetailAPIView.as_view(), name='detail'),
     url(r'events/$', EventCreateAPIView.as_view(), name='create'),
+    url(r'events/(?P<pk>[0-9]+)/$', EventDetailAPIView.as_view(), name='detail'),
     url(r'events/(?P<pk>[0-9]+)/$', EventUpdateAPIView.as_view(), name='update'),
     url(r'events/(?P<pk>[0-9]+)/$', EventDestroyAPIView.as_view(), name='destroy'),
+    # Food Deals
+    url(r'food_deals/$', FoodDealListAPIView.as_view(), name='list'),
+    url(r'food_deals/$', FoodDealCreateAPIView.as_view(), name='create'),
+    url(r'food_deals/(?P<pk>[0-9]+)/$', FoodDealDetailAPIView.as_view(), name='detail'),
+    url(r'food_deals/(?P<pk>[0-9]+)/$', FoodDealUpdateAPIView.as_view(), name='update'),
+    url(r'food_deals/(?P<pk>[0-9]+)/$', FoodDealDestroyAPIView.as_view(), name='destroy'),
 ]
