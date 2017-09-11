@@ -32,11 +32,13 @@ class EventCreateUpdateSerializer(serializers.ModelSerializer):
 
 class FoodDealSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ['id', 'post_id', 'message', 'updated_time', 'photo_link', 'event_link']
+        model = FoodDeal
+        fields = ['id', 'post_id', 'message', 'updated_time', 'photo_link', 'event_link', 'updated_date']
 
 
 class FoodDealCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ['post_id', 'message', 'updated_time', 'photo_link', 'event_link']
+        model = FoodDeal
+        fields = ['post_id', 'message', 'updated_time', 'photo_link', 'event_link', 'updated_date']
 
 

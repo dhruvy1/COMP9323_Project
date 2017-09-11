@@ -33,6 +33,7 @@ class Event(models.Model):
 class FoodDeal(models.Model):
     post_id = models.CharField(max_length=100)
     message = models.TextField()
+    updated_date = models.DateField()
     updated_time = models.TimeField()
     photo_link = models.CharField(max_length=400, blank=True, default='')
     event_link = models.CharField(max_length=400, blank=True, default='')
