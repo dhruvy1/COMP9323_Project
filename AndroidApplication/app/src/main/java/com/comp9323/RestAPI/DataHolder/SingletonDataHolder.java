@@ -1,5 +1,6 @@
 package com.comp9323.RestAPI.DataHolder;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.comp9323.RestAPI.Beans.User;
@@ -14,6 +15,7 @@ public class SingletonDataHolder {
     private static final SingletonDataHolder DH = new SingletonDataHolder();
 
     private User userSelf;
+    private Context context;
     //Map<String, WeakReference<Object>> or Vector<WeakReference<Object>> objectData; //using "weakreference" allow destroy data when quit activities
     //vector<Object> ObjectData;
     //remember to initialize object list/map
@@ -33,5 +35,13 @@ public class SingletonDataHolder {
     public void setUserSelf(User user){
         Log.v("tag", "written to DH");
         this.userSelf = user;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }

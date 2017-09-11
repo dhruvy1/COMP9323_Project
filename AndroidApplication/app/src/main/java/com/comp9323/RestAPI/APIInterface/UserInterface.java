@@ -2,6 +2,10 @@ package com.comp9323.RestAPI.APIInterface;
 
 import com.comp9323.RestAPI.Beans.User;
 import com.comp9323.RestAPI.Beans.UserList;
+
+import java.util.List;
+import java.util.Vector;
+
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -18,7 +22,7 @@ import retrofit2.http.Path;
 
 public interface UserInterface {
     @GET("/api/mobile_users/")
-    Call<UserList> getUsers();
+    Call<Vector<User>> getUsers();
 
     @POST("/api/mobile_users/create/")
     Call<User> createUser(@Body User user);
