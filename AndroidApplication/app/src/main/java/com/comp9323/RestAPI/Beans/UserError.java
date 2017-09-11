@@ -1,11 +1,11 @@
 package com.comp9323.RestAPI.Beans;
 
 import java.io.Serializable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserError implements Serializable
-{
+public class UserError implements Serializable {
 
     @SerializedName("detail")
     @Expose
@@ -14,13 +14,11 @@ public class UserError implements Serializable
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public UserError() {
     }
 
     /**
-     *
      * @param detail
      */
     public UserError(String detail) {

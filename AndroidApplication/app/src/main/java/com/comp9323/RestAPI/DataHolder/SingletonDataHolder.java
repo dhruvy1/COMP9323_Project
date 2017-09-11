@@ -20,19 +20,19 @@ public class SingletonDataHolder {
     //vector<Object> ObjectData;
     //remember to initialize object list/map
 
-    private SingletonDataHolder(){
+    private SingletonDataHolder() {
         //...
     }
 
-    public static SingletonDataHolder getInstance(){
+    public static SingletonDataHolder getInstance() {
         return DH;
     }
 
-    public User getUserSelf(){
+    public User getUserSelf() {
         return this.userSelf;
     }
 
-    public void setUserSelf(User user){
+    public void setUserSelf(User user) {
         Log.v("tag", "written to DH");
         this.userSelf = user;
     }

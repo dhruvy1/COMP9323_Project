@@ -1,9 +1,7 @@
 package com.comp9323.RestAPI.APIInterface;
 
 import com.comp9323.RestAPI.Beans.User;
-import com.comp9323.RestAPI.Beans.UserList;
 
-import java.util.List;
 import java.util.Vector;
 
 import retrofit2.Call;

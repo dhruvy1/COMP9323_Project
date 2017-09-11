@@ -1,11 +1,11 @@
 package com.comp9323.RestAPI.Beans;
 
 import java.io.Serializable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User implements Serializable
-{
+public class User implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -20,13 +20,11 @@ public class User implements Serializable
 
     /**
      * No args constructor for use in serialization
-     *
      */
     public User() {
     }
 
     /**
-     *
      * @param id
      * @param username
      * @param deviceId

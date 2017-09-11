@@ -16,20 +16,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserImpl {
-    public static final String USR_PERF = "APP_USR_INFO" ;
+    public static final String USR_PERF = "APP_USR_INFO";
     private static final UserInterface apiInterface = RestClient.getClient().create(UserInterface.class);
 
-    public static void CreateUser(String username){CreateUser( new User(username, createUUID()));}
-    public static void  GetUsers(){}
-
+    public static void CreateUser(String username) {
+        CreateUser(new User(username, createUUID()));
+    }
 
     /**
-     *
      * @param user
      */
-    private static void CreateUser(User user){
+    private static void CreateUser(User user) {
         //final SingletonDataHolder DH = SingletonDataHolder.getInstance();
-         Log.v("TAG", "start calling REST");
+        Log.v("TAG", "start calling REST");
         Call<User> call = apiInterface.createUser(user);
         call.enqueue(new Callback<User>() {
             @Override
@@ -54,8 +53,6 @@ public class UserImpl {
             }
         });
     }
-    
-
 
 
     private static String createUUID() {
