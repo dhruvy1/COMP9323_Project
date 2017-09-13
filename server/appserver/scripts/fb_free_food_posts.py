@@ -6,7 +6,7 @@ from sys import argv
 
 # set access token and version of fb api
 graph = facebook.GraphAPI(
-    access_token="EAACEdEose0cBAJMpqJZCgQbfltIrbyqkZCzBNFLAslBunngku9o7x7tlIDif7OtRZAXhfRetJs3UW7mDMeONNnxNdDr55LgSmLGSzBwUkkBQ62ZCCvROpVkVzuw3Jq8l21sErk4y71DmQTTfmwVrnkGfup2nt7poL2CI6IZC4hwoQhMSTcTCLbQZAPJvxKq70ZD", version=2.10)
+    access_token="425065081221660|Z14Prd648CGC7pkGiqkKBTyfrDk", version=2.10)
 
 
 def getFreeFoodPosts(name, result_limit):

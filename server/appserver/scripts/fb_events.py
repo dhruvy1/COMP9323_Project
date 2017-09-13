@@ -6,7 +6,7 @@ from sys import argv
 
 # set access token and version of fb api
 graph = facebook.GraphAPI(
-    access_token="EAACEdEose0cBAJMpqJZCgQbfltIrbyqkZCzBNFLAslBunngku9o7x7tlIDif7OtRZAXhfRetJs3UW7mDMeONNnxNdDr55LgSmLGSzBwUkkBQ62ZCCvROpVkVzuw3Jq8l21sErk4y71DmQTTfmwVrnkGfup2nt7poL2CI6IZC4hwoQhMSTcTCLbQZAPJvxKq70ZD", version=2.10)
+    access_token="425065081221660|Z14Prd648CGC7pkGiqkKBTyfrDk", version=2.10)
 
 
 def getPageEvents(name, result_limit):
@@ -78,11 +78,10 @@ if __name__ == "__main__":
         print("Input: python3 " + argv[0] + " [limit] <page_name, ...>")
         print("[limit]: Optional. Default is 10. Value must be greater than 0.")
         print("<page_name, ...>: Required. Handles multiple page names at once.")
-        print("Sample input: python3 " +
-              argv[0] + " 5 ArcUNSW 428460270539887")
+        print("Sample input: python3 " + argv[0] + " 5 ArcUNSW")
         print("Note: Pages can use page_name, Groups need group_id.")
     if (arg_len == 2): # only 1 argument supplied
-        if (not argv[1].isdigit()): # limit not supplied
+        if not argv[1].isdigit(): # limit not supplied
             getPageEvents(argv[1], 10)
         else: 
             print("You did not supply any page_names")
