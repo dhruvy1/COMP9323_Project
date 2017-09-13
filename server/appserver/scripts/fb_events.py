@@ -74,19 +74,19 @@ def postToRestServer(payload):
 
 if __name__ == "__main__":
     arg_len = len(argv)
-    if (arg_len <= 1):
+    if (arg_len <= 1): # no arguments supplied
         print("Input: python3 " + argv[0] + " [limit] <page_name, ...>")
         print("[limit]: Optional. Default is 10. Value must be greater than 0.")
         print("<page_name, ...>: Required. Handles multiple page names at once.")
         print("Sample input: python3 " +
               argv[0] + " 5 ArcUNSW 428460270539887")
         print("Note: Pages can use page_name, Groups need group_id.")
-    if (arg_len == 2):
-        if (not argv[1].isdigit()):
-            print("XD")
-        else:
+    if (arg_len == 2): # only 1 argument supplied
+        if (not argv[1].isdigit()): # limit not supplied
+            getPageEvents(argv[1], 10)
+        else: 
             print("You did not supply any page_names")
-    if (arg_len > 2):
+    if (arg_len > 2): # more than 2 argumments supplied
         if (not argv[1].isdigit()):  # limit not supplied
             for page_name in argv:
                 getPageEvents(page_name, 10)
