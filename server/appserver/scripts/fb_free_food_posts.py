@@ -1,0 +1,53 @@
+import facebook
+import json
+import re
+import requests
+from sys import argv
+
+# set access token and version of fb api
+graph = facebook.GraphAPI(
+    access_token="EAACEdEose0cBAJMpqJZCgQbfltIrbyqkZCzBNFLAslBunngku9o7x7tlIDif7OtRZAXhfRetJs3UW7mDMeONNnxNdDr55LgSmLGSzBwUkkBQ62ZCCvROpVkVzuw3Jq8l21sErk4y71DmQTTfmwVrnkGfup2nt7poL2CI6IZC4hwoQhMSTcTCLbQZAPJvxKq70ZD", version=2.10)
+
+
+def getFreeFoodPosts(name, result_limit):
+
+    # set the event fields that we will need
+    post_fields = "id, message, updated_time, link"
+    # get page events, providing page name, event fields and the result limit
+    posts_dict = graph.get_connections(
+        id=name, fields=post_fields, connection_name="feed", limit=result_limit)
+
+    for post in posts_dict["data"]:
+        if re.search(r'Free', post["message"], re.M | re.I):
+            payload = {
+                "post_id": post["id"],
+                "message": post["message"],
+                "updated_date": str(getDateFromTime(post["updated_time"])),
+                "updated_time": str(filterTime(post["updated_time"])),
+            }
+            if "link" in post:
+                if re.search(r'photo.php', post["link"], re.M | re.I):
+                    payload["photo_link"] = post["link"]
+                elif re.search(r'events', post["link"], re.M | re.I):
+                    payload["event_link"] = post["link"]
+            postToRestServer(payload)
+
+
+def getDateFromTime(time):
+    return re.sub(r"T.*", "", time)
+
+
+def filterTime(time):
+    return re.sub(r"T.*", "", re.sub(r"^.*T", "", time))
+
+
+def postToRestServer(payload):
+    url = "http://52.65.129.3:8000/api/food_deals/"
+    headers = {"Content-Type": "application/json",
+               "Accept": "application/json"}
+    response = requests.post(url, data=json.dumps(payload), headers=headers)
+    print(response)
+
+
+if __name__ == "__main__":
+    getFreeFoodPosts("428460270539887", 10)

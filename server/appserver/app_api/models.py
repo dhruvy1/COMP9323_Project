@@ -13,9 +13,9 @@ class Event(models.Model):
     description = models.TextField(blank=True, default='')
     # date time
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(blank=True, default='')
     start_time = models.TimeField()
-    end_time = models.TimeField()
+    end_time = models.TimeField(blank=True, default='')
     # location
     place_name = models.CharField(max_length=200, blank=True, default='')
     city = models.CharField(max_length=100, blank=True, default='')
