@@ -22,7 +22,7 @@ public interface UserInterface {
     @GET("/api/mobile_users/")
     Call<Vector<User>> getUsers();
 
-    @POST("/api/mobile_users/create/")
+    @POST("/api/mobile_users/")
     Call<User> createUser(@Body User user);
 
     @GET("/api/mobile_users/{id}/")
