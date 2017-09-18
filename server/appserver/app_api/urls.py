@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from .views import *
 from rest_framework_swagger.views import get_swagger_view
-schema_view = get_swagger_view(title='9323 API')
+schema_view = get_swagger_view(title='Campus Mate')
 
 urlpatterns = [
     # Swagger URL
