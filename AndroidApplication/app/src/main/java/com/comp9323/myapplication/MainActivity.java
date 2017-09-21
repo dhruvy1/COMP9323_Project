@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ContentFrameLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,31 +16,33 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.comp9323.RestAPI.APIImpl.UserImpl;
+import com.comp9323.FoodDeal.FoodDealFragment;
 import com.comp9323.RestAPI.APIInterface.EventAPI;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.EventBean;
-import com.comp9323.RestAPI.Beans.User;
+import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FoodDealFragment.OnListFragmentInteractionListener {
 
     public static final String USR_PERF = "APP_USR_INFO";
-    public static final SingletonDataHolder DH = SingletonDataHolder.getInstance();
 
     private EventAPI eventAPI;
     private ListView mList;
+    private FrameLayout contentContainer_;
     //private RecyclerView mList;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -67,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
                     eventAPI.getEvents().enqueue(eventsCallback);
                     return true;
                 case R.id.navigation_dashboard:
+                    FoodDealFragment newFragment = new FoodDealFragment();
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content, newFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
                     Toast dash = Toast.makeText(getApplicationContext(), "Item selected navigation dashboard", Toast.LENGTH_SHORT);
                     dash.show();
                     return true;
@@ -83,45 +93,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         createEventAPI();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-/**
-        DH.setContext(this);
-        DeleteSharePreference(); //DEBUG use
+        this.contentContainer_ = (FrameLayout) findViewById(R.id.content);
 
-        //user get their profile detail
-        if (isFirstLogin()) {
-            ///TODO ASK user INPUT
-            String username = "sample4";
-            createNewUser(username);
-        }
- **/
-    }
-
-    private void DeleteSharePreference() {
-        SharedPreferences SF = getSharedPreferences(USR_PERF, 0);
-        if (SF.contains("uuid")) {
-            getSharedPreferences(USR_PERF, 0).edit().remove("uuid").remove("username").remove("id").commit();
-        }
-    }
-
-    private boolean isFirstLogin() {
-        SharedPreferences SF = this.getSharedPreferences(USR_PERF, Context.MODE_PRIVATE);
-        if (!SF.contains("uuid")) {
-            return true;
-        } else {
-            //load up user detail from shared_preference to data holder
-            DH.setUserSelf(new User(SF.getInt("id", -1), SF.getString("username", null), SF.getString("uuid", null)));
-            return false;
-        }
-    }
-
-    private void createNewUser(String username) {
-        UserImpl.CreateUser(username);
     }
 
     private void createEventAPI() {
@@ -155,4 +135,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Error",t.getMessage());
         }
     };
+
+    @Override
+    public void onListFragmentInteraction(FoodDeal item) {
+        Log.d("Main Activity", item.toString());
+    }
 }

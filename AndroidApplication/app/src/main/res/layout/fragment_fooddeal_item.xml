@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/FoodDeal_Lisr_Item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:paddingBottom="5dp"
+    android:paddingEnd="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingStart="5dp"
+    android:paddingTop="5dp">
+
+
+    <TextView
+        android:id="@+id/FoodDeal_Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:drawableTop="@drawable/dealimg_placeholder"
+        android:text="this is a long line of text which can simulate the case that the food deal name is in extremely long long of sentencse and may having multiple line of redumdent content which having no value on diaplaying that on the screen but i don;t want to deal with the lanauge capturing stuff"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+</LinearLayout>
