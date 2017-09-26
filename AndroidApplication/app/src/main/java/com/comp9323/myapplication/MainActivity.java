@@ -1,5 +1,6 @@
 package com.comp9323.myapplication;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -13,7 +14,10 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.comp9323.Food.FoodContainer;
 import com.comp9323.Food.FoodDeal.FoodDealFragment;
+import com.comp9323.Food.FoodPlace.FoodPlaceFragment;
+import com.comp9323.Food.FoodPlace.dummy.DummyContent;
 import com.comp9323.RestAPI.APIInterface.EventAPI;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.EventBean;
@@ -27,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements FoodDealFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements FoodDealFragment.OnListFragmentInteractionListener, FoodPlaceFragment.OnListFragmentInteractionListener{
 
     public static final String USR_PERF = "APP_USR_INFO";
 
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_event:
                     //mList = (RecyclerView) findViewById(R.id.recycler_view);
 
                     mList = (ListView) findViewById(R.id.listview);
@@ -61,8 +65,9 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
 
                     eventAPI.getEvents().enqueue(eventsCallback);
                     return true;
-                case R.id.navigation_dashboard:
-                    FoodDealFragment newFragment = new FoodDealFragment();
+                case R.id.navigation_food:
+                    //FoodDealFragment newFragment = new FoodDealFragment();
+                    FoodContainer newFragment = new FoodContainer();
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.content, newFragment);
                     transaction.addToBackStack(null);
@@ -71,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
                     Toast dash = Toast.makeText(getApplicationContext(), "Item selected navigation dashboard", Toast.LENGTH_SHORT);
                     dash.show();
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_qna:
                     Toast nav = Toast.makeText(getApplicationContext(), "Item selected navigation notifications", Toast.LENGTH_SHORT);
                     nav.show();
                     return true;
@@ -112,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
 
                 mList.setAdapter(mAdapter);
 **/
-
                 EventArrayAdapter apiArrayAdapter = new EventArrayAdapter(getApplicationContext(), 0, events);
                 mList.setAdapter(apiArrayAdapter);
 
@@ -126,9 +130,13 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
             Log.d("Error",t.getMessage());
         }
     };
-
     @Override
     public void onListFragmentInteraction(FoodDeal item) {
-        Log.d("Main Activity", item.toString());
+        Log.d("Food Deal Interaction", "item pressed: " + item.getMessage());
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+        Log.d("Food Deal Interaction", "item pressed: " + item.toString());
     }
 }
