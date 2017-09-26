@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.comp9323.AsycnTask.PullingFoodDeals;
 import com.comp9323.RestAPI.APIImpl.FoodDealImpl;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
@@ -31,6 +32,7 @@ public class FoodDealFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private MyFoodDealRecyclerViewAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -56,8 +58,8 @@ public class FoodDealFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        mAdapter = new MyFoodDealRecyclerViewAdapter(SingletonDataHolder.getInstance().getFoodDealList(), mListener);
         fillDummyItem();
-        //FoodDealImpl.getFoodDeals(1);
     }
 
     @Override
@@ -75,8 +77,9 @@ public class FoodDealFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             Log.d("FoodDealFragment", "size "+SingletonDataHolder.getInstance().getFoodDealList().size());
-            recyclerView.setAdapter(new MyFoodDealRecyclerViewAdapter(SingletonDataHolder.getInstance().getFoodDealList(), mListener));
+            recyclerView.setAdapter(mAdapter);
         }
+        new PullingFoodDeals(mAdapter).execute(1);
         return view;
     }
 
@@ -114,7 +117,7 @@ public class FoodDealFragment extends Fragment {
     }
 
     public void fillDummyItem(){
-        for(int i =0; i<30;i++){
+        for(int i =0; i<10;i++){
             SingletonDataHolder.getInstance().addFoodDeal(new FoodDeal(i,i+"","this is " + i + " item","10:10:10","","localhost:8080/deadnull","10-10-2012"));
         }
     }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.comp9323.FoodDeal.FoodDealFragment.OnListFragmentInteractionListener;
 import com.comp9323.RestAPI.Beans.FoodDeal;
+import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
 
 import java.io.IOException;
@@ -24,13 +25,13 @@ import java.util.List;
  */
 public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDealRecyclerViewAdapter.FoodDealViewHolder> {
 
-    private final List<FoodDeal> FoodDeals_;
+    private final List<FoodDeal> mFoodDeals;
     private final OnListFragmentInteractionListener FoodDeal_Fragment_listener;
 
     public MyFoodDealRecyclerViewAdapter(List<FoodDeal> foodDeals, OnListFragmentInteractionListener listener) {
-        FoodDeals_ = foodDeals;
+        mFoodDeals = foodDeals;
         FoodDeal_Fragment_listener = listener;
-        Log.d("Adapter", "size: "+ FoodDeals_.size());
+        Log.d("Adapter", "size: "+ mFoodDeals.size());
     }
 
     @Override
@@ -44,55 +45,54 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
     public void onBindViewHolder(final FoodDealViewHolder holder, int position) {
 
         //TODO set value that display in the list
-        holder.FoodDeal_ = FoodDeals_.get(position);
-        holder.View_title_.setText(FoodDeals_.get(position).getMessage());
+        holder.mFoodDeal = mFoodDeals.get(position);
+        holder.mTextView.setText(mFoodDeals.get(position).getMessage());
 
-        holder.View_.setOnClickListener(new View.OnClickListener() {
+        holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != FoodDeal_Fragment_listener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    FoodDeal_Fragment_listener.onListFragmentInteraction(holder.FoodDeal_);
+                    FoodDeal_Fragment_listener.onListFragmentInteraction(holder.mFoodDeal);
                 }
             }
         });
     }
-
     @Override
     public int getItemCount() {
-        return FoodDeals_.size();
+        return mFoodDeals.size();
     }
 
     //Item view of the recycle List
     //need to match the @layout list_item.xml
     public class FoodDealViewHolder extends RecyclerView.ViewHolder {
-        public final View View_;
-        public final TextView View_title_;
-        public FoodDeal FoodDeal_;
+        public final View mView;
+        public final TextView mTextView;
+        public FoodDeal mFoodDeal;
 
         public FoodDealViewHolder(View view) {
             super(view);
-            View_ = view;
-            View_title_ = (TextView) view.findViewById(R.id.FoodDeal_Name);
+            mView = view;
+            mTextView = (TextView) view.findViewById(R.id.FoodDeal_Name);
 
             //dynamic set image
-            if (FoodDeal_ != null && FoodDeal_.getPhotoLink().length() >0) {
+            if (mFoodDeal != null && mFoodDeal.getPhotoLink().length() >0) {
                 Drawable img = null;
                 try {
-                    img = Drawable.createFromStream((InputStream)new URL(FoodDeal_.getPhotoLink()).getContent(), "food_deal_item_image");
+                    img = Drawable.createFromStream((InputStream)new URL(mFoodDeal.getPhotoLink()).getContent(), "food_deal_item_image");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 if (img != null) {
-                    View_title_.setCompoundDrawables(null, img, null, null);
+                    mTextView.setCompoundDrawables(null, img, null, null);
                 }
             }
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + View_title_.getText() + "'";
+            return super.toString() + " '" + mTextView.getText() + "'";
         }
     }
 }

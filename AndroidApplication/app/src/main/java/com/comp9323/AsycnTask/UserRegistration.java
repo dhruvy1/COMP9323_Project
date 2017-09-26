@@ -7,7 +7,9 @@ import android.service.autofill.SaveInfo;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.comp9323.FoodDeal.FoodDealFragment;
 import com.comp9323.RestAPI.APIImpl.UserImpl;
+import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.MainActivity;
 

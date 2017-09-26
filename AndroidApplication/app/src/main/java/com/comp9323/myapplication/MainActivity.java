@@ -1,21 +1,14 @@
 package com.comp9323.myapplication;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ContentFrameLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,12 +18,10 @@ import com.comp9323.RestAPI.APIInterface.EventAPI;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.EventBean;
 import com.comp9323.RestAPI.Beans.FoodDeal;
-import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
 
     private EventAPI eventAPI;
     private ListView mList;
-    private FrameLayout contentContainer_;
+    private FrameLayout mContentContainer;
     //private RecyclerView mList;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -100,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        this.contentContainer_ = (FrameLayout) findViewById(R.id.content);
+        this.mContentContainer = (FrameLayout) findViewById(R.id.content);
 
     }
 
