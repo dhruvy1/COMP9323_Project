@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.comp9323.FoodDeal.FoodDealFragment;
+import com.comp9323.Food.FoodDeal.FoodDealFragment;
 import com.comp9323.RestAPI.APIInterface.EventAPI;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.EventBean;

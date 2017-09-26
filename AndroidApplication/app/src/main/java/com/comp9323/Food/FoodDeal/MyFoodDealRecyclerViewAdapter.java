@@ -1,4 +1,4 @@
-package com.comp9323.FoodDeal;
+package com.comp9323.Food.FoodDeal;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
@@ -8,9 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.comp9323.FoodDeal.FoodDealFragment.OnListFragmentInteractionListener;
+import com.comp9323.Food.FoodDeal.FoodDealFragment.OnListFragmentInteractionListener;
 import com.comp9323.RestAPI.Beans.FoodDeal;
-import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
 
 import java.io.IOException;

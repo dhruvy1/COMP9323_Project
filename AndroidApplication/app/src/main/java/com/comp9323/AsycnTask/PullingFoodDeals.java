@@ -3,7 +3,7 @@ package com.comp9323.AsycnTask;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.comp9323.FoodDeal.MyFoodDealRecyclerViewAdapter;
+import com.comp9323.Food.FoodDeal.MyFoodDealRecyclerViewAdapter;
 import com.comp9323.RestAPI.APIImpl.FoodDealImpl;
 
 /**

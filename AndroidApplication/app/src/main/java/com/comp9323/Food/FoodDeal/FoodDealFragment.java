@@ -1,8 +1,9 @@
-package com.comp9323.FoodDeal;
+package com.comp9323.Food.FoodDeal;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.comp9323.AsycnTask.PullingFoodDeals;
-import com.comp9323.RestAPI.APIImpl.FoodDealImpl;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
-
-import java.util.Collections;
 
 /**
  * A fragment representing a list of Items.
@@ -25,14 +23,15 @@ import java.util.Collections;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class FoodDealFragment extends Fragment {
+public class FoodDealFragment extends Fragment{
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
-    private MyFoodDealRecyclerViewAdapter mAdapter;
+    protected OnListFragmentInteractionListener mListener;
+    protected MyFoodDealRecyclerViewAdapter mAdapter;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -59,7 +58,13 @@ public class FoodDealFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         mAdapter = new MyFoodDealRecyclerViewAdapter(SingletonDataHolder.getInstance().getFoodDealList(), mListener);
+
         fillDummyItem();
+    }
+    private void refreshList(){
+        SingletonDataHolder.getInstance().clearFoodList();
+        new PullingFoodDeals(mAdapter).execute(1);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -68,18 +73,25 @@ public class FoodDealFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fooddeal_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            Log.d("FoodDealFragment", "size "+SingletonDataHolder.getInstance().getFoodDealList().size());
-            recyclerView.setAdapter(mAdapter);
+        Context context = view.getContext();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fooddeal_list);
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        new PullingFoodDeals(mAdapter).execute(1);
+        Log.d("FoodDealFragment", "size "+SingletonDataHolder.getInstance().getFoodDealList().size());
+        recyclerView.setAdapter(mAdapter);
+
+        //set refresh listener
+      mSwipeRefreshLayout = view.findViewById(R.id.fooddeal_swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshList();
+                return;
+            }
+        });
         return view;
     }
 
