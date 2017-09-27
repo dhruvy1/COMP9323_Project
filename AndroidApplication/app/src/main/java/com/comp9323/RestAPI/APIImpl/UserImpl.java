@@ -11,6 +11,7 @@ import java.util.Vector;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.APIInterface.UserInterface;
 import com.comp9323.RestAPI.Beans.User;
+import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.MainActivity;
 
 import retrofit2.Call;
@@ -22,17 +23,17 @@ public class UserImpl {
     public static final String USR_PERF = "APP_USR_INFO";
     private static final UserInterface apiInterface = RestClient.getClient().create(UserInterface.class);
 
-    public static void CreateUser(String username) {
-        CreateUser(new User(username, createUUID()));
+    public static boolean CreateUser(String username) {
+        return CreateUser(new User(username, createUUID()));
     }
 
     public static boolean deleteSelf() {
-        return deleteUser(MainActivity.DH.getUserSelf().getId());
+        return deleteUser(SingletonDataHolder.getInstance().getUserSelf().getId());
     }
 
     public static boolean editUserWithFields(HashMap<String, String> couples) {
         //create new user template
-        int Id = MainActivity.DH.getUserSelf().getId();
+        int Id = SingletonDataHolder.getInstance().getUserSelf().getId();
         User templateUser = new User();
         for (String item : couples.keySet()) {
             String value = couples.get(item);
@@ -48,7 +49,7 @@ public class UserImpl {
 
     public static boolean editWholeUser(HashMap<String, String> couples) {
         //load user
-        User userSelf = MainActivity.DH.getUserSelf();
+        User userSelf = SingletonDataHolder.getInstance().getUserSelf();
         //set fields
         for (String item : couples.keySet()) {
             String value = couples.get(item);
@@ -72,7 +73,7 @@ public class UserImpl {
                 Log.d("Rest Call", "Is response success? " + response.isSuccessful());
                 Vector<User> users = response.body();
                 if (users != null) {
-                    MainActivity.DH.addUsers(users);
+                    SingletonDataHolder.getInstance().addUsers(users);
                     ifSuccess[0] = true;
                     for (User u : users) {
                         Log.d("Rest Debug Print", u.toString());
@@ -99,7 +100,7 @@ public class UserImpl {
                 Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
                 User user = response.body();
                 Log.d("Rest Debug print", user.toString());
-                MainActivity.DH.addUser(user);//TODO Should i store it?
+                SingletonDataHolder.getInstance().addUser(user);//TODO Should i store it?
                 ifSuccess[0] = true;
                 Log.v("Rest Call", "End Get User");
             }
@@ -113,31 +114,41 @@ public class UserImpl {
         return ifSuccess[0];
     }
 
-    private static void CreateUser(User user) {
+    private static boolean CreateUser(User user) {
         //final SingletonDataHolder DH = SingletonDataHolder.getInstance();
         Log.v("Rest Call", "Start Create User");
+        final boolean[] ifSuccess= {false};
+        final User[] users = new User[1];
         apiInterface.createUser(user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
                 User user = response.body();
                 //temp store user detail into data holder
-                MainActivity.DH.setUserSelf(user);
+                SingletonDataHolder.getInstance().setUserSelf(user);
                 //saving user detail into shared_preference
-                SharedPreferences.Editor SFE = MainActivity.DH.getContext().getSharedPreferences(USR_PERF, Context.MODE_PRIVATE).edit();
+                SharedPreferences.Editor SFE = SingletonDataHolder.getInstance().getContext().getSharedPreferences(USR_PERF, Context.MODE_PRIVATE).edit();
                 SFE.putInt("id", user.getId());
                 SFE.putString("username", user.getUsername());
                 SFE.putString("uuid", user.getDeviceId());
-                SFE.commit();
-                Log.v("Rest Call", "End Create User");
+                ifSuccess[0] = SFE.commit();
+                users[0]= user;
+                Log.v("Rest Call", "End Create User, commiting:" + ifSuccess[0]);
             }
 
             @Override
             public void onFailure(Call call, Throwable t) {
                 Log.d("REST CALL", "~~FAILED~~");
+                users[0] = new User();
                 call.cancel();
             }
         });
+        while (users[0] == null){
+            Log.i("Waiting", "REST resposne is not run yet");
+        }
+        Log.v("Rest Call Debug", "End Create User, committing:" + ifSuccess[0]);
+        Log.v("Rest Call Debug", "username:" + SingletonDataHolder.getInstance().getUserSelf().getUsername());
+        return ifSuccess[0];
     }
 
     private static boolean deleteUser(int id) {

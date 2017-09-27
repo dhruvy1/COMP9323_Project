@@ -27,11 +27,13 @@ public class SingletonDataHolder {
     //vector<Object> ObjectData;
     //remember to initialize object list/map
     private List< WeakReference<User>> userList;
-    private List<WeakReference<FoodDeal>> foodDealList;
+    private List<FoodDeal> foodDealList;
+    private Map<Integer, FoodDeal> foodDealMap;
 
     private SingletonDataHolder() {
         userList = new Vector<>();
         foodDealList = new Vector<>();
+        foodDealMap = new HashMap<>();
         //...
     }
 
@@ -39,28 +41,36 @@ public class SingletonDataHolder {
         return DH;
     }
 
+    //self
     public User getUserSelf() {
         return this.userSelf;
     }
-
     public void setUserSelf(User user) {
         Log.v("tag", "written to DH");
         this.userSelf = user;
     }
 
+    //base comtext
     public Context getContext() {
         return context;
     }
-
     public void setContext(Context context) {
         this.context = context;
     }
 
+    //User List
     public WeakReference<User> getUser(int Index){
         return userList.get(Index);
     }
-    public List<WeakReference<User>> getUserList(){
+    public List<WeakReference<User>> getUserListRef(){
         return userList;
+    }
+    public List<User> getUserList(){
+        List<User> temp = new Vector<>();
+        for(WeakReference<User> ref : userList){
+            temp.add(ref.get());
+        }
+        return temp;
     }
     public void addUser(User user){
         userList.add(new WeakReference<>(user));
@@ -76,32 +86,39 @@ public class SingletonDataHolder {
     public void clearUserList(){
         userList.clear();
     }
-    public WeakReference<FoodDeal> getFoodDeal(int Index){
+
+
+    //FOOD DEALS
+    public FoodDeal getFoodDeal(int Index){
         return foodDealList.get(Index);
     }
-    public WeakReference<FoodDeal> getFoodDealwithID(int id){
-        for (WeakReference<FoodDeal> ref: foodDealList) {
-            if(ref.get().getId() == id)
+    public FoodDeal getFoodDealwithID(int id){
+        for (FoodDeal ref: foodDealList) {
+            if(ref.getId() == id)
                 return ref;
         }
         return null;
     }
-    public List<WeakReference<FoodDeal>> getFoodDealList(){
+    public List<FoodDeal> getFoodDealList(){
         return foodDealList;
     }
     public void addFoodDeal(FoodDeal fd){
-        foodDealList.add(new WeakReference<>(fd));
+        foodDealList.add(fd);
+        foodDealMap.put(fd.getId(),fd);
     }
     public void addFoodDeals(List<FoodDeal> fds){
         for (FoodDeal fd: fds) {
-            foodDealList.add(new WeakReference<>(fd));
+            foodDealList.add(fd);
+            foodDealMap.put(fd.getId(),fd);
         }
     }
     public void removeFoodDeall(int Index){
-        foodDealList.remove(Index);
+        FoodDeal temp = foodDealList.remove(Index);
+        foodDealMap.remove(temp);
     }
     public void clearFoodList(){
         foodDealList.clear();
+        foodDealMap.clear();
     }
 
 }

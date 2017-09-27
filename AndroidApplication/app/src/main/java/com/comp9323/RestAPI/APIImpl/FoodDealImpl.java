@@ -5,6 +5,7 @@ import android.util.Log;
 import com.comp9323.RestAPI.APIInterface.FoodDealInterface;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.FoodDeal;
+import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.MainActivity;
 
 import java.util.Vector;
@@ -56,7 +57,7 @@ public class FoodDealImpl {
     }
 
     public static boolean editFoodDeal(int id, String postid, String message, String updatetime, String photolink, String eventlink, String updatedate) throws Exception{
-        FoodDeal fd = MainActivity.DH.getFoodDealwithID(id).get();
+        FoodDeal fd = SingletonDataHolder.getInstance().getFoodDealwithID(id);
         if (fd == null) return false;
         if (postid != null && postid.length() > 0)
             fd.setPostId(postid);
@@ -84,18 +85,20 @@ public class FoodDealImpl {
     public static boolean getFoodDeals(int page) {
         Log.v("Rest Call", "Start Create Food Deal");
         final boolean[] ifSuccess = {false};
+        final String[] flag = {null};
         apiInterface.getFoodDeals(page).enqueue(new Callback<Vector<FoodDeal>>() {
             @Override
             public void onResponse(Call<Vector<FoodDeal>> call, Response<Vector<FoodDeal>> response) {
                 Log.d("Rest Call", "Is response success? " + response.isSuccessful());
                 Vector<FoodDeal> fooddeals = response.body();
                 if (fooddeals != null) {
-                    MainActivity.DH.addFoodDeals(fooddeals);
-                    ifSuccess[0] = true;
+                    ifSuccess[0] = response.isSuccessful();
                     for (FoodDeal fd : fooddeals) {
+                        SingletonDataHolder.getInstance().addFoodDeal(fd);
                         Log.d("Rest Debug Print", fd.getId() + "");
                     }
                 }
+                flag[0] = "done";
                 Log.v("Rest Call", "End Create Food Deal");
             }
 
@@ -105,6 +108,9 @@ public class FoodDealImpl {
                 call.cancel();
             }
         });
+        while(flag[0] == null){
+            Log.d("Rest call", "Size of list :" +SingletonDataHolder.getInstance().getFoodDealList().size());
+        }
         return ifSuccess[0];
     }
 
@@ -137,7 +143,7 @@ public class FoodDealImpl {
                 Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
                 FoodDeal fd = response.body();
                 if (fd != null) {
-                    MainActivity.DH.addFoodDeal(fd);//TODO Should i store like this
+                    SingletonDataHolder.getInstance().addFoodDeal(fd);//TODO Should i store like this
                     ifSuccess[0] = true;
                     Log.v("Rest Call", "End get Food Deals");
                 }
@@ -162,7 +168,7 @@ public class FoodDealImpl {
                 FoodDeal newfd = response.body();
                 if (newfd != null) {
                     //TODO should i store it?
-                    MainActivity.DH.addFoodDeal(newfd);
+                    SingletonDataHolder.getInstance().addFoodDeal(newfd);
                     ifSuccess[0] = true;
                 }
                 Log.v("Rest Call", "End Create Food Deal");
