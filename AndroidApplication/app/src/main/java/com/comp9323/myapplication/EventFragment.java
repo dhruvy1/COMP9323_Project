@@ -7,34 +7,38 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.google.android.gms.plus.PlusOneButton;
+import com.comp9323.RestAPI.Beans.EventBean;
+
 
 /**
- * A fragment with a Google +1 button.
+ * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EventItemFragment.OnFragmentInteractionListener} interface
+ * {@link EventFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EventItemFragment#newInstance} factory method to
+ * Use the {@link EventFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventItemFragment extends Fragment {
+public class EventFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    // The request code must be 0 or greater.
-    private static final int PLUS_ONE_REQUEST_CODE = 0;
-    // The URL to +1.  Must be a valid URL.
-    private final String PLUS_ONE_URL = "http://developer.android.com";
+    private static final String EVENT_NAME = "param1";
+    private static final String EVENT_LOCATION = "param2";
+    private static final String EVENT_START = "param3";
+    private static final String EVENT_END = "param4";
+    private static final String EVENT_IMG_SRC = "param4";
+    private static final String EVENT_DESC = "param5";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private PlusOneButton mPlusOneButton;
+    private String mParam3;
+    private String mParam4;
+    private String mParam5;
 
     private OnFragmentInteractionListener mListener;
 
-    public EventItemFragment() {
+    public EventFragment() {
         // Required empty public constructor
     }
 
@@ -42,16 +46,18 @@ public class EventItemFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EventItemFragment.
+     * @param eventBean the event item data
+     * @return A new instance of fragment EventFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EventItemFragment newInstance(String param1, String param2) {
-        EventItemFragment fragment = new EventItemFragment();
+    public static EventFragment newInstance(EventBean eventBean) {
+        EventFragment fragment = new EventFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(EVENT_NAME, param1);
+        args.putString(EVENT_LOCATION, param2);
+        args.putString(EVENT_DATE, param3);
+        args.putString(EVENT_IMG_SRC, param4);
+        args.putString(EVENT_DESC, param5);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,8 +66,21 @@ public class EventItemFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+            TextView name = getView().findViewById(R.id.event_name);
+            name.setText(getArguments().getString(EVENT_NAME));
+
+            TextView loc = getView().findViewById(R.id.event_location);
+            loc.setText(getArguments().getString(EVENT_LOCATION));
+
+            TextView start_date = getView().findViewById(R.id.event_start);
+            start_date.setText(getArguments().getString(EVENT_START));
+
+            TextView end_date = getView().findViewById(R.id.event_end);
+            end_date.setText(getArguments().getString(EVENT_EMD));
+//            mParam3 = getArguments().getString(EVENT_LOCATION);
+//            mParam4 = getArguments().getString(EVENT_LOCATION);
+//            mParam5 = getArguments().getString(EVENT_LOCATION);
         }
     }
 
@@ -69,20 +88,8 @@ public class EventItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_event_item, container, false);
 
-        //Find the +1 button
-        mPlusOneButton = (PlusOneButton) view.findViewById(R.id.plus_one_button);
-
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Refresh the state of the +1 button each time the activity receives focus.
-        mPlusOneButton.initialize(PLUS_ONE_URL, PLUS_ONE_REQUEST_CODE);
+        return inflater.inflate(R.layout.fragment_event, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -123,5 +130,4 @@ public class EventItemFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 }

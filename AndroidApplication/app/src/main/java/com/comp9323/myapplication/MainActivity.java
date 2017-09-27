@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast clicked = Toast.makeText(getApplicationContext(), "Item selected " + event.getName(), Toast.LENGTH_LONG);
                             clicked.show();
 
-                            EventItemFragment eventPage = new EventItemFragment();
+                            //EventItemFragment eventPage = new EventItemFragment();
                     }
                     });
 

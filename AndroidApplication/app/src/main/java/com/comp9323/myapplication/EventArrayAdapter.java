@@ -26,7 +26,7 @@ public class EventArrayAdapter extends ArrayAdapter<EventBean> {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        //TODO:: CLEANUP CODE
         // Get the data item for this position
         EventBean event = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
