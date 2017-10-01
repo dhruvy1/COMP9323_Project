@@ -46,7 +46,7 @@ def postToRestServer(payload):
     headers = {"Content-Type": "application/json",
                "Accept": "application/json"}
     response = requests.post(url, data=json.dumps(payload), headers=headers)
-    print(response)
+    # print(response)
 
 
 if __name__ == "__main__":
