@@ -51,5 +51,5 @@ class FoodPlaceSerializer(serializers.ModelSerializer):
 
 class FoodPlaceCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FoodDeal
+        model = FoodPlace
         fields = ['name', 'location', 'price_level', 'google_rating', 'latitude', 'longitude']
