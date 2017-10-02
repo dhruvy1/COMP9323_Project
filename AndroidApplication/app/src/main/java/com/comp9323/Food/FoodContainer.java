@@ -31,6 +31,9 @@ import com.comp9323.myapplication.R;
 public class FoodContainer extends Fragment{
 
     private FrameLayout mFoodContainer;
+    private FoodDealFragment mDealFragment;
+    private FoodPlaceFragment mPlaceFragment;
+
     private BottomNavigationView.OnNavigationItemSelectedListener
         mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -38,7 +41,6 @@ public class FoodContainer extends Fragment{
             switch (item.getItemId()) {
                 case R.id.navigation_fooddeal:
                     FoodDealFragment newFragment = new FoodDealFragment();
-                    //FoodContainer newFragment = new FoodContainer();
                     FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                     transaction.replace(R.id.food_list_container, newFragment);
                     transaction.addToBackStack(null);

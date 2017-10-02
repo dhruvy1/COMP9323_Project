@@ -1,6 +1,9 @@
 package com.comp9323.Food.FoodDeal;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,16 +14,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.comp9323.AsycnTask.PullingFoodDeals;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
+import com.comp9323.myapplication.MainActivity;
 import com.comp9323.myapplication.R;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnListFooDealInteractionListener}
  * interface.
  */
 public class FoodDealFragment extends Fragment{
@@ -29,7 +35,9 @@ public class FoodDealFragment extends Fragment{
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    protected OnListFragmentInteractionListener mListener;
+    private static int page = 1;
+
+    protected static OnListFooDealInteractionListener mListener;
     protected MyFoodDealRecyclerViewAdapter mAdapter;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -53,17 +61,39 @@ public class FoodDealFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        mListener = new OnListFooDealInteractionListener() {
+            @Override
+            public void onListFragmentInteraction(FoodDeal item) {
+
+                String link = item.getEventLink();
+                Log.d("Length", link.length()+"");
+                if (link.length()>0){
+                    Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    intent.setPackage("com.android.chrome");
+                    try {
+                        getContext().startActivity(intent);
+                    } catch (ActivityNotFoundException ex) {
+                        // Chrome browser presumably not installed so allow user to choose instead
+                        intent.setPackage(null);
+                        getContext().startActivity(intent);
+                    }
+                }else {
+                    Toast.makeText(getActivity().getApplicationContext(), "There are no Home Page of Deal Yet", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
         mAdapter = new MyFoodDealRecyclerViewAdapter(SingletonDataHolder.getInstance().getFoodDealList(), mListener);
 
         fillDummyItem();
     }
-    private void refreshList(){
+    private void refreshList(int newpage){
+        page = newpage;
         SingletonDataHolder.getInstance().clearFoodList();
-        new PullingFoodDeals(mAdapter).execute(1);
+        new PullingFoodDeals(mAdapter).execute(newpage);
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -81,14 +111,39 @@ public class FoodDealFragment extends Fragment{
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
         Log.d("FoodDealFragment", "size "+SingletonDataHolder.getInstance().getFoodDealList().size());
+
         recyclerView.setAdapter(mAdapter);
+        //set onloadListener for checking if list end
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                int visibleThreshold = 1;
+                Log.d("ONSCROLL", "last Item " + lastVisibleItem);
+                Log.d("ONSCROLL", "Item Count " + totalItemCount);
+                Log.d("ONSCROLL", "Page number" + page);
+                if (!mAdapter.ifLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+//                    if (mAdapter.onLoadMoreListener != null) {
+//                        onLoadMoreListener.onLoadMore();
+//                    }
+                    page++;
+                    new PullingFoodDeals(mAdapter).execute(page);
+                }
+            }
+        });
+
+
+
 
         //set refresh listener
         mSwipeRefreshLayout = view.findViewById(R.id.fooddeal_swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-            refreshList();
+            refreshList(1);
             return;
             }
         });
@@ -99,12 +154,6 @@ public class FoodDealFragment extends Fragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
     }
 
     @Override
@@ -113,6 +162,9 @@ public class FoodDealFragment extends Fragment{
         mListener = null;
     }
 
+    public void setListener(OnListFooDealInteractionListener listener){
+        mListener = listener;
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -123,14 +175,14 @@ public class FoodDealFragment extends Fragment{
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
+    public interface OnListFooDealInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(FoodDeal item);
     }
 
     public void fillDummyItem(){
         for(int i =0; i<10;i++){
-            SingletonDataHolder.getInstance().addFoodDeal(new FoodDeal(i,i+"","this is " + i + " item","10:10:10","","localhost:8080/deadnull","10-10-2012"));
+            SingletonDataHolder.getInstance().addFoodDeal(new FoodDeal(i,i+"","this is " + i + " item","10:10:10","","","10-10-2012"));
         }
     }
 }

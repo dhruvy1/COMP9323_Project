@@ -19,6 +19,7 @@ public class PullingFoodDeals extends AsyncTask<Integer, Void, Boolean> {
     }
     @Override
     protected Boolean doInBackground(Integer... integers) {
+        mAdapter.setIsloading(true);
         Log.d("A*", "Pulling FoodDeal start");
         int pageNumber = integers[0];
         return FoodDealImpl.getFoodDeals(pageNumber);
@@ -29,5 +30,6 @@ public class PullingFoodDeals extends AsyncTask<Integer, Void, Boolean> {
         Log.d("A*", "Pull done");
         mAdapter.notifyDataSetChanged();
         Log.d("A*", "notify Done");
+        mAdapter.setIsloading(false);
     }
 }

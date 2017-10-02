@@ -11,20 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.comp9323.AsycnTask.PullingFoodDeals;
 import com.comp9323.AsycnTask.SearchFoodPlace;
-import com.comp9323.Food.FoodDeal.MyFoodDealRecyclerViewAdapter;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
 import com.comp9323.Food.FoodPlace.dummy.DummyContent;
 import com.comp9323.Food.FoodPlace.dummy.DummyContent.DummyItem;
 
-import java.util.List;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnListFoodDealInteractionListener}
  * interface.
  */
 public class FoodPlaceFragment extends Fragment {
@@ -35,7 +31,7 @@ public class FoodPlaceFragment extends Fragment {
     private int mColumnCount = 1;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected MyFoodPlaceRecyclerViewAdapter mAdapter;
-    private OnListFragmentInteractionListener mListener;
+    private static OnListFoodDealInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -61,6 +57,12 @@ public class FoodPlaceFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        mListener = new OnListFoodDealInteractionListener() {
+            @Override
+            public void onListFragmentInteraction(DummyItem item) {
+//TODO
+            }
+        };
         //TODO change list holder
         mAdapter = new MyFoodPlaceRecyclerViewAdapter(DummyContent.ITEMS, mListener);
     }
@@ -96,12 +98,6 @@ public class FoodPlaceFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
     }
 
     @Override
@@ -127,7 +123,7 @@ public class FoodPlaceFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
+    public interface OnListFoodDealInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
     }

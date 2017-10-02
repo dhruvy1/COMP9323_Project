@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.comp9323.Food.FoodPlace.FoodPlaceFragment.OnListFragmentInteractionListener;
+import com.comp9323.Food.FoodPlace.FoodPlaceFragment.OnListFoodDealInteractionListener;
 import com.comp9323.Food.FoodPlace.dummy.DummyContent.DummyItem;
 import com.comp9323.myapplication.R;
 
@@ -14,15 +14,15 @@ import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link OnListFoodDealInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodPlaceRecyclerViewAdapter.ViewHolder> {
 
     private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnListFoodDealInteractionListener mListener;
 
-    public MyFoodPlaceRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyFoodPlaceRecyclerViewAdapter(List<DummyItem> items, OnListFoodDealInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }

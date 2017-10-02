@@ -1,6 +1,5 @@
 package com.comp9323.myapplication;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -14,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.comp9323.AnQ.QnAWebView;
 import com.comp9323.Food.FoodContainer;
 import com.comp9323.Food.FoodDeal.FoodDealFragment;
 import com.comp9323.Food.FoodPlace.FoodPlaceFragment;
@@ -31,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements FoodDealFragment.OnListFragmentInteractionListener, FoodPlaceFragment.OnListFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity{
 
     public static final String USR_PERF = "APP_USR_INFO";
 
@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
                     eventAPI.getEvents().enqueue(eventsCallback);
                     return true;
                 case R.id.navigation_food:
-                    //FoodDealFragment newFragment = new FoodDealFragment();
                     FoodContainer newFragment = new FoodContainer();
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.content, newFragment);
@@ -77,6 +76,13 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
                     dash.show();
                     return true;
                 case R.id.navigation_qna:
+
+                    QnAWebView newWebview = new QnAWebView();
+                    FragmentTransaction transaction3 = getSupportFragmentManager().beginTransaction();
+                    transaction3.replace(R.id.content, newWebview);
+                    transaction3.addToBackStack(null);
+                    transaction3.commit();
+
                     Toast nav = Toast.makeText(getApplicationContext(), "Item selected navigation notifications", Toast.LENGTH_SHORT);
                     nav.show();
                     return true;
@@ -130,13 +136,4 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
             Log.d("Error",t.getMessage());
         }
     };
-    @Override
-    public void onListFragmentInteraction(FoodDeal item) {
-        Log.d("Food Deal Interaction", "item pressed: " + item.getMessage());
-    }
-
-    @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-        Log.d("Food Deal Interaction", "item pressed: " + item.toString());
-    }
 }
