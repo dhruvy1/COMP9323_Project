@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
+import com.comp9323.Food.FoodDeal.FoodDealFragment.OnListFooDealInteractionListener;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,16 +22,17 @@ import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link FoodDeal} and makes a call to the
- * specified {@link FoodDealFragment.OnListFooDealInteractionListener}.
+ * specified {@link OnListFooDealInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDealRecyclerViewAdapter.FoodDealViewHolder> {
 
     //private final List<FoodDeal> mFoodDeals;
     private static boolean mIsLoading = false;
-    private final FoodDealFragment.OnListFooDealInteractionListener FoodDeal_Fragment_listener;
-    private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_LOADING = 1;
+    private static boolean mIsReachEnd = false;
+    private final OnListFooDealInteractionListener FoodDeal_Fragment_listener;
+//    private final int VIEW_TYPE_ITEM = 0;
+//    private final int VIEW_TYPE_LOADING = 1;
 
     public MyFoodDealRecyclerViewAdapter(FoodDealFragment.OnListFooDealInteractionListener listener) {
       //  mFoodDeals = foodDeals;
@@ -39,14 +42,14 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
 
     @Override
     public FoodDealViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_ITEM) {
+//        if (viewType == VIEW_TYPE_ITEM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_fooddeal_item, parent, false);
             return new FoodDealViewHolder(view);
-        }else if (viewType == VIEW_TYPE_LOADING){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_fooddeal_item, parent, false);
-            return new LastViewHolder(view);
-        }else
-            return null;
+//        }else if (viewType == VIEW_TYPE_LOADING){
+//            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_fooddeal_item, parent, false);
+//            return new LastViewHolder(view);
+//        }else
+//            return null;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
         }else {
             //TODO set value that display in the list
             holder.mFoodDeal = SingletonDataHolder.getInstance().getFoodDealList().get(position);
-            holder.mTextView.setText(SingletonDataHolder.getInstance().getFoodDealList().get(position).getMessage());
+            holder.mTextView.setText(holder.mFoodDeal.getMessage());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,8 +82,20 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
 
     @Override
     public int getItemViewType(int position) {
-        return SingletonDataHolder.getInstance().getFoodDealList().get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        return position;
+        //return SingletonDataHolder.getInstance().getFoodDealList().get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
+
+    public boolean ifLoading(){
+        return mIsLoading;
+    }
+    public void setIsLoading(boolean bool){
+        mIsLoading = bool;
+    }
+    public boolean ifReachEnd(){
+        return mIsReachEnd;
+    }
+    public void setIsReachEnd(boolean bool){mIsReachEnd = bool;}
 
     //Item view of the recycle List
     //need to match the @layout list_item.xml
@@ -123,10 +138,4 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
         }
     }
 
-    public boolean ifLoading(){
-        return mIsLoading;
-    }
-    public void setIsLoading(boolean bool){
-        mIsLoading = bool;
-    }
 }

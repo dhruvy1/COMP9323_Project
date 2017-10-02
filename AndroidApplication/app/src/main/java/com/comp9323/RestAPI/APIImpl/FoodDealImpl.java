@@ -85,32 +85,38 @@ public class FoodDealImpl {
     public static boolean getFoodDeals(int page) {
         Log.v("Rest Call", "Start Create Food Deal");
         final boolean[] ifSuccess = {false};
-        final String[] flag = {null};
+        final boolean[] ifNdone = {true};
         apiInterface.getFoodDeals(page).enqueue(new Callback<Vector<FoodDeal>>() {
             @Override
             public void onResponse(Call<Vector<FoodDeal>> call, Response<Vector<FoodDeal>> response) {
                 Log.d("Rest Call", "Is response success? " + response.isSuccessful());
                 Vector<FoodDeal> fooddeals = response.body();
                 if (fooddeals != null) {
-                    ifSuccess[0] = response.isSuccessful();
+                    if (fooddeals.size() != 0)
+                        ifSuccess[0] = response.isSuccessful();
+
                     for (FoodDeal fd : fooddeals) {
                         SingletonDataHolder.getInstance().addFoodDeal(fd);
                         Log.d("Rest Debug Print", fd.getId() + "");
                     }
                 }
-                flag[0] = "done";
+                ifNdone[0] = false;
                 Log.v("Rest Call", "End Create Food Deal");
             }
 
             @Override
             public void onFailure(Call<Vector<FoodDeal>> call, Throwable t) {
                 Log.d("Rest Call", "~~FAILED~~");
+                ifNdone[0] = false;
+                ifSuccess[0] = true;
                 call.cancel();
             }
         });
-        while(flag[0] == null){
+        while(ifNdone[0]){
             Log.d("Rest call", "Size of list :" +SingletonDataHolder.getInstance().getFoodDealList().size());
         }
+        if (!ifNdone[0] && !ifSuccess[0])
+            return false;
         return ifSuccess[0];
     }
 

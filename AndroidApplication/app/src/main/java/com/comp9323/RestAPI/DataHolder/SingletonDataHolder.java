@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.comp9323.RestAPI.Beans.FoodDeal;
+import com.comp9323.RestAPI.Beans.FoodPlace;
 import com.comp9323.RestAPI.Beans.User;
 
 import java.lang.ref.WeakReference;
@@ -20,6 +21,9 @@ import java.util.Vector;
 public class SingletonDataHolder {
 
     private static final SingletonDataHolder DH = new SingletonDataHolder();
+    private final Vector<FoodPlace> foodPlaceList;
+    private final HashMap<Integer, FoodPlace> foodPlaceMap;
+
 
     private User userSelf;
     private Context context;
@@ -34,6 +38,8 @@ public class SingletonDataHolder {
         userList = new Vector<>();
         foodDealList = new Vector<>();
         foodDealMap = new HashMap<>();
+        foodPlaceList = new Vector<>();
+        foodPlaceMap = new HashMap<>();
         //...
     }
 
@@ -108,17 +114,49 @@ public class SingletonDataHolder {
     }
     public void addFoodDeals(List<FoodDeal> fds){
         for (FoodDeal fd: fds) {
-            foodDealList.add(fd);
-            foodDealMap.put(fd.getId(),fd);
+            addFoodDeal(fd);
         }
     }
-    public void removeFoodDeall(int Index){
+    public void removeFoodDeal(int Index){
         FoodDeal temp = foodDealList.remove(Index);
         foodDealMap.remove(temp);
     }
-    public void clearFoodList(){
+    public void clearFoodDealList(){
         foodDealList.clear();
         foodDealMap.clear();
     }
+
+    //FoodPlace
+    public FoodPlace getFoodPlace(int Index){
+        return foodPlaceList.get(Index);
+    }
+    public FoodPlace getFoodPlacewithID(int id){
+        for (FoodPlace place: foodPlaceList) {
+            if(place.getId() == id)
+                return place;
+        }
+        return null;
+    }
+    public List<FoodPlace> getFoodPlaceList(){
+        return foodPlaceList;
+    }
+    public void addFoodPlace(FoodPlace fp){
+        foodPlaceList.add(fp);
+        foodPlaceMap.put(fp.getId(),fp);
+    }
+    public void addFoodPlaces(List<FoodPlace> fps){
+        for (FoodPlace fp: fps) {
+            addFoodPlace(fp);
+        }
+    }
+    public void removeFoodPlacel(int Index){
+        FoodPlace temp = foodPlaceList.remove(Index);
+        foodPlaceMap.remove(temp);
+    }
+    public void clearFoodPlaceList(){
+        foodPlaceList.clear();
+        foodPlaceMap.clear();
+    }
+
 
 }

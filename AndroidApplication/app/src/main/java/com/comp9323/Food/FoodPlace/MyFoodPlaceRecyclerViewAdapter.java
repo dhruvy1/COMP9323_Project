@@ -4,26 +4,28 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.comp9323.Food.FoodPlace.FoodPlaceFragment.OnListFoodDealInteractionListener;
-import com.comp9323.Food.FoodPlace.dummy.DummyContent.DummyItem;
+import com.comp9323.RestAPI.Beans.FoodPlace;
+import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
-
-import java.util.List;
+import com.comp9323.Food.FoodPlace.FoodPlaceFragment.OnListFoodPlaceInteractionListener;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFoodDealInteractionListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link FoodPlace} and makes a call to the
+ * specified {@link  OnListFoodPlaceInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodPlaceRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFoodDealInteractionListener mListener;
+    //private final List<DummyItem> mValues;
+    private static boolean mIsLoading = false;
+    private static boolean mIsReachEnd = false;
+    private final OnListFoodPlaceInteractionListener mListener;
 
-    public MyFoodPlaceRecyclerViewAdapter(List<DummyItem> items, OnListFoodDealInteractionListener listener) {
-        mValues = items;
+    public MyFoodPlaceRecyclerViewAdapter( OnListFoodPlaceInteractionListener listener) {
+        //mValues = items;
         mListener = listener;
     }
 
@@ -36,9 +38,11 @@ public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodP
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mPlace = SingletonDataHolder.getInstance().getFoodPlace(position);
+        holder.mNameView.setText(holder.mPlace.getName());
+        //holder.mLocationView.setText(holder.mPlace.getLocation());
+        if (holder.mPlace.getGoogleRating().length() > 0)
+            holder.mRatingView.setRating(Float.parseFloat(holder.mPlace.getGoogleRating()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +50,7 @@ public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodP
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFoodPlaceInteraction(holder.mPlace);
                 }
             }
         });
@@ -54,25 +58,43 @@ public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodP
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return SingletonDataHolder.getInstance().getFoodPlaceList().size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+        //return SingletonDataHolder.getInstance().getFoodDealList().get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+    }
+    public boolean ifLoading(){
+        return mIsLoading;
+    }
+    public void setIsLoading(boolean bool){mIsLoading = bool;}
+    public boolean ifReachEnd(){
+        return mIsReachEnd;
+    }
+    public void setIsReachEnd(boolean bool){mIsReachEnd = bool;}
+
+    //Item view of the recycle List
+    //need to match the @layout list_item.xml
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView mNameView;
+       // public final TextView mLocationView;
+        public final RatingBar mRatingView;
+        public FoodPlace mPlace;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mNameView = view.findViewById(R.id.FoodPlace_Name);
+            //mLocationView = view.findViewById(R.id.FoodPlace_Location);
+            mRatingView = view.findViewById(R.id.FoodPlace_RatingBar);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mNameView.getText() + "'";
         }
     }
 }

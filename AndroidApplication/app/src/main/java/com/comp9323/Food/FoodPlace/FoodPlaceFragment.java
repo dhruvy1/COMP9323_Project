@@ -11,27 +11,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.comp9323.AsycnTask.SearchFoodPlace;
+import com.comp9323.AsycnTask.FoodPlaceAsycn;
+import com.comp9323.RestAPI.Beans.FoodPlace;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
-import com.comp9323.Food.FoodPlace.dummy.DummyContent;
-import com.comp9323.Food.FoodPlace.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFoodDealInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnListFoodPlaceInteractionListener}
  * interface.
  */
 public class FoodPlaceFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
+    private static int mPage = 1;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
-    protected MyFoodPlaceRecyclerViewAdapter mAdapter;
-    private static OnListFoodDealInteractionListener mListener;
+    protected static MyFoodPlaceRecyclerViewAdapter mAdapter;
+    private static OnListFoodPlaceInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -40,7 +38,6 @@ public class FoodPlaceFragment extends Fragment {
     public FoodPlaceFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static FoodPlaceFragment newInstance(int columnCount) {
         FoodPlaceFragment fragment = new FoodPlaceFragment();
@@ -53,18 +50,16 @@ public class FoodPlaceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        mListener = new OnListFoodDealInteractionListener() {
+        mListener = new OnListFoodPlaceInteractionListener() {
             @Override
-            public void onListFragmentInteraction(DummyItem item) {
-//TODO
+            public void onListFoodPlaceInteraction(FoodPlace item) {
+                //TODO
             }
         };
-        //TODO change list holder
-        mAdapter = new MyFoodPlaceRecyclerViewAdapter(DummyContent.ITEMS, mListener);
+        mAdapter = new MyFoodPlaceRecyclerViewAdapter(mListener);
     }
 
     @Override
@@ -74,7 +69,7 @@ public class FoodPlaceFragment extends Fragment {
 
         // Set the adapter
         Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.foodplace_list);
+        final RecyclerView recyclerView = view.findViewById(R.id.foodplace_list);
         if (mColumnCount <= 1) {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
         } else {
@@ -82,12 +77,30 @@ public class FoodPlaceFragment extends Fragment {
         }
         recyclerView.setAdapter(mAdapter);
 
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                super.onScrolled(recyclerView, dx, dy);
+                if (!mAdapter.ifReachEnd()) {
+                    int totalItemCount = linearLayoutManager.getItemCount();
+                    int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                    int visibleThreshold = 1;
+                    if (!mAdapter.ifLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                        mPage++;
+                        new FoodPlaceAsycn(mAdapter).execute(FoodPlaceAsycn.GET_LIST, mPage + "");
+                    }
+                }
+            }
+        });
         //set refresh listener
         mSwipeRefreshLayout = view.findViewById(R.id.foodplace_swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshList();
+                SingletonDataHolder.getInstance().clearFoodPlaceList();
+                mAdapter.setIsReachEnd(false);
+                pullList(1);
             }
         });
 
@@ -104,12 +117,13 @@ public class FoodPlaceFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        SingletonDataHolder.getInstance().clearFoodPlaceList();
     }
 
-    private void refreshList(){
-        SingletonDataHolder.getInstance().clearFoodList();
+    private void pullList(int newPage){
         //TODO
-        new SearchFoodPlace(mAdapter).execute(DummyContent.ITEMS.size()+"");
+        mPage = newPage;
+        new FoodPlaceAsycn(mAdapter).execute(FoodPlaceAsycn.GET_LIST, newPage+"");
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -123,8 +137,8 @@ public class FoodPlaceFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFoodDealInteractionListener {
+    public interface OnListFoodPlaceInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFoodPlaceInteraction(FoodPlace item);
     }
 }

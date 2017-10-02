@@ -17,7 +17,6 @@ import com.comp9323.AnQ.QnAWebView;
 import com.comp9323.Food.FoodContainer;
 import com.comp9323.Food.FoodDeal.FoodDealFragment;
 import com.comp9323.Food.FoodPlace.FoodPlaceFragment;
-import com.comp9323.Food.FoodPlace.dummy.DummyContent;
 import com.comp9323.RestAPI.APIInterface.EventAPI;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.EventBean;

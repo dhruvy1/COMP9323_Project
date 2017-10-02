@@ -14,13 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.comp9323.AsycnTask.PullingFoodDeals;
+import com.comp9323.AsycnTask.FoodDealAsycn;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
-import com.comp9323.myapplication.MainActivity;
 import com.comp9323.myapplication.R;
 
 /**
@@ -35,7 +33,7 @@ public class FoodDealFragment extends Fragment{
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private static int page = 1;
+    private static int mPage = 1;
 
     protected static OnListFooDealInteractionListener mListener;
     protected MyFoodDealRecyclerViewAdapter mAdapter;
@@ -90,10 +88,9 @@ public class FoodDealFragment extends Fragment{
 
         fillDummyItem();
     }
-    private void refreshList(int newpage){
-        page = newpage;
-        SingletonDataHolder.getInstance().clearFoodList();
-        new PullingFoodDeals(mAdapter).execute(newpage);
+    private void pullList(int newpage){
+        mPage = newpage;
+        new FoodDealAsycn(mAdapter).execute(FoodDealAsycn.GET_LIST, mPage+"");
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -119,18 +116,18 @@ public class FoodDealFragment extends Fragment{
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int totalItemCount = linearLayoutManager.getItemCount();
-                int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                int visibleThreshold = 1;
-                Log.d("ONSCROLL", "last Item " + lastVisibleItem);
-                Log.d("ONSCROLL", "Item Count " + totalItemCount);
-                Log.d("ONSCROLL", "Page number" + page);
-                if (!mAdapter.ifLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                if(!mAdapter.ifReachEnd()) {
+                    int totalItemCount = linearLayoutManager.getItemCount();
+                    int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                    int visibleThreshold = 1;
+                    if (!mAdapter.ifLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
 //                    if (mAdapter.onLoadMoreListener != null) {
 //                        onLoadMoreListener.onLoadMore();
 //                    }
-                    page++;
-                    new PullingFoodDeals(mAdapter).execute(page);
+                        //TODO change to multi fields
+                        mPage++;
+                        new FoodDealAsycn(mAdapter).execute(FoodDealAsycn.GET_LIST, mPage + "");
+                    }
                 }
             }
         });
@@ -140,8 +137,9 @@ public class FoodDealFragment extends Fragment{
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-            refreshList(1);
-            return;
+            SingletonDataHolder.getInstance().clearFoodDealList();
+            mAdapter.setIsReachEnd(false);
+            pullList(1);
             }
         });
         return view;
@@ -157,6 +155,7 @@ public class FoodDealFragment extends Fragment{
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        SingletonDataHolder.getInstance().clearFoodDealList();
     }
 
     public void setListener(OnListFooDealInteractionListener listener){

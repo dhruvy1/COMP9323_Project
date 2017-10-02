@@ -3,28 +3,32 @@ package com.comp9323.AsycnTask;
 import android.os.AsyncTask;
 
 import com.comp9323.Food.FoodPlace.MyFoodPlaceRecyclerViewAdapter;
-import com.comp9323.Food.FoodPlace.dummy.DummyContent;
+import com.comp9323.RestAPI.APIImpl.FoodPlaceImpl;
 
 /**
  * Created by thomas on 26/9/2017.
  */
 
-public class SearchFoodPlace extends AsyncTask<String, Void, Boolean> {
+public class FoodPlaceAsycn extends AsyncTask<String, Void, Boolean> {
     private final MyFoodPlaceRecyclerViewAdapter mAdapter;
+    public static final String GET_LIST = "pull list";
 
-    public SearchFoodPlace(MyFoodPlaceRecyclerViewAdapter adapter){
+    public FoodPlaceAsycn(MyFoodPlaceRecyclerViewAdapter adapter){
         mAdapter = adapter;
     }
 
     @Override
     protected Boolean doInBackground(String... strings) {
         //TODO change to database connection
-        //simulate more food place is pulled from Database
-        int end = Integer.parseInt(strings[0]) +5;
-        for (int  i = Integer.parseInt(strings[0])+1; i <= end; i++) {
-            DummyContent.ITEMS.add(new DummyContent.DummyItem(i+"", "this is new item ", "having id :" + i));
+        mAdapter.setIsLoading(true);
+        String method = strings[0];
+        if (method.equals(GET_LIST)) {
+            int pageNumber = Integer.parseInt(strings[1]);
+            return FoodPlaceImpl.getFoodPlaces(pageNumber);
+        }else{
+            //TODO add more type of actions
+            return false;
         }
-        return true;
     }
 
     @Override
@@ -32,5 +36,6 @@ public class SearchFoodPlace extends AsyncTask<String, Void, Boolean> {
         super.onPostExecute(aBoolean);
         if (aBoolean)
             mAdapter.notifyDataSetChanged();
+        mAdapter.setIsLoading(false);
     }
 }
