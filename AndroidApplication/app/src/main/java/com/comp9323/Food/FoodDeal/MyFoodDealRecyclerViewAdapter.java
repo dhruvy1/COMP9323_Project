@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.comp9323.RestAPI.Beans.FoodDeal;
+import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
 
 import java.io.IOException;
@@ -24,23 +25,16 @@ import java.util.List;
  */
 public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDealRecyclerViewAdapter.FoodDealViewHolder> {
 
-    private final List<FoodDeal> mFoodDeals;
+    //private final List<FoodDeal> mFoodDeals;
     private static boolean mIsLoading = false;
     private final FoodDealFragment.OnListFooDealInteractionListener FoodDeal_Fragment_listener;
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
-    //private OnLoadMoreListener onLoadMoreListener;
 
-
-//    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
-//        this.onLoadMoreListener = mOnLoadMoreListener;
-//    }
-
-
-    public MyFoodDealRecyclerViewAdapter(List<FoodDeal> foodDeals, FoodDealFragment.OnListFooDealInteractionListener listener) {
-        mFoodDeals = foodDeals;
+    public MyFoodDealRecyclerViewAdapter(FoodDealFragment.OnListFooDealInteractionListener listener) {
+      //  mFoodDeals = foodDeals;
         FoodDeal_Fragment_listener = listener;
-        Log.d("Adapter", "size: "+ mFoodDeals.size());
+       // Log.d("Adapter", "size: "+ mFoodDeals.size());
     }
 
     @Override
@@ -63,8 +57,8 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
             loadingViewHolder.progressBar.setIndeterminate(true);
         }else {
             //TODO set value that display in the list
-            holder.mFoodDeal = mFoodDeals.get(position);
-            holder.mTextView.setText(mFoodDeals.get(position).getMessage());
+            holder.mFoodDeal = SingletonDataHolder.getInstance().getFoodDealList().get(position);
+            holder.mTextView.setText(SingletonDataHolder.getInstance().getFoodDealList().get(position).getMessage());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,20 +74,13 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
     }
     @Override
     public int getItemCount() {
-        return mFoodDeals.size();
+        return SingletonDataHolder.getInstance().getFoodDealList().size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return mFoodDeals.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        return SingletonDataHolder.getInstance().getFoodDealList().get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
-
-
-    //listener for pulling deal from db when list reach the end
-    private interface OnLoadMoreListener{
-        void onLoadMore();
-    }
-
 
     //Item view of the recycle List
     //need to match the @layout list_item.xml
@@ -139,7 +126,7 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
     public boolean ifLoading(){
         return mIsLoading;
     }
-    public void setIsloading(boolean bool){
+    public void setIsLoading(boolean bool){
         mIsLoading = bool;
     }
 }

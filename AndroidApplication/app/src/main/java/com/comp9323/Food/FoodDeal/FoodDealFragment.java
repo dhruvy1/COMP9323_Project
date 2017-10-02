@@ -86,7 +86,7 @@ public class FoodDealFragment extends Fragment{
                 }
             }
         };
-        mAdapter = new MyFoodDealRecyclerViewAdapter(SingletonDataHolder.getInstance().getFoodDealList(), mListener);
+        mAdapter = new MyFoodDealRecyclerViewAdapter(mListener);
 
         fillDummyItem();
     }
@@ -134,9 +134,6 @@ public class FoodDealFragment extends Fragment{
                 }
             }
         });
-
-
-
 
         //set refresh listener
         mSwipeRefreshLayout = view.findViewById(R.id.fooddeal_swiperefresh);
