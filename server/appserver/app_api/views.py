@@ -1,11 +1,12 @@
 from django.http import HttpResponse
-from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
-from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.decorators import permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from .serializers import *
+from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from django.http import Http404
+
+from .serializers import *
+
 
 def index(request):
     return HttpResponse("Hello, world.")
@@ -83,6 +84,25 @@ class FoodDealListAPIView(ListAPIView):
 class FoodDealCreateAPIView(CreateAPIView):
     queryset = FoodDeal.objects.all()
     serializer_class = FoodDealCreateUpdateSerializer
+
+    # Custom POST method to check for already existing Food Deal
+    def post(self, request, *args, **kwargs):
+
+        # Retrieve all Food deals from the DB
+        food_deals = FoodDeal.objects.all()
+
+        for fd in food_deals:
+            # If post_id in the request already exists in the DB
+            if request.data['post_id'] == fd.post_id:
+
+                # Return appropriate HTTP response
+                print(fd.post_id + ' Already exists')
+                content = {'Already exists': str(fd.post_id)}
+                print(len(food_deals))
+                return Response(content, status=status.HTTP_202_ACCEPTED)
+
+        # If post_id does not exist, add it to the DB
+        return self.create(request, *args, **kwargs)
 
 
 @permission_classes((AllowAny,))
