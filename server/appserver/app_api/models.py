@@ -38,6 +38,7 @@ class FoodDeal(models.Model):
     photo_link = models.CharField(max_length=400, blank=True, default='')
     event_link = models.CharField(max_length=400, blank=True, default='')
 
+
 class FoodPlace(models.Model):
     name = models.CharField(max_length=500)
     location = models.CharField(max_length=200)

@@ -27,4 +27,10 @@ urlpatterns = [
     url(r'food_deals/(?P<pk>[0-9]+)/$', FoodDealDetailAPIView.as_view(), name='detail'),
     url(r'food_deals/(?P<pk>[0-9]+)/$', FoodDealUpdateAPIView.as_view(), name='update'),
     url(r'food_deals/(?P<pk>[0-9]+)/$', FoodDealDestroyAPIView.as_view(), name='destroy'),
+    # Food Place
+    url(r'food_places/all/$', FoodPlaceListAPIView.as_view(), name='list'),
+    url(r'food_places/$', FoodPlaceCreateAPIView.as_view(), name='create'),
+    url(r'food_places/(?P<pk>[0-9]+)/$', FoodPlaceDetailAPIView.as_view(), name='detail'),
+    url(r'food_places/(?P<pk>[0-9]+)/$', FoodPlaceUpdateAPIView.as_view(), name='update'),
+    url(r'food_places/(?P<pk>[0-9]+)/$', FoodPlaceDestroyAPIView.as_view(), name='destroy'),
 ]

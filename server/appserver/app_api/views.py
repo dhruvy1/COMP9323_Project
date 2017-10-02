@@ -121,3 +121,36 @@ class FoodDealDetailAPIView(RetrieveAPIView):
 class FoodDealDestroyAPIView(DestroyAPIView):
     queryset = FoodDeal.objects.all()
     serializer_class = FoodDealSerializer
+
+
+# Food Place
+@permission_classes((AllowAny,))
+class FoodPlaceListAPIView(ListAPIView):
+    queryset = FoodPlace.objects.all()
+    serializer_class = FoodPlaceSerializer
+
+
+@permission_classes((AllowAny,))
+class FoodPlaceCreateAPIView(CreateAPIView):
+    queryset = FoodPlace.objects.all()
+    serializer_class = FoodPlaceCreateUpdateSerializer
+
+
+@permission_classes((AllowAny,))
+class FoodPlaceUpdateAPIView(UpdateAPIView):
+    queryset = FoodPlace.objects.all()
+    serializer_class = FoodPlaceCreateUpdateSerializer
+
+
+@permission_classes((AllowAny,))
+class FoodPlaceDetailAPIView(RetrieveAPIView):
+    queryset = FoodPlace.objects.all()
+    serializer_class = FoodPlaceSerializer
+
+
+@permission_classes((AllowAny,))
+class FoodPlaceDestroyAPIView(DestroyAPIView):
+    queryset = FoodPlace.objects.all()
+    serializer_class = FoodPlaceSerializer
+
+
