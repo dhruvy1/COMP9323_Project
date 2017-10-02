@@ -26,8 +26,8 @@
         {
             "height": 598,
             "html_attributions": [
-                "<a href="https: //maps.google.com/maps/contrib/115637539138964591940/photos">Mamma Teresa Italian Restaurant</a>"],              
-                "photo_reference": "CmRaAAAA9bLBlDBjecM9j0QoybPfhgFwYEPEYfUYxq_uC02-JMOgJ1DXdpga5EqbWnh6_V0EoIt8ghNCtnYIw0VStU3M_Qkacmw29ndJxpw9Fv43ephbOnefWu07RrXhlHz_xf92EhAwwnMPlIsgOfyakonB1mEkGhT2KwVGcl2NU-iLBlRplgAbedqaqw", "width": 900
+                "<a href="https: //maps.google.com/maps/contrib/115637539138964591940/photos">Mamma Teresa Italian Restaurant</a>"],                 "photo_reference": "CmRaAAAA9bLBlDBjecM9j0QoybPfhgFwYEPEYfUYxq_uC02-JMOgJ1DXdpga5EqbWnh6_V0EoIt8ghNCtnYIw0VStU3M_Qkacmw29ndJxpw9Fv43ephbOnefWu07RrXhlHz_xf92EhAwwnMPlIsgOfyakonB1mEkGhT2KwVGcl2NU-iLBlRplgAbedqaqw",
+                "width": 900
             }
         ],
         "place_id": "ChIJt2y1xY6xEmsRJx7ksb9U4oo",
@@ -71,7 +71,8 @@
             {
                 "height": 282,
                 "html_attributions": [
-                    "<a href="https: //maps.google.com/maps/contrib/117833864846217013976/photos">So Good Kitchen</a>"],       "photo_reference": "CmRaAAAAfIQ-fmQEQ2Xq9pCvNq3uzrflcqM21GKdOHPY-bQZOJx2ycSeoB9WYVSvuFXf0aIbWvxig5RPaJxTDqeJ5v9AhOascRN9_NDYDbl3otkSm72yKMSqNw_Akm5R4xwJess0EhAFaXESnkvWzMtBPNv5-9q0GhQlfrEPZVFCrqyAl_oQeXL085HT9Q", "width": 282
+                    "<a href="https: //maps.google.com/maps/contrib/117833864846217013976/photos">So Good Kitchen</a>"],        "photo_reference": "CmRaAAAAfIQ-fmQEQ2Xq9pCvNq3uzrflcqM21GKdOHPY-bQZOJx2ycSeoB9WYVSvuFXf0aIbWvxig5RPaJxTDqeJ5v9AhOascRN9_NDYDbl3otkSm72yKMSqNw_Akm5R4xwJess0EhAFaXESnkvWzMtBPNv5-9q0GhQlfrEPZVFCrqyAl_oQeXL085HT9Q",
+                    "width": 282
                 }
             ],
             "place_id": "ChIJdS-fSo-xEmsRjBSg5kuHOaU",
@@ -86,18 +87,48 @@
             ],
             "vicinity": "510 Anzac Parade, Kingsford"
         },
-        {'geometry': {'location': {'lat': -33.9606265, 'lng': 151.1552705
-                }, 'viewport': {'northeast': {'lat': -33.9592025197085, 'lng': 151.1566656302915
-                    }, 'southwest': {'lat': -33.9619004802915, 'lng': 151.1539676697085
+        {
+            "geometry": {
+                "location": {
+                    "lat": -33.9606265,
+                    "lng": 151.1552705
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -33.9592025197085,
+                        "lng": 151.1566656302915
+                    },
+                    "southwest": {
+                        "lat": -33.9619004802915,
+                        "lng": 151.1539676697085
                     }
                 }
-            }, 
-            'icon': 'https: //maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png', 
-            'id': '22fc8407c9a702ae0aeb70cc2ad069f55b959c50', 'name': "Nando's Brighton Le Sands", 'opening_hours': {'open_now': False, 'weekday_text': []
-            }, 'photos': [
-                {'height': 3024, 'html_attributions': ['<a href="https://maps.google.com/maps/contrib/114854679906067138004/photos">Hassan Abdul-Sater</a>'
-                    ], 'photo_reference': 'CmRaAAAA21S4J9N4X_iiXbO_9wyQe--wGDeyDlmlXpqf97Q7D5ZYgurD_JZeOnEUZRUSJWwKB6UaBryhJlzgvlY0XDa55hUljPBq3Yce26zlfey4FJ-TJySqP5Z1eWmtXo6Bs2RUEhAxjjDEWlpGlSjQr76FmjzIGhT5eaIIDADCMwpWeuyzRNKuv2yuAQ', 'width': 4032
-                }
-            ], 'place_id': 'ChIJw-SITky3EmsRVsJNyD6x0So', 'price_level': 2, 'rating': 3.8, 'reference': 'CmRRAAAAjBwYCdPwBWgrjyhiM3_vEG5IPiFjOhXK0wkc3Lx5et-51MQoqpVAYnOQU6dYZ1Exw_IR4q0BCGtgG1gAOv6Z3uPVzik5urHCX5-wSR3vKnq2UsAqakXUzsY4rOyp9NvgEhAKfDiTM4Dln2RcZ5tfLoYXGhTneWq0L5kwSRNRJilmRpszM2Zlgg', 'scope': 'GOOGLE', 'types': ['restaurant', 'food', 'point_of_interest', 'establishment'
-            ], 'vicinity': '1/343-345 Bay Street, Brighton-Le-Sands'
-        }
+            },
+            "icon": "https: //maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+            "id": "22fc8407c9a702ae0aeb70cc2ad069f55b959c50",
+            "name": "Nando"s Brighton Le Sands", "opening_hours": {"open_now": False, "weekday_text": []
+        },
+        "photos": [
+            {
+                "height": 3024,
+                "html_attributions": [
+                    "<a href="https: //maps.google.com/maps/contrib/114854679906067138004/photos">Hassan Abdul-Sater</a>"
+                ],
+                "photo_reference": "CmRaAAAA21S4J9N4X_iiXbO_9wyQe--wGDeyDlmlXpqf97Q7D5ZYgurD_JZeOnEUZRUSJWwKB6UaBryhJlzgvlY0XDa55hUljPBq3Yce26zlfey4FJ-TJySqP5Z1eWmtXo6Bs2RUEhAxjjDEWlpGlSjQr76FmjzIGhT5eaIIDADCMwpWeuyzRNKuv2yuAQ",
+                "width": 4032
+            }
+        ],
+        "place_id": "ChIJw-SITky3EmsRVsJNyD6x0So",
+        "price_level": 2,
+        "rating": 3.8,
+        "reference": "CmRRAAAAjBwYCdPwBWgrjyhiM3_vEG5IPiFjOhXK0wkc3Lx5et-51MQoqpVAYnOQU6dYZ1Exw_IR4q0BCGtgG1gAOv6Z3uPVzik5urHCX5-wSR3vKnq2UsAqakXUzsY4rOyp9NvgEhAKfDiTM4Dln2RcZ5tfLoYXGhTneWq0L5kwSRNRJilmRpszM2Zlgg",
+        "scope": "GOOGLE",
+        "types": [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+        ],
+        "vicinity": "1/343-345 Bay Street, Brighton-Le-Sands"
+    }
+}
