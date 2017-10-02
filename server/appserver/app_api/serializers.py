@@ -42,3 +42,14 @@ class FoodDealCreateUpdateSerializer(serializers.ModelSerializer):
         fields = ['post_id', 'message', 'updated_time', 'photo_link', 'event_link', 'updated_date']
 
 
+# Food Place
+class FoodPlaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodPlace
+        fields = ['id', 'name', 'location', 'price_level', 'google_rating', 'latitude', 'longitude']
+
+
+class FoodPlaceCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodPlace
+        fields = ['name', 'location', 'price_level', 'google_rating', 'latitude', 'longitude']
