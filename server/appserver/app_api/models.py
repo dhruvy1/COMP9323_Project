@@ -46,3 +46,4 @@ class FoodPlace(models.Model):
     google_rating = models.CharField(max_length=3, blank=True, default='')
     latitude = models.CharField(max_length=100)
     longitude = models.CharField(max_length=100)
+    photo_link = models.CharField(max_length=500, blank=True, default='')
