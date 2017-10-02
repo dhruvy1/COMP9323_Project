@@ -16,15 +16,15 @@ def getFoodPlacesNearUNSW(next_page_token):
         payload = {
             "name": place["name"],
             "location": place["vicinity"],
-            "latitude": place["geometry"]["location"]["lat"],
-            "longitutde": place["geometry"]["location"]["lng"]
+            "latitude": str(place["geometry"]["location"]["lat"]),
+            "longitude": str(place["geometry"]["location"]["lng"])
         }
         if "price_level" in place:
-            payload["price_level"] = place["price_level"]
+            payload["price_level"] = str(place["price_level"])
         if "rating" in place:
-            payload["google_rating"] = place["rating"]
-        # postToRestServer(payload)
-        print(payload)
+            payload["google_rating"] = str(place["rating"])
+        postToRestServer(payload)
+        # print(payload)
         # print(places_nearby_results)
     if "next_page_token" in places_nearby_results:
         time.sleep(1.5)
@@ -32,11 +32,11 @@ def getFoodPlacesNearUNSW(next_page_token):
 
 
 def postToRestServer(payload):
-    url = "http://52.65.129.3:8000/api/food_deals/"
+    url = "http://52.65.129.3:8000/api/food_places/"
     headers = {"Content-Type": "application/json",
                "Accept": "application/json"}
     response = requests.post(url, data=json.dumps(payload), headers=headers)
-    print(response)
+    # print(response)
 
 
 if __name__ == "__main__":
