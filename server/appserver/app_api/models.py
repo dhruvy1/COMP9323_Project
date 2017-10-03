@@ -4,6 +4,7 @@ from django.db import models
 class MobileUser(models.Model):
     username = models.CharField(max_length=200)
     device_id = models.CharField(max_length=200)
+    karma_points = models.CharField(max_length=100, default='0')
 
 
 class Event(models.Model):
@@ -28,6 +29,7 @@ class Event(models.Model):
     # cover photo
     cover_id = models.CharField(max_length=50, blank=True, default='')
     source_url = models.CharField(max_length=200, blank=True, default='')
+    rating = models.CharField(max_length=100, default='0')
 
 
 class FoodDeal(models.Model):
@@ -37,6 +39,7 @@ class FoodDeal(models.Model):
     updated_time = models.TimeField()
     photo_link = models.CharField(max_length=400, blank=True, default='')
     event_link = models.CharField(max_length=400, blank=True, default='')
+    rating = models.CharField(max_length=100, default='0')
 
 
 class FoodPlace(models.Model):
@@ -47,3 +50,4 @@ class FoodPlace(models.Model):
     latitude = models.CharField(max_length=100)
     longitude = models.CharField(max_length=100)
     photo_link = models.CharField(max_length=500, blank=True, default='')
+    rating = models.CharField(max_length=100, default='0')

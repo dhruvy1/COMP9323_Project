@@ -26,7 +26,7 @@ def getFoodPlacesNearUNSW(next_page_token):
         if "rating" in place:
             payload["google_rating"] = str(place["rating"])
         if "photos" in place:
-            payload["photo_link"] = getGooglePhotoUrl(place["photos"][0])
+            payload["photo"] = getGooglePhotoUrl(place["photos"][0])
         postToRestServer(payload)
         # print(payload)
         # print(places_nearby_results)
