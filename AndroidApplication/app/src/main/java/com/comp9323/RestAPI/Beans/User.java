@@ -80,5 +80,13 @@ public class User implements Serializable {
         this.deviceId = deviceId;
         return this;
     }
-
+    @Override
+    public String toString(){
+        String s = "User[ id: " + id + " , ";
+        if (this.username != null)
+            s += "user name: " + username;
+        if(this.deviceId != null)
+            s+= " , deviceId: " + deviceId;
+        return s;
+    }
 }

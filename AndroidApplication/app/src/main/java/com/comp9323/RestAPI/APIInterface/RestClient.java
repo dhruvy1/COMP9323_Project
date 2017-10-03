@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
     private static Retrofit retrofit = null;
+    private static final String BASE_URL = "http://52.65.129.3:8000/api/";
 
     public static Retrofit getClient() {
 
@@ -19,7 +20,7 @@ public class RestClient {
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://52.65.129.3:8000/api/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
