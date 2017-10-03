@@ -48,6 +48,7 @@ public class Login extends AppCompatActivity{
             Toast toast = Toast.makeText(SingletonDataHolder.getInstance().getContext(),welcome, Toast.LENGTH_SHORT);
             toast.show();
             startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            finish();
         }
 
     }

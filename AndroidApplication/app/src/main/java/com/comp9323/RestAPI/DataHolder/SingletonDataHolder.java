@@ -1,6 +1,7 @@
 package com.comp9323.RestAPI.DataHolder;
 
 import android.content.Context;
+import android.content.pm.Signature;
 import android.util.Log;
 
 import com.comp9323.RestAPI.Beans.FoodDeal;

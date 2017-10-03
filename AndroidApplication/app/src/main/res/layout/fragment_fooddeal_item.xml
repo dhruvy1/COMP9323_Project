@@ -14,13 +14,18 @@
     android:paddingTop="5dp">
 
 
+    <ImageView
+        android:id="@+id/FoodDeal_Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/dealimg_placeholder" />
+
     <TextView
         android:id="@+id/FoodDeal_Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:drawableTop="@drawable/dealimg_placeholder"
-        android:text="this is a long line of text which can simulate the case that the food deal name is in extremely long long of sentencse and may having multiple line of redumdent content which having no value on diaplaying that on the screen but i don;t want to deal with the lanauge capturing stuff"
         android:textAppearance="?attr/textAppearanceListItem" />
+
 
 </LinearLayout>

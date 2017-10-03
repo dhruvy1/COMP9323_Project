@@ -1,11 +1,15 @@
 package com.comp9323.Food.FoodDeal;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -63,6 +67,12 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
             holder.mFoodDeal = SingletonDataHolder.getInstance().getFoodDealList().get(position);
             holder.mTextView.setText(holder.mFoodDeal.getMessage());
 
+            //Set pulled image
+            //TODO cannot pull like this
+//            if (holder.mFoodDeal.getPhotoLink().length() > 0 ){
+//                new DownloadImageTask(holder.mImageView,this).execute(holder.mFoodDeal.getPhotoLink());
+//            }
+
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -102,25 +112,15 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
     public class FoodDealViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mTextView;
+        public final ImageView mImageView;
         public FoodDeal mFoodDeal;
 
         public FoodDealViewHolder(View view) {
             super(view);
             mView = view;
             mTextView = (TextView) view.findViewById(R.id.FoodDeal_Name);
+            mImageView = view.findViewById(R.id.FoodDeal_Image);
 
-            //dynamic set image
-            if (mFoodDeal != null && mFoodDeal.getPhotoLink().length() >0) {
-                Drawable img = null;
-                try {
-                    img = Drawable.createFromStream((InputStream)new URL(mFoodDeal.getPhotoLink()).getContent(), "food_deal_item_image");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (img != null) {
-                    mTextView.setCompoundDrawables(null, img, null, null);
-                }
-            }
         }
 
         @Override
@@ -137,5 +137,31 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
             progressBar = view.findViewById(R.id.FoodList_progressBar);
         }
     }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+        MyFoodDealRecyclerViewAdapter mlistener;
 
+        public DownloadImageTask(ImageView imageView, MyFoodDealRecyclerViewAdapter listener) {
+            bmImage = imageView;
+            mlistener = listener;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            mlistener.notifyDataSetChanged();
+        }
+    }
 }
