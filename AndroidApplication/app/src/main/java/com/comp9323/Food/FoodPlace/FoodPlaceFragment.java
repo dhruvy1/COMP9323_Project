@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.comp9323.AsycnTask.FoodPlaceAsycn;
 import com.comp9323.RestAPI.Beans.FoodPlace;
@@ -56,7 +57,9 @@ public class FoodPlaceFragment extends Fragment {
         mListener = new OnListFoodPlaceInteractionListener() {
             @Override
             public void onListFoodPlaceInteraction(FoodPlace item) {
-                //TODO
+//                LinearLayout detail = getView().findViewById(R.id.FoodPlace_Item_Detail);
+//                detail.getVisibility();
+//                detail.setVisibility(View.VISIBLE);
             }
         };
         mAdapter = new MyFoodPlaceRecyclerViewAdapter(mListener);

@@ -1,9 +1,12 @@
 package com.comp9323.Food.FoodPlace;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -87,6 +90,24 @@ public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodP
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            Log.d("Veiw id", ""+ view.getId());
+            Log.d("Veiw id", "item title"+ R.id.FoodPlace_Item_Title);
+            Log.d("Veiw id", "item layout"+ R.id.FoodPlace_Item_Layout);
+            Log.d("Veiw id", "item place list"+ R.id.foodplace_list);
+            Log.d("Veiw id", "item vertical"+ R.id.FoodPlace_Item_Layout2);
+            Log.d("Veiw id", "item detail"+ R.id.FoodPlace_Item_Detail);
+            mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (view == mView.findViewById(R.id.FoodPlace_Item_Title)) {
+                        LinearLayout detail = mView.findViewById(R.id.FoodPlace_Item_Detail);
+                        if (detail.getVisibility() != View.VISIBLE)
+                            detail.setVisibility(View.VISIBLE);
+                        else
+                            detail.setVisibility(View.GONE);
+                    }
+                }
+            });
             mNameView = view.findViewById(R.id.FoodPlace_Name);
             //mLocationView = view.findViewById(R.id.FoodPlace_Location);
             mRatingView = view.findViewById(R.id.FoodPlace_RatingBar);
