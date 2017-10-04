@@ -1,5 +1,7 @@
 package com.comp9323.RestAPI.APIImpl;
 
+import android.util.Log;
+
 import com.comp9323.RestAPI.APIInterface.EventInterface;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.EventBean;
@@ -30,6 +32,8 @@ public class EventImpl {
 
             @Override
             public void onFailure(Call<List<EventBean>> call, Throwable t) {
+                Log.d("REST CALL", t.getStackTrace().toString()+"");
+                Log.d("REST CALL", "~~Fail CALL~~");
                 call.cancel();
             }
         });

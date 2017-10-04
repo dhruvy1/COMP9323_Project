@@ -32,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements FoodDealFragment.OnListFragmentInteractionListener, FoodPlaceFragment.OnListFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements FoodDealFragment.OnListFragmentInteractionListener, FoodPlaceFragment.OnListFragmentInteractionListener, EventFragment.OnListFragmentInteractionListener{
 
     public static final String USR_PERF = "APP_USR_INFO";
 
@@ -149,5 +149,10 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
         Log.d("Food Deal Interaction", "item pressed: " + item.toString());
+    }
+
+    @Override
+    public void onListFragmentInteraction(EventBean item) {
+        Log.d("Event Interaction", "item pressed: " + item.toString());
     }
 }
