@@ -52,6 +52,7 @@ def getPageEvents(name, result_limit):
         if "cover" in event:
             payload["cover_id"] = event["cover"]["id"]
             payload["source_url"] = event["cover"]["source"]
+        payload["created_by"] = "Facebook"
 
         postToRestServer(payload)
 

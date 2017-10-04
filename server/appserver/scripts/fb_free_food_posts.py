@@ -25,11 +25,16 @@ def getFreeFoodPosts(name, result_limit):
                 "updated_date": str(getDateFromTime(post["updated_time"])),
                 "updated_time": str(filterTime(post["updated_time"])),
             }
+            payload["post_id"] += "copy"
             if "link" in post:
-                if re.search(r'photo.php', post["link"], re.M | re.I):
-                    payload["photo_link"] = post["link"]
-                elif re.search(r'events', post["link"], re.M | re.I):
+                if re.search(r"photo.php", post["link"], re.M | re.I):
+                    payload["photo_link"] = getPhotoSrc(post["link"])
+                elif re.search(r"events", post["link"], re.M | re.I):
                     payload["event_link"] = post["link"]
+            payload["created_by"] = "Facebook"
+            
+            # print(post)
+            # print(payload)
             postToRestServer(payload)
 
 
@@ -40,13 +45,18 @@ def getDateFromTime(time):
 def filterTime(time):
     return re.sub(r"T.*", "", re.sub(r"^.*T", "", time))
 
+def getPhotoSrc(photo_link):
+    fb_id = re.match(r".*fbid=(.*?)&.*", photo_link)
+    album = graph.get_object(id=fb_id.group(1), fields="images")
+    return album["images"][0]["source"]
+
 
 def postToRestServer(payload):
     url = "http://52.65.129.3:8000/api/food_deals/"
     headers = {"Content-Type": "application/json",
                "Accept": "application/json"}
     response = requests.post(url, data=json.dumps(payload), headers=headers)
-    # print(response)
+    print(response)
 
 
 if __name__ == "__main__":
