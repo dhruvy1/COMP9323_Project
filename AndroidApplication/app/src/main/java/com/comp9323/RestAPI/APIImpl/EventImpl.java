@@ -23,13 +23,18 @@ public class EventImpl {
 
     private static final EventInterface eventAPI = RestClient.getClient().create(EventInterface.class);
 
-    public static void getEvents(int page) {
-        eventAPI.getEvents(page).enqueue(new Callback<EventResponse>() {
+    public static void getEvents() {
+        eventAPI.getEvents().enqueue(new Callback<EventResponse>() {
             @Override
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
                 EventResponse responseData = response.body();
                 List<EventBean> events = responseData.getResults();
-                SingletonDataHolder.getInstance().addEvents(events);
+                for (EventBean e : events) {
+                    SingletonDataHolder.getInstance().addEvent(e);
+                }
+//                SingletonDataHolder.getInstance().addEvents(events);
+                Log.d("REST CALL", "CALL SUCCESS!");
+                Log.d("EVENT DATA:", SingletonDataHolder.getInstance().getEvent(0).getName());
             }
 
             @Override

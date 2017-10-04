@@ -31,7 +31,7 @@ public class GetEventData extends AsyncTask<Integer, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Integer... integers) {
         Log.d("A", "Getting event data from server....");
-        EventImpl.getEvents(integers[0]);
+        EventImpl.getEvents();
         return true;
     }
 

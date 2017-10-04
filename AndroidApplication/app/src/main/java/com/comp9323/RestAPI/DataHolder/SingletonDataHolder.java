@@ -38,7 +38,7 @@ public class SingletonDataHolder {
         userList = new Vector<>();
         foodDealList = new Vector<>();
         foodDealMap = new HashMap<>();
-        events = new ArrayList<>();
+        events = new Vector<>();
         eventResponse = false;
         //...
     }

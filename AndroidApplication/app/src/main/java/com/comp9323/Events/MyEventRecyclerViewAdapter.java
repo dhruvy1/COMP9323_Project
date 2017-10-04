@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.comp9323.Events.EventFragment.OnListFragmentInteractionListener;
 import com.comp9323.RestAPI.Beans.EventBean;
+import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
 
 import java.util.List;
@@ -19,11 +20,11 @@ import java.util.List;
  */
 public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecyclerViewAdapter.ViewHolder> {
 
-    private final List<EventBean> mValues;
+    //private final List<EventBean> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyEventRecyclerViewAdapter(List<EventBean> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MyEventRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
+        //mValues = items;
         mListener = listener;
     }
 
@@ -37,10 +38,13 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getName());
-        holder.mContentView.setText(mValues.get(position).getPlaceName());
-
+        //holder.mItem = mValues.get(position);
+        //holder.mIdView.setText(mValues.get(position).getName());
+        //holder.mContentView.setText(mValues.get(position).getPlaceName());
+        EventBean eventBean = SingletonDataHolder.getInstance().getEvent(position);
+        holder.mItem = eventBean;
+        holder.mIdView.setText(eventBean.getName());
+        holder.mContentView.setText(eventBean.getPlaceName());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +59,8 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        //return mValues.size();
+        return SingletonDataHolder.getInstance().getEvents().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

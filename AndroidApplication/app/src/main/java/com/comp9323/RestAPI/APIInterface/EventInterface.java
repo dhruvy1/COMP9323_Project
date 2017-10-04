@@ -21,7 +21,7 @@ import retrofit2.http.Query;
 
 public interface EventInterface {
     @GET("events/all/")
-    Call<EventResponse> getEvents(@Query("page") int pageNumber);
+    Call<EventResponse> getEvents();
 
     @POST("events")
     Call<EventBean> addEvent(@Body EventBean event);

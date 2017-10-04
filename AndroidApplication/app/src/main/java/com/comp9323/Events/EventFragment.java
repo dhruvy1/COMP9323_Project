@@ -56,7 +56,7 @@ public class EventFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        mAdapter = new MyEventRecyclerViewAdapter(SingletonDataHolder.getInstance().getEvents(), mListener);
+        mAdapter = new MyEventRecyclerViewAdapter(mListener);
     }
 
     @Override
@@ -67,16 +67,15 @@ public class EventFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.event_list);
+            RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+            new GetEventData(mAdapter).execute(1);
             recyclerView.setAdapter(mAdapter);
         }
-        SingletonDataHolder.getInstance().clearEvents();
-        new GetEventData(mAdapter).execute(1);
         return view;
     }
 
@@ -96,6 +95,7 @@ public class EventFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        SingletonDataHolder.getInstance().clearEvents();
     }
 
     /**
