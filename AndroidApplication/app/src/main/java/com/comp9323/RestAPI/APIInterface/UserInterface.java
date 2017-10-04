@@ -19,21 +19,21 @@ import retrofit2.http.Path;
  */
 
 public interface UserInterface {
-    @GET("/api/mobile_users/")
+    @GET("/api/mobile_users/all/")
     Call<Vector<User>> getUsers();
 
-    @POST("/api/mobile_users/create/")
+    @POST("/api/mobile_users/")
     Call<User> createUser(@Body User user);
 
     @GET("/api/mobile_users/{id}/")
     Call<User> getUser(@Path("id") int id);
 
-    @DELETE("/api/mobile_users/{id}/delete/")
+    @DELETE("/api/mobile_users/{id}/")
     Call<Response<Void>> deleteUser(@Path("id") int id);
 
-    @PATCH("/api/mobile_users/{id}/edit/")
+    @PATCH("/api/mobile_users/{id}/")
     Call<User> editUserWithFields(@Path("id") int id, @Body User user);
 
-    @PUT("/api/mobile_users/{id}/edit/")
+    @PUT("/api/mobile_users/{id}/")
     Call<User> editWholeUser(@Path("id") int id, @Body User user);
 }
