@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.comp9323.RestAPI.APIInterface.FoodDealInterface;
 import com.comp9323.RestAPI.APIInterface.RestClient;
+import com.comp9323.RestAPI.Beans.DealListPackage;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
-import com.comp9323.myapplication.MainActivity;
 
 import java.util.Vector;
 import java.util.regex.Pattern;
@@ -20,17 +20,17 @@ public class FoodDealImpl {
     private static final String TIME_PATTERN = "^([01]?\\d|2[0-3]):([0-5]?\\d):([0-5]?\\d)$";
     private static final String DATE_PATTERN = "^(((((1[26]|2[048])00)|[12]\\d([2468][048]|[13579][26]|0[48]))-((((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01]))|((0[469]|11)-(0[1-9]|[12]\\d|30)))|(02-(0[1-9]|[12]\\d))))|((([12]\\d([02468][1235679]|[13579][01345789]))|((1[1345789]|2[1235679])00))-((((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01]))|((0[469]|11)-(0[1-9]|[12]\\d|30)))|(02-(0[1-9]|1\\d|2[0-8])))))$";
 
-    public static boolean createFoodDeal(String postId, String message, String updateTime, String photoLink, String eventLink, String updateDate) throws Exception {
+    public static boolean createFoodDeal(String postId, String message, String updateTime, String photoLink, String eventLink, String updateDate, String rating, String createdBy) throws Exception {
         if (updateTime == null || !Pattern.matches(TIME_PATTERN, updateTime))
             throw new Exception("Time Not Match");
         if (updateDate == null || !Pattern.matches(DATE_PATTERN, updateDate))
             throw new Exception("Date Not Match");
-        FoodDeal fd = new FoodDeal(postId, message, updateTime, photoLink, eventLink, updateDate);
+        FoodDeal fd = new FoodDeal(postId, message, updateTime, photoLink, eventLink, updateDate, rating, createdBy);
         return createFoodDeal(fd);
 
     }
 
-    public static boolean editFoodDealByFields(int id, String postId, String message, String updateTime, String photoLink, String eventLink, String updateDate) throws Exception {
+    public static boolean editFoodDealByFields(int id, String postId, String message, String updateTime, String photoLink, String eventLink, String updateDate, String rating, String createdBy) throws Exception {
         FoodDeal template = new FoodDeal();
         if (postId != null && postId.length() > 0)
             template.setPostId(postId);
@@ -51,12 +51,16 @@ public class FoodDealImpl {
                 throw new Exception("Date Not Match");
             }
             template.setPostId(updateDate);
-
         }
+        if (rating != null && rating.length() >0)
+            template.setRating(rating);
+        if (createdBy != null && createdBy.length() >0)
+            template.setCreatedBy(createdBy);
+
         return editFoodDealByFields(id, template);
     }
 
-    public static boolean editFoodDeal(int id, String postid, String message, String updatetime, String photolink, String eventlink, String updatedate) throws Exception{
+    public static boolean editFoodDeal(int id, String postid, String message, String updatetime, String photolink, String eventlink, String updatedate, String rating, String createdBy) throws Exception{
         FoodDeal fd = SingletonDataHolder.getInstance().getFoodDealwithID(id);
         if (fd == null) return false;
         if (postid != null && postid.length() > 0)
@@ -79,6 +83,11 @@ public class FoodDealImpl {
             }
             fd.setPostId(updatedate);
         }
+        if (rating != null && rating.length() >0)
+            fd.setRating(rating);
+        if (createdBy != null && createdBy.length() >0)
+            fd.setCreatedBy(createdBy);
+
         return editFoodDeal(id, fd);
     }
 
@@ -86,16 +95,18 @@ public class FoodDealImpl {
         Log.v("Rest Call", "Start Create Food Deal");
         final boolean[] ifSuccess = {false};
         final boolean[] ifNdone = {true};
-        apiInterface.getFoodDeals(page).enqueue(new Callback<Vector<FoodDeal>>() {
+        final boolean[] ifEnd = {false};
+        apiInterface.getFoodDeals(page).enqueue(new Callback<DealListPackage>() {
             @Override
-            public void onResponse(Call<Vector<FoodDeal>> call, Response<Vector<FoodDeal>> response) {
+            public void onResponse(Call<DealListPackage> call, Response<DealListPackage> response) {
                 Log.d("Rest Call", "Is response success? " + response.isSuccessful());
-                Vector<FoodDeal> fooddeals = response.body();
-                if (fooddeals != null) {
-                    if (fooddeals.size() != 0)
+                DealListPackage newPackage = response.body();
+                if (newPackage != null) {
+                    if (newPackage.getResults().size() != 0)
                         ifSuccess[0] = response.isSuccessful();
-
-                    for (FoodDeal fd : fooddeals) {
+                    if(newPackage.getNextUrl() == null || newPackage.getNextUrl().compareTo("null") == 0)
+                        ifEnd[0] = true;
+                    for (FoodDeal fd : newPackage.getResults()) {
                         SingletonDataHolder.getInstance().addFoodDeal(fd);
                         Log.d("Rest Debug Print", fd.getId() + "");
                     }
@@ -105,18 +116,15 @@ public class FoodDealImpl {
             }
 
             @Override
-            public void onFailure(Call<Vector<FoodDeal>> call, Throwable t) {
+            public void onFailure(Call<DealListPackage> call, Throwable t) {
                 Log.d("Rest Call", "~~FAILED~~");
                 ifNdone[0] = false;
-                ifSuccess[0] = true;
                 call.cancel();
             }
         });
         while(ifNdone[0]){
             Log.d("Rest call", "Size of list :" +SingletonDataHolder.getInstance().getFoodDealList().size());
         }
-        if (!ifNdone[0] && !ifSuccess[0])
-            return false;
         return ifSuccess[0];
     }
 

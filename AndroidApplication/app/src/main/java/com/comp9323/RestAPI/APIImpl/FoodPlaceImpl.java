@@ -5,6 +5,7 @@ import android.util.Log;
 import com.comp9323.RestAPI.APIInterface.FoodPlaceInterface;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.FoodPlace;
+import com.comp9323.RestAPI.Beans.PlaceListPackage;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 
 import java.util.Vector;
@@ -17,11 +18,11 @@ import retrofit2.Response;
 public class FoodPlaceImpl{
     private static final FoodPlaceInterface apiInterface = RestClient.getClient().create(FoodPlaceInterface.class);
 
-    public static boolean createFoodPlace(String name, String location, String priceLevel, String googleRating, String latitude, String longitude ) {
-        FoodPlace fp = new FoodPlace(name, location, priceLevel, googleRating, latitude, longitude);
+    public static boolean createFoodPlace(String name, String location, String priceLevel, String googleRating, String latitude, String longitude, String photoLink, String rating, String createdBy ) {
+        FoodPlace fp = new FoodPlace(name, location, priceLevel, googleRating, latitude, longitude, photoLink, rating, createdBy);
         return createFoodPlace(fp);
     }
-    public static boolean editFoodPlaceByFields(int id, String name, String location, String priceLevel, String googleRating, String latitude, String longitude) {
+    public static boolean editFoodPlaceByFields(int id, String name, String location, String priceLevel, String googleRating, String latitude, String longitude, String photoLink, String rating, String createdBy) {
         FoodPlace template = new FoodPlace();
         if(name != null && name.length() > 0)
             template.setName(name);
@@ -35,11 +36,17 @@ public class FoodPlaceImpl{
             template.setLatitude(latitude);
         if(longitude != null && longitude.length() > 0)
             template.setLongitude(longitude);
+        if(photoLink != null && photoLink.length() >0)
+            template.setPhotoLink(photoLink);
+        if(rating != null && rating.length() >0)
+            template.setRating(rating);
+        if(createdBy != null && createdBy.length() > 0)
+            template.setCreatedBy(createdBy);
 
         return editFoodPlaceByFields(id,template);
     }
 
-    public static boolean editFoodPlace(int id, String name, String location, String priceLevel, String googleRating, String latitude, String longitude) {
+    public static boolean editFoodPlace(int id, String name, String location, String priceLevel, String googleRating, String latitude, String longitude, String photoLink, String rating, String createdBy ){
         FoodPlace fp = SingletonDataHolder.getInstance().getFoodPlacewithID(id);
         if(name != null && name.length() > 0)
             fp.setName(name);
@@ -53,40 +60,47 @@ public class FoodPlaceImpl{
             fp.setLatitude(latitude);
         if(longitude != null && longitude.length() > 0)
             fp.setLongitude(longitude);
+        if(photoLink != null && photoLink.length() >0)
+            fp.setPhotoLink(photoLink);
+        if(rating != null && rating.length() >0)
+            fp.setRating(rating);
+        if(createdBy != null && createdBy.length() > 0)
+            fp.setCreatedBy(createdBy);
         
         return editFoodPlace(id, fp);
     }
 
 
     public static boolean getFoodPlaces(int page) {
-        Log.v("Rest Call", "Start Create Food Deal");
+        Log.v("Rest Call", "Start get Food place");
         final boolean[] ifSuccess = {false};
         final String[] flag = {null};
-        apiInterface.getFoodPlaces(page).enqueue(new Callback<Vector<FoodPlace>>() {
+        apiInterface.getFoodPlaces(page).enqueue(new Callback<PlaceListPackage>() {
             @Override
-            public void onResponse(Call<Vector<FoodPlace>> call, Response<Vector<FoodPlace>> response) {
+            public void onResponse(Call<PlaceListPackage> call, Response<PlaceListPackage> response) {
                 Log.d("Rest Call", "Is response success? " + response.isSuccessful());
-                Vector<FoodPlace> FoodPlaces = response.body();
-                if (FoodPlaces != null) {
+                PlaceListPackage newPackage = response.body();
+                if (newPackage != null) {
                     ifSuccess[0] = response.isSuccessful();
-                    for (FoodPlace fd : FoodPlaces) {
+                    for (FoodPlace fd : newPackage.getResults()) {
                         SingletonDataHolder.getInstance().addFoodPlace(fd);
                         Log.d("Rest Debug Print", fd.getId() + "");
                     }
                 }
                 flag[0] = "done";
-                Log.v("Rest Call", "End Create Food Deal");
+                Log.v("Rest Call", "End pulling Food place");
             }
 
             @Override
-            public void onFailure(Call<Vector<FoodPlace>> call, Throwable t) {
+            public void onFailure(Call<PlaceListPackage> call, Throwable t) {
+                Log.d("Rest Fail", ""+t.getStackTrace());
                 Log.d("Rest Call", "~~FAILED~~");
                 flag[0] = "fail";
                 call.cancel();
             }
         });
         while(flag[0] == null){
-            Log.d("Rest call", "Size of list :" +SingletonDataHolder.getInstance().getFoodPlaceList().size());
+           // Log.d("Rest call", "Size of list :" +SingletonDataHolder.getInstance().getFoodPlaceList().size());
         }
         return ifSuccess[0];
     }

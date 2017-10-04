@@ -28,7 +28,13 @@ public class FoodDeal implements Serializable
     @SerializedName("updated_date")
     @Expose
     private String updatedDate;
-    private final static long serialVersionUID = 2030005949535790666L;
+    @SerializedName("rating")
+    @Expose
+    private String rating;
+    @SerializedName("created_by")
+    @Expose
+    private String createdBy;
+    private final static long serialVersionUID = -8242576134588360110L;
 
     /**
      * No args constructor for use in serialization
@@ -41,13 +47,15 @@ public class FoodDeal implements Serializable
      *
      * @param message
      * @param id
+     * @param createdBy
      * @param updatedDate
      * @param photoLink
+     * @param rating
      * @param eventLink
      * @param updatedTime
      * @param postId
      */
-    public FoodDeal(Integer id, String postId, String message, String updatedTime, String photoLink, String eventLink, String updatedDate) {
+    public FoodDeal(Integer id, String postId, String message, String updatedTime, String photoLink, String eventLink, String updatedDate, String rating, String createdBy) {
         super();
         this.id = id;
         this.postId = postId;
@@ -56,8 +64,11 @@ public class FoodDeal implements Serializable
         this.photoLink = photoLink;
         this.eventLink = eventLink;
         this.updatedDate = updatedDate;
+        this.rating = rating;
+        this.createdBy = createdBy;
     }
-    public FoodDeal(String postId, String message, String updatedTime, String photoLink, String eventLink, String updatedDate) {
+
+    public FoodDeal(String postId, String message, String updatedTime, String photoLink, String eventLink, String updatedDate, String rating, String createdBy) {
         super();
         this.postId = postId;
         this.message = message;
@@ -65,6 +76,8 @@ public class FoodDeal implements Serializable
         this.photoLink = photoLink;
         this.eventLink = eventLink;
         this.updatedDate = updatedDate;
+        this.rating = rating;
+        this.createdBy = createdBy;
     }
 
     public Integer getId() {
@@ -155,6 +168,32 @@ public class FoodDeal implements Serializable
 
     public FoodDeal withUpdatedDate(String updatedDate) {
         this.updatedDate = updatedDate;
+        return this;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public FoodDeal withRating(String rating) {
+        this.rating = rating;
+        return this;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public FoodDeal withCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
         return this;
     }
 

@@ -86,7 +86,6 @@ public class FoodDealFragment extends Fragment{
         };
         mAdapter = new MyFoodDealRecyclerViewAdapter(mListener);
 
-        fillDummyItem();
     }
     private void pullList(int newpage){
         mPage = newpage;
@@ -174,11 +173,5 @@ public class FoodDealFragment extends Fragment{
     public interface OnListFooDealInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(FoodDeal item);
-    }
-
-    public void fillDummyItem(){
-        for(int i =0; i<10;i++){
-            SingletonDataHolder.getInstance().addFoodDeal(new FoodDeal(i,i+"","this is " + i + " item","10:10:10","","","10-10-2012"));
-        }
     }
 }

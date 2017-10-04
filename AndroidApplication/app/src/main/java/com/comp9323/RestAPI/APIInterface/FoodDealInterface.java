@@ -1,5 +1,6 @@
 package com.comp9323.RestAPI.APIInterface;
 
+import com.comp9323.RestAPI.Beans.DealListPackage;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 
 import java.util.Vector;
@@ -23,7 +24,7 @@ public interface FoodDealInterface {
     @POST("/api/food_deals/")
     Call<FoodDeal> createFoodDeal(@Body FoodDeal fd);
     @GET("/api/food_deals/all/")
-    Call<Vector<FoodDeal>> getFoodDeals(@Query("page") int pageNumber);
+    Call<DealListPackage> getFoodDeals(@Query("page") int pageNumber);
     @DELETE("/api/food_deals/{id}/")
     Call<Response<Void>> deleteFoodDeal(@Path("id") int id);
     @GET("/api/food_deals/{id}/")

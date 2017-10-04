@@ -28,7 +28,16 @@ public class FoodPlace implements Serializable
     @SerializedName("longitude")
     @Expose
     private String longitude;
-    private final static long serialVersionUID = -8996665835930522429L;
+    @SerializedName("photo_link")
+    @Expose
+    private String photoLink;
+    @SerializedName("rating")
+    @Expose
+    private String rating;
+    @SerializedName("created_by")
+    @Expose
+    private String createdBy;
+    private final static long serialVersionUID = -8731275924963347679L;
 
     /**
      * No args constructor for use in serialization
@@ -41,13 +50,16 @@ public class FoodPlace implements Serializable
      *
      * @param id
      * @param priceLevel
+     * @param createdBy
      * @param location
      * @param name
+     * @param photoLink
      * @param googleRating
      * @param longitude
+     * @param rating
      * @param latitude
      */
-    public FoodPlace(Integer id, String name, String location, String priceLevel, String googleRating, String latitude, String longitude) {
+    public FoodPlace(Integer id, String name, String location, String priceLevel, String googleRating, String latitude, String longitude, String photoLink, String rating, String createdBy) {
         super();
         this.id = id;
         this.name = name;
@@ -56,8 +68,12 @@ public class FoodPlace implements Serializable
         this.googleRating = googleRating;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.photoLink = photoLink;
+        this.rating = rating;
+        this.createdBy = createdBy;
     }
-    public FoodPlace(String name, String location, String priceLevel, String googleRating, String latitude, String longitude) {
+
+    public FoodPlace(String name, String location, String priceLevel, String googleRating, String latitude, String longitude, String photoLink, String rating, String createdBy) {
         super();
         this.name = name;
         this.location = location;
@@ -65,7 +81,11 @@ public class FoodPlace implements Serializable
         this.googleRating = googleRating;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.photoLink = photoLink;
+        this.rating = rating;
+        this.createdBy = createdBy;
     }
+
     public Integer getId() {
         return id;
     }
@@ -154,6 +174,45 @@ public class FoodPlace implements Serializable
 
     public FoodPlace withLongitude(String longitude) {
         this.longitude = longitude;
+        return this;
+    }
+
+    public String getPhotoLink() {
+        return photoLink;
+    }
+
+    public void setPhotoLink(String photoLink) {
+        this.photoLink = photoLink;
+    }
+
+    public FoodPlace withPhotoLink(String photoLink) {
+        this.photoLink = photoLink;
+        return this;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public FoodPlace withRating(String rating) {
+        this.rating = rating;
+        return this;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public FoodPlace withCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
         return this;
     }
 

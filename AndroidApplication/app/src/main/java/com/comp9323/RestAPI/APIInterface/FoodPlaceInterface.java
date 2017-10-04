@@ -1,8 +1,7 @@
 package com.comp9323.RestAPI.APIInterface;
 
 import com.comp9323.RestAPI.Beans.FoodPlace;
-
-import java.util.Vector;
+import com.comp9323.RestAPI.Beans.PlaceListPackage;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -25,7 +24,7 @@ public interface FoodPlaceInterface {
 
     @GET("/api/food_places/all/")
 
-    Call<Vector<FoodPlace>> getFoodPlaces(@Query("page") int pageNumber);
+    Call<PlaceListPackage> getFoodPlaces(@Query("page") int pageNumber);
     @DELETE("/api/food_places/{id}/")
     Call<Response<Void>> deleteFoodPlace(@Path("id") int id);
 
