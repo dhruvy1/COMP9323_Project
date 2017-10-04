@@ -1,6 +1,7 @@
 package com.comp9323.RestAPI.APIInterface;
 
 import com.comp9323.RestAPI.Beans.EventBean;
+import com.comp9323.RestAPI.Beans.EventResponse;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ import retrofit2.http.Query;
 
 public interface EventInterface {
     @GET("events/all/")
-    Call<List<EventBean>> getEvents(@Query("page") int pageNumber);
+    Call<EventResponse> getEvents(@Query("page") int pageNumber);
 
     @POST("events")
     Call<EventBean> addEvent(@Body EventBean event);

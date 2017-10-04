@@ -5,6 +5,7 @@ import android.util.Log;
 import com.comp9323.RestAPI.APIInterface.EventInterface;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.EventBean;
+import com.comp9323.RestAPI.Beans.EventResponse;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 
 import java.util.ArrayList;
@@ -23,15 +24,16 @@ public class EventImpl {
     private static final EventInterface eventAPI = RestClient.getClient().create(EventInterface.class);
 
     public static void getEvents(int page) {
-        eventAPI.getEvents(page).enqueue(new Callback<List<EventBean>>() {
+        eventAPI.getEvents(page).enqueue(new Callback<EventResponse>() {
             @Override
-            public void onResponse(Call<List<EventBean>> call, Response<List<EventBean>> response) {
-                List<EventBean> events = response.body();
+            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                EventResponse responseData = response.body();
+                List<EventBean> events = responseData.getResults();
                 SingletonDataHolder.getInstance().addEvents(events);
             }
 
             @Override
-            public void onFailure(Call<List<EventBean>> call, Throwable t) {
+            public void onFailure(Call<EventResponse> call, Throwable t) {
                 Log.d("REST CALL", t.getStackTrace().toString()+"");
                 Log.d("REST CALL", "~~Fail CALL~~");
                 call.cancel();
