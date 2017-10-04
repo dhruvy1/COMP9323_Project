@@ -3,10 +3,12 @@ package com.comp9323.RestAPI.DataHolder;
 import android.content.Context;
 import android.util.Log;
 
+import com.comp9323.RestAPI.Beans.EventBean;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.Beans.User;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +31,15 @@ public class SingletonDataHolder {
     private List< WeakReference<User>> userList;
     private List<FoodDeal> foodDealList;
     private Map<Integer, FoodDeal> foodDealMap;
+    private List<EventBean> events;
+    private boolean eventResponse;
 
     private SingletonDataHolder() {
         userList = new Vector<>();
         foodDealList = new Vector<>();
         foodDealMap = new HashMap<>();
+        events = new ArrayList<>();
+        eventResponse = false;
         //...
     }
 
@@ -121,4 +127,22 @@ public class SingletonDataHolder {
         foodDealMap.clear();
     }
 
+    /**
+     * Event functions
+     */
+    public List<EventBean> getEvents() {return events;}
+
+    public EventBean getEvent(int position) {return events.get(position);}
+
+    public void addEvent(EventBean event) {events.add(event);}
+
+    public void addEvents(List<EventBean> events) {events.addAll(events);}
+
+    public void removeEvent(int position) {events.remove(position);}
+
+    public void clearEvents() {events.clear();}
+
+    public void saveEventResponse(boolean success) {eventResponse = success;}
+
+    public boolean checkEventResponse(boolean success) {return eventResponse = success;}
 }

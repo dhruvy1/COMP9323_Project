@@ -1,4 +1,5 @@
-package com.comp9323.myapplication;
+/**
+package com.comp9323.Events;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 /**
  * Created by timta on 17/09/2017.
  */
+/**
 
 public class EventArrayAdapter extends ArrayAdapter<EventBean> {
 
@@ -46,3 +48,4 @@ public class EventArrayAdapter extends ArrayAdapter<EventBean> {
     }
 
 }
+*/
