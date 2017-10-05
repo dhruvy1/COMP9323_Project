@@ -33,7 +33,7 @@ public class FoodPlaceFragment extends Fragment {
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected static MyFoodPlaceRecyclerViewAdapter mAdapter;
     private static OnListFoodPlaceInteractionListener mListener;
-    private static FoodPlaceAsycn mAsycn;
+    public static final View[] expandedView = {null};
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,10 +65,16 @@ public class FoodPlaceFragment extends Fragment {
 
 //                if (view == getView().findViewById(R.id.FoodPlace_Item_Title)) {
                     LinearLayout detail = view.findViewById(R.id.FoodPlace_Item_Detail);
-                    if (detail.getVisibility() != View.VISIBLE)
+                    if (detail.getVisibility() != View.VISIBLE) {
                         detail.setVisibility(View.VISIBLE);
-                    else
+                        if (expandedView[0] != null) {
+                            expandedView[0].findViewById(R.id.FoodPlace_Item_Detail).setVisibility(View.GONE);
+                        }
+                        expandedView[0] = view;
+                    }else {
                         detail.setVisibility(View.GONE);
+                        expandedView[0] = null;
+                    }
 //                }
             }
         };
