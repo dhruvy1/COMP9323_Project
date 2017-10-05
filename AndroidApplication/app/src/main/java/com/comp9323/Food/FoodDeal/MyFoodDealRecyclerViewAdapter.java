@@ -2,8 +2,12 @@ package com.comp9323.Food.FoodDeal;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,31 +62,35 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
     @Override
     public void onBindViewHolder(final FoodDealViewHolder holder, int position) {
 
-        if (holder instanceof LastViewHolder){
-            LastViewHolder loadingViewHolder = (LastViewHolder) holder;
-            loadingViewHolder.progressBar.setIndeterminate(true);
+        // set value that display in the list
+        holder.mFoodDeal = SingletonDataHolder.getInstance().getFoodDealList().get(position);
+        holder.mTextView.setText(holder.mFoodDeal.getMessage());
+
+        //Set pulled image
+        //TODO cannot pull like this
+//        if (holder.mFoodDeal.getPhotoLink().length() > 0 ){
+//            new DownloadImageTask(holder.mImageView,this).execute(holder.mFoodDeal.getPhotoLink());
+//        }
+
+        //hyperlink image
+        if (holder.mFoodDeal.getCreatedBy().compareTo("Facebook") == 0) {
+            if (holder.mFoodDeal.getEventLink().length() > 0) {
+                holder.mTextView.setText( addIconAtBeginning(holder.mTextView.getText(), R.drawable.hyperlink) );
+            }
         }else {
-            //TODO set value that display in the list
-            holder.mFoodDeal = SingletonDataHolder.getInstance().getFoodDealList().get(position);
-            holder.mTextView.setText(holder.mFoodDeal.getMessage());
-
-            //Set pulled image
-            //TODO cannot pull like this
-//            if (holder.mFoodDeal.getPhotoLink().length() > 0 ){
-//                new DownloadImageTask(holder.mImageView,this).execute(holder.mFoodDeal.getPhotoLink());
-//            }
-
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (null != FoodDeal_Fragment_listener) {
-                        // Notify the active callbacks interface (the activity, if the
-                        // fragment is attached to one) that an item has been selected.
-                        FoodDeal_Fragment_listener.onListFragmentInteraction(holder.mFoodDeal);
-                    }
-                }
-            });
+            holder.mTextView.setText( addIconAtBeginning(holder.mTextView.getText(), R.drawable.internallink) );
         }
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != FoodDeal_Fragment_listener) {
+                    // Notify the active callbacks interface (the activity, if the
+                    // fragment is attached to one) that an item has been selected.
+                    FoodDeal_Fragment_listener.onListFragmentInteraction(holder.mFoodDeal);
+                }
+            }
+        });
     }
     @Override
     public int getItemCount() {
@@ -101,10 +109,10 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
     public void setIsLoading(boolean bool){
         mIsLoading = bool;
     }
-    public boolean ifReachEnd(){
+    public static boolean ifReachEnd(){
         return mIsReachEnd;
     }
-    public void setIsReachEnd(boolean bool){mIsReachEnd = bool;}
+    public static void setIsReachEnd(boolean bool){mIsReachEnd = bool;}
 
     //Item view of the recycle List
     //need to match the @layout list_item.xml
@@ -128,14 +136,21 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
         }
     }
 
-    public class LastViewHolder extends FoodDealViewHolder{
-        public ProgressBar progressBar;
-
-        public LastViewHolder(View view) {
-            super(view);
-            progressBar = view.findViewById(R.id.FoodList_progressBar);
+    private SpannableStringBuilder addIconAtBeginning(CharSequence s, int resId){
+        Drawable icon;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            icon = SingletonDataHolder.getInstance().getContext().getDrawable(resId);
+        } else {
+            icon = SingletonDataHolder.getInstance().getContext().getResources().getDrawable(resId);
         }
+        icon.setBounds(0, 0, 50, 50);
+        ImageSpan ip = new ImageSpan(icon);
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        sb.append(s);
+        sb.setSpan(ip, 0, 1, Spanned.SPAN_COMPOSING);
+        return sb;
     }
+
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
         MyFoodDealRecyclerViewAdapter mlistener;

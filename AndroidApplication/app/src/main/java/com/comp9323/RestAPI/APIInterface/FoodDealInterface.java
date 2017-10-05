@@ -24,7 +24,7 @@ public interface FoodDealInterface {
     @POST("/api/food_deals/")
     Call<FoodDeal> createFoodDeal(@Body FoodDeal fd);
     @GET("/api/food_deals/all/")
-    Call<DealListPackage> getFoodDeals(@Query("page") int pageNumber);
+    Call<DealListPackage> getFoodDeals(@Query("limit") int limit, @Query("offset") int pageNumber);
     @DELETE("/api/food_deals/{id}/")
     Call<Response<Void>> deleteFoodDeal(@Path("id") int id);
     @GET("/api/food_deals/{id}/")

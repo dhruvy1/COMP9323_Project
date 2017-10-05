@@ -24,7 +24,7 @@ public interface FoodPlaceInterface {
 
     @GET("/api/food_places/all/")
 
-    Call<PlaceListPackage> getFoodPlaces(@Query("page") int pageNumber);
+    Call<PlaceListPackage> getFoodPlaces(@Query("limit") int limit, @Query("offset") int pageNumber);
     @DELETE("/api/food_places/{id}/")
     Call<Response<Void>> deleteFoodPlace(@Path("id") int id);
 

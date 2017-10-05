@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.comp9323.AsycnTask.FoodDealAsycn;
+import com.comp9323.Food.FoodPlace.MyFoodPlaceRecyclerViewAdapter;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
@@ -86,6 +87,7 @@ public class FoodDealFragment extends Fragment{
         };
         mAdapter = new MyFoodDealRecyclerViewAdapter(mListener);
 
+
     }
     private void pullList(int newpage){
         mPage = newpage;
@@ -115,15 +117,12 @@ public class FoodDealFragment extends Fragment{
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(!mAdapter.ifReachEnd()) {
+                Log.d("if list end", ""+ MyFoodDealRecyclerViewAdapter.ifReachEnd());
+                if(!MyFoodDealRecyclerViewAdapter.ifReachEnd()) {
                     int totalItemCount = linearLayoutManager.getItemCount();
                     int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                     int visibleThreshold = 1;
                     if (!mAdapter.ifLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-//                    if (mAdapter.onLoadMoreListener != null) {
-//                        onLoadMoreListener.onLoadMore();
-//                    }
-                        //TODO change to multi fields
                         mPage++;
                         new FoodDealAsycn(mAdapter).execute(FoodDealAsycn.GET_LIST, mPage + "");
                     }
@@ -137,10 +136,16 @@ public class FoodDealFragment extends Fragment{
             @Override
             public void onRefresh() {
             SingletonDataHolder.getInstance().clearFoodDealList();
-            mAdapter.setIsReachEnd(false);
+            MyFoodDealRecyclerViewAdapter.setIsReachEnd(false);
             pullList(1);
             }
         });
+
+        //pull item from server after launch if no item in the list
+        if (SingletonDataHolder.getInstance().getFoodDealList().size() ==0){
+            pullList(1);
+        }
+
         return view;
     }
 

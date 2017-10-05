@@ -7,12 +7,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.comp9323.AsycnTask.FoodPlaceAsycn;
+import com.comp9323.Food.FoodDeal.MyFoodDealRecyclerViewAdapter;
 import com.comp9323.RestAPI.Beans.FoodPlace;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
@@ -31,6 +33,7 @@ public class FoodPlaceFragment extends Fragment {
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected static MyFoodPlaceRecyclerViewAdapter mAdapter;
     private static OnListFoodPlaceInteractionListener mListener;
+    private static FoodPlaceAsycn mAsycn;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -56,10 +59,17 @@ public class FoodPlaceFragment extends Fragment {
         }
         mListener = new OnListFoodPlaceInteractionListener() {
             @Override
-            public void onListFoodPlaceInteraction(FoodPlace item) {
-//                LinearLayout detail = getView().findViewById(R.id.FoodPlace_Item_Detail);
-//                detail.getVisibility();
-//                detail.setVisibility(View.VISIBLE);
+            public void onListFoodPlaceInteraction(FoodPlace item, View view, int position) {
+
+//                View view = getView().findViewById(R.id.FoodPlace_Item_Detail);
+
+//                if (view == getView().findViewById(R.id.FoodPlace_Item_Title)) {
+                    LinearLayout detail = view.findViewById(R.id.FoodPlace_Item_Detail);
+                    if (detail.getVisibility() != View.VISIBLE)
+                        detail.setVisibility(View.VISIBLE);
+                    else
+                        detail.setVisibility(View.GONE);
+//                }
             }
         };
         mAdapter = new MyFoodPlaceRecyclerViewAdapter(mListener);
@@ -85,7 +95,7 @@ public class FoodPlaceFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy){
                 super.onScrolled(recyclerView, dx, dy);
-                if (!mAdapter.ifReachEnd()) {
+                if (!MyFoodPlaceRecyclerViewAdapter.ifReachEnd()) {
                     int totalItemCount = linearLayoutManager.getItemCount();
                     int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                     int visibleThreshold = 1;
@@ -101,12 +111,18 @@ public class FoodPlaceFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Log.d("Refrash", "call onRefresh");
                 SingletonDataHolder.getInstance().clearFoodPlaceList();
-                mAdapter.setIsReachEnd(false);
+                MyFoodPlaceRecyclerViewAdapter.setIsReachEnd(false);
                 pullList(1);
+                Log.d("Refresh", "end onRefresh");
             }
         });
 
+        //pull item from server after launch if no item in the list
+        if (SingletonDataHolder.getInstance().getFoodPlaceList().size() ==0){
+            pullList(1);
+        }
         return view;
     }
 
@@ -126,8 +142,10 @@ public class FoodPlaceFragment extends Fragment {
     private void pullList(int newPage){
         //TODO
         mPage = newPage;
+        Log.d("pull list", "start");
         new FoodPlaceAsycn(mAdapter).execute(FoodPlaceAsycn.GET_LIST, newPage+"");
         mSwipeRefreshLayout.setRefreshing(false);
+        Log.d("pull list", "end");
     }
 
     /**
@@ -142,6 +160,6 @@ public class FoodPlaceFragment extends Fragment {
      */
     public interface OnListFoodPlaceInteractionListener {
         // TODO: Update argument type and name
-        void onListFoodPlaceInteraction(FoodPlace item);
+        void onListFoodPlaceInteraction(FoodPlace item, View view, int position);
     }
 }

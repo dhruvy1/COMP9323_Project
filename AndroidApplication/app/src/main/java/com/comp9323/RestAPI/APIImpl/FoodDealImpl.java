@@ -2,6 +2,7 @@ package com.comp9323.RestAPI.APIImpl;
 
 import android.util.Log;
 
+import com.comp9323.Food.FoodDeal.MyFoodDealRecyclerViewAdapter;
 import com.comp9323.RestAPI.APIInterface.FoodDealInterface;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.DealListPackage;
@@ -95,8 +96,7 @@ public class FoodDealImpl {
         Log.v("Rest Call", "Start Create Food Deal");
         final boolean[] ifSuccess = {false};
         final boolean[] ifNdone = {true};
-        final boolean[] ifEnd = {false};
-        apiInterface.getFoodDeals(page).enqueue(new Callback<DealListPackage>() {
+        apiInterface.getFoodDeals(3, (page-1)*3).enqueue(new Callback<DealListPackage>() {
             @Override
             public void onResponse(Call<DealListPackage> call, Response<DealListPackage> response) {
                 Log.d("Rest Call", "Is response success? " + response.isSuccessful());
@@ -105,7 +105,7 @@ public class FoodDealImpl {
                     if (newPackage.getResults().size() != 0)
                         ifSuccess[0] = response.isSuccessful();
                     if(newPackage.getNextUrl() == null || newPackage.getNextUrl().compareTo("null") == 0)
-                        ifEnd[0] = true;
+                        MyFoodDealRecyclerViewAdapter.setIsReachEnd(true);
                     for (FoodDeal fd : newPackage.getResults()) {
                         SingletonDataHolder.getInstance().addFoodDeal(fd);
                         Log.d("Rest Debug Print", fd.getId() + "");
@@ -123,6 +123,7 @@ public class FoodDealImpl {
             }
         });
         while(ifNdone[0]){
+            //holding the process until on response is complete
             Log.d("Rest call", "Size of list :" +SingletonDataHolder.getInstance().getFoodDealList().size());
         }
         return ifSuccess[0];

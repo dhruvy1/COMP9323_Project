@@ -26,12 +26,7 @@ public class FoodDealAsycn extends AsyncTask<String, Void, Boolean> {
         String method = strings[0];
         if (method.equals(GET_LIST)) {
             int pageNumber = Integer.parseInt(strings[1]);
-            boolean ifEnd = FoodDealImpl.getFoodDeals(pageNumber);
-            if (ifEnd) {
-                mAdapter.setIsReachEnd(true);
-                return false;
-            }
-            return true;
+            return FoodDealImpl.getFoodDeals(pageNumber);
         }else{
             //TODO add more type of actions
             return false;

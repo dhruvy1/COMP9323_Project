@@ -40,7 +40,7 @@ public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodP
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mPlace = SingletonDataHolder.getInstance().getFoodPlace(position);
         holder.mNameView.setText(holder.mPlace.getName());
         //holder.mLocationView.setText(holder.mPlace.getLocation());
@@ -51,9 +51,7 @@ public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodP
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFoodPlaceInteraction(holder.mPlace);
+                    mListener.onListFoodPlaceInteraction(holder.mPlace, holder.mView, position);
                 }
             }
         });
@@ -73,10 +71,10 @@ public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodP
         return mIsLoading;
     }
     public void setIsLoading(boolean bool){mIsLoading = bool;}
-    public boolean ifReachEnd(){
+    public static boolean ifReachEnd(){
         return mIsReachEnd;
     }
-    public void setIsReachEnd(boolean bool){mIsReachEnd = bool;}
+    public static void setIsReachEnd(boolean bool){mIsReachEnd = bool;}
 
     //Item view of the recycle List
     //need to match the @layout list_item.xml
@@ -91,23 +89,9 @@ public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodP
             super(view);
             mView = view;
             Log.d("Veiw id", ""+ view.getId());
-            Log.d("Veiw id", "item title"+ R.id.FoodPlace_Item_Title);
             Log.d("Veiw id", "item layout"+ R.id.FoodPlace_Item_Layout);
-            Log.d("Veiw id", "item place list"+ R.id.foodplace_list);
-            Log.d("Veiw id", "item vertical"+ R.id.FoodPlace_Item_Layout2);
-            Log.d("Veiw id", "item detail"+ R.id.FoodPlace_Item_Detail);
-            mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (view == mView.findViewById(R.id.FoodPlace_Item_Title)) {
-                        LinearLayout detail = mView.findViewById(R.id.FoodPlace_Item_Detail);
-                        if (detail.getVisibility() != View.VISIBLE)
-                            detail.setVisibility(View.VISIBLE);
-                        else
-                            detail.setVisibility(View.GONE);
-                    }
-                }
-            });
+
+
             mNameView = view.findViewById(R.id.FoodPlace_Name);
             //mLocationView = view.findViewById(R.id.FoodPlace_Location);
             mRatingView = view.findViewById(R.id.FoodPlace_RatingBar);
@@ -118,4 +102,5 @@ public class MyFoodPlaceRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodP
             return super.toString() + " '" + mNameView.getText() + "'";
         }
     }
+
 }

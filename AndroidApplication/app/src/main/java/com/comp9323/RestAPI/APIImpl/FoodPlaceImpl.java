@@ -2,6 +2,7 @@ package com.comp9323.RestAPI.APIImpl;
 
 import android.util.Log;
 
+import com.comp9323.Food.FoodPlace.MyFoodPlaceRecyclerViewAdapter;
 import com.comp9323.RestAPI.APIInterface.FoodPlaceInterface;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.FoodPlace;
@@ -74,33 +75,36 @@ public class FoodPlaceImpl{
     public static boolean getFoodPlaces(int page) {
         Log.v("Rest Call", "Start get Food place");
         final boolean[] ifSuccess = {false};
-        final String[] flag = {null};
-        apiInterface.getFoodPlaces(page).enqueue(new Callback<PlaceListPackage>() {
+        final boolean[] ifNdone = {true};
+        apiInterface.getFoodPlaces(20, (page-1)*20).enqueue(new Callback<PlaceListPackage>() {
             @Override
             public void onResponse(Call<PlaceListPackage> call, Response<PlaceListPackage> response) {
                 Log.d("Rest Call", "Is response success? " + response.isSuccessful());
                 PlaceListPackage newPackage = response.body();
                 if (newPackage != null) {
-                    ifSuccess[0] = response.isSuccessful();
+                    if (newPackage.getResults().size() != 0)
+                        ifSuccess[0] = response.isSuccessful();
+                    if (newPackage.getNextUrl() == null || newPackage.getNextUrl().compareTo("null") == 0)
+                        MyFoodPlaceRecyclerViewAdapter.setIsReachEnd(true);
                     for (FoodPlace fd : newPackage.getResults()) {
                         SingletonDataHolder.getInstance().addFoodPlace(fd);
                         Log.d("Rest Debug Print", fd.getId() + "");
                     }
                 }
-                flag[0] = "done";
+                ifNdone[0] = false;
                 Log.v("Rest Call", "End pulling Food place");
             }
 
             @Override
             public void onFailure(Call<PlaceListPackage> call, Throwable t) {
-                Log.d("Rest Fail", ""+t.getStackTrace());
+                Log.d("Rest Fail", ""+t.getStackTrace().toString());
                 Log.d("Rest Call", "~~FAILED~~");
-                flag[0] = "fail";
+                ifNdone[0] = false;
                 call.cancel();
             }
         });
-        while(flag[0] == null){
-           // Log.d("Rest call", "Size of list :" +SingletonDataHolder.getInstance().getFoodPlaceList().size());
+        while(ifNdone[0]){
+            Log.d("Rest call", "Size of list :" +SingletonDataHolder.getInstance().getFoodPlaceList().size());
         }
         return ifSuccess[0];
     }
