@@ -11,8 +11,6 @@ import com.comp9323.RestAPI.Beans.EventBean;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
 
-import java.util.List;
-
 /**
  * {@link RecyclerView.Adapter} that can display a {@link EventBean} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
@@ -72,8 +70,8 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdView = (TextView) view.findViewById(R.id.event_name);
+            mContentView = (TextView) view.findViewById(R.id.event_location);
         }
 
         @Override
