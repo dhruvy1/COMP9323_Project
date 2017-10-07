@@ -237,15 +237,7 @@ public class EventBean {
     }
 
     public String getEventTime() {
-        DateFormat df = new SimpleDateFormat("HH:dd:ss");
-        Date startTime;
-        Date endTime;
-        try {
-            startTime = df.parse(this.getStartTime());
-        } catch (ParseException e) {
-
-        }
-        //String startTime = this.getStartTime().substring(0, this.getStartTime().length()-3);
+        String startTime = this.getStartTime().substring(0, this.getStartTime().length()-3);
         String endTime = this.getEndTime().substring(0, this.getEndTime().length()-3);
         String time = startTime + " to " + endTime;
         String date;

@@ -35,22 +35,22 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         //holder.mItem = mValues.get(position);
         //holder.mIdView.setText(mValues.get(position).getName());
         //holder.mContentView.setText(mValues.get(position).getPlaceName());
-        EventBean eventBean = SingletonDataHolder.getInstance().getEvent(position);
-        holder.mItem = eventBean;
-        holder.mEventNameView.setText(eventBean.getName());
-        holder.mEventLocationView.setText(eventBean.getPlaceName());
-        holder.mEventTimeView.setText(eventBean.getEventTime());
+        holder.mItem = SingletonDataHolder.getInstance().getEvent(position);
+        holder.mEventNameView.setText(holder.mItem.getName());
+        holder.mEventLocationView.setText(holder.mItem.getPlaceName());
+        holder.mEventTimeView.setText(holder.mItem.getEventTime());
+        holder.mEventDescription.setText(holder.mItem.getDescription());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.mItem, holder.mView, position);
                 }
             }
         });
@@ -67,6 +67,7 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
         public final TextView mEventNameView;
         public final TextView mEventLocationView;
         public final TextView mEventTimeView;
+        public final TextView mEventDescription;
         public EventBean mItem;
 
         public ViewHolder(View view) {
@@ -75,6 +76,7 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
             mEventNameView = view.findViewById(R.id.event_name);
             mEventLocationView = view.findViewById(R.id.event_location);
             mEventTimeView = view.findViewById(R.id.event_timeframe);
+            mEventDescription = view.findViewById(R.id.event_description);
         }
 
         @Override
