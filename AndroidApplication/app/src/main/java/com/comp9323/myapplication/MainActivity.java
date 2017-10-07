@@ -21,6 +21,8 @@ import com.comp9323.RestAPI.APIInterface.EventAPI;
 import com.comp9323.RestAPI.APIInterface.RestClient;
 import com.comp9323.RestAPI.Beans.EventBean;
 import com.comp9323.RestAPI.Beans.FoodDeal;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 
 import java.util.ArrayList;
@@ -33,9 +35,20 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity{
 
     public static final String USR_PERF = "APP_USR_INFO";
-
     private EventAPI eventAPI;
     private ListView mList;
+    public enum Page{ EVENT,DEAL, PLACE, QNA };
+    //determine which page is user current is
+    public static final Page[] CURRENT_PAGE = {Page.EVENT};
+    public static final OnMapReadyCallback mOnMapReadyCallBack= new OnMapReadyCallback(){
+
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            if(CURRENT_PAGE[0] == Page.PLACE){
+
+            }
+        }
+    };
     private FrameLayout mContentContainer;
     //private RecyclerView mList;
 
@@ -47,6 +60,8 @@ public class MainActivity extends AppCompatActivity{
             switch (item.getItemId()) {
                 case R.id.navigation_event:
                     //mList = (RecyclerView) findViewById(R.id.recycler_view);
+                    //set user current page
+                    CURRENT_PAGE[0] = Page.EVENT;
 
                     mList = (ListView) findViewById(R.id.listview);
                     mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,6 +80,9 @@ public class MainActivity extends AppCompatActivity{
                     eventAPI.getEvents().enqueue(eventsCallback);
                     return true;
                 case R.id.navigation_food:
+                    //set user current page
+                    CURRENT_PAGE[0] = Page.DEAL;
+
                     FoodContainer newFragment = new FoodContainer();
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.content, newFragment);
@@ -75,6 +93,8 @@ public class MainActivity extends AppCompatActivity{
                     dash.show();
                     return true;
                 case R.id.navigation_qna:
+                    //set user current page
+                    CURRENT_PAGE[0] = Page.QNA;
 
                     QnAWebView newWebview = new QnAWebView();
                     FragmentTransaction transaction3 = getSupportFragmentManager().beginTransaction();

@@ -3,6 +3,7 @@ package com.comp9323.Food.FoodDeal;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -12,10 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.comp9323.AsycnTask.DownloadPhoto;
+import com.comp9323.AsycnTask.FoodDealAsycn;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
@@ -65,15 +70,31 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
         // set value that display in the list
         holder.mFoodDeal = SingletonDataHolder.getInstance().getFoodDealList().get(position);
         holder.mTextView.setText(holder.mFoodDeal.getMessage());
-
+        holder.mRating.setText((holder.mFoodDeal.getRating()));
         //Set pulled image
-        //TODO cannot pull like this
+        //TODO function is working, but it will take up lots of processing time and messed other Asycn 
 //        if (holder.mFoodDeal.getPhotoLink().length() > 0 ){
-//            new DownloadImageTask(holder.mImageView,this).execute(holder.mFoodDeal.getPhotoLink());
+//            //slow if first load
+//            new DownloadPhoto(holder.mImageView, FoodDealFragment.mAdapter).execute(holder.mFoodDeal.getPhotoLink());
 //        }
 
+        //like and dislike button
+        holder.mLikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(SingletonDataHolder.getInstance().getContext(), "onclick", Toast.LENGTH_SHORT).show();
+                new FoodDealAsycn(FoodDealFragment.mAdapter).execute(FoodDealAsycn.RATING, ""+holder.mFoodDeal.getId(), "1");
+            }
+        });
+        holder.mDislikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FoodDealAsycn(FoodDealFragment.mAdapter).execute(FoodDealAsycn.RATING, ""+holder.mFoodDeal.getId(), "-1");
+            }
+        });
+
         //hyperlink image
-        if (holder.mFoodDeal.getCreatedBy().compareTo("Facebook") == 0) {
+        if (holder.mFoodDeal.getCreatedBy().compareTo(FoodDeal.FACEBOOK) == 0) {
             if (holder.mFoodDeal.getEventLink().length() > 0) {
                 holder.mTextView.setText( addIconAtBeginning(holder.mTextView.getText(), R.drawable.hyperlink) );
             }
@@ -121,13 +142,18 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
         public final TextView mTextView;
         public final ImageView mImageView;
         public FoodDeal mFoodDeal;
+        public final ImageButton mLikeButton;
+        public final ImageButton mDislikeButton;
+        public final TextView mRating;
 
         public FoodDealViewHolder(View view) {
             super(view);
             mView = view;
             mTextView = (TextView) view.findViewById(R.id.FoodDeal_Name);
             mImageView = view.findViewById(R.id.FoodDeal_Image);
-
+            mLikeButton = view.findViewById(R.id.FoodDeal_Like);
+            mDislikeButton = view.findViewById(R.id.FoodDeal_Dislike);
+            mRating = view.findViewById(R.id.FoodDeal_Rating);
         }
 
         @Override
@@ -143,39 +169,12 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
         } else {
             icon = SingletonDataHolder.getInstance().getContext().getResources().getDrawable(resId);
         }
-        icon.setBounds(0, 0, 50, 50);
+        icon.setBounds(0, 0, 75, 75);
         ImageSpan ip = new ImageSpan(icon);
         SpannableStringBuilder sb = new SpannableStringBuilder();
+        sb.append("  ");
         sb.append(s);
         sb.setSpan(ip, 0, 1, Spanned.SPAN_COMPOSING);
         return sb;
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        MyFoodDealRecyclerViewAdapter mlistener;
-
-        public DownloadImageTask(ImageView imageView, MyFoodDealRecyclerViewAdapter listener) {
-            bmImage = imageView;
-            mlistener = listener;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            mlistener.notifyDataSetChanged();
-        }
     }
 }

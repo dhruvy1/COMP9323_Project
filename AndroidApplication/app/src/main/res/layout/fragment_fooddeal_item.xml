@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/FoodDeal_Lisr_Item"
     android:layout_width="match_parent"
@@ -14,22 +14,67 @@
     android:paddingTop="5dp">
 
 
-    <ImageView
-        android:id="@+id/FoodDeal_Image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        app:srcCompat="@drawable/dealimg_placeholder" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/FoodDeal_Name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/FoodDeal_Like"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/like_icon" />
+
+            <TextView
+                android:id="@+id/FoodDeal_Rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|bottom"
+                android:text="100"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/FoodDeal_Dislike"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/dislike_icon" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/FoodDeal_Image"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                app:srcCompat="@drawable/dealimg_placeholder" />
+
+            <TextView
+                android:id="@+id/FoodDeal_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="18sp" />
+        </LinearLayout>
 
 
+    </LinearLayout>
 
 
-</LinearLayout>
+</FrameLayout>

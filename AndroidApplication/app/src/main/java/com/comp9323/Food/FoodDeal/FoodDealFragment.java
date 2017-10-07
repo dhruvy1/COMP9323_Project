@@ -34,10 +34,10 @@ public class FoodDealFragment extends Fragment{
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private static int mPage = 1;
+    public static int mPage = 1;
 
     protected static OnListFooDealInteractionListener mListener;
-    protected MyFoodDealRecyclerViewAdapter mAdapter;
+    protected static MyFoodDealRecyclerViewAdapter mAdapter;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     /**
@@ -148,7 +148,9 @@ public class FoodDealFragment extends Fragment{
 
         return view;
     }
-
+    public void RatingFunction(String id, String rating){
+        new FoodDealAsycn(mAdapter).execute(FoodDealAsycn.RATING, id, rating);
+    }
 
     @Override
     public void onAttach(Context context) {

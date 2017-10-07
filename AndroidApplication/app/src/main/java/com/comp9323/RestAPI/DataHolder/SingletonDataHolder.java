@@ -22,10 +22,6 @@ import java.util.Vector;
 public class SingletonDataHolder {
 
     private static final SingletonDataHolder DH = new SingletonDataHolder();
-    private final Vector<FoodPlace> foodPlaceList;
-    private final HashMap<Integer, FoodPlace> foodPlaceMap;
-
-
     private User userSelf;
     private Context context;
     //Map<String, WeakReference<Object>> or Vector<WeakReference<Object>> objectData; //using "weakreference" allow destroy data when quit activities
@@ -33,14 +29,16 @@ public class SingletonDataHolder {
     //remember to initialize object list/map
     private List< WeakReference<User>> userList;
     private List<FoodDeal> foodDealList;
-    private Map<Integer, FoodDeal> foodDealMap;
+//    private Map<Integer, FoodDeal> foodDealMap;
+    private final Vector<FoodPlace> foodPlaceList;
+//    private final HashMap<Integer, FoodPlace> foodPlaceMap;
 
     private SingletonDataHolder() {
         userList = new Vector<>();
         foodDealList = new Vector<>();
-        foodDealMap = new HashMap<>();
+     //   foodDealMap = new HashMap<>();
         foodPlaceList = new Vector<>();
-        foodPlaceMap = new HashMap<>();
+//        foodPlaceMap = new HashMap<>();
         //...
     }
 
@@ -111,7 +109,16 @@ public class SingletonDataHolder {
     }
     public void addFoodDeal(FoodDeal fd){
         foodDealList.add(fd);
-        foodDealMap.put(fd.getId(),fd);
+//        foodDealMap.put(fd.getId(),fd);
+    }
+    public void findAndReplaceFoodDeal(FoodDeal fd){
+        for(int i =0; i<foodDealList.size();i++){
+            if(foodDealList.get(i).getId() == fd.getId()){
+                foodDealList.set(i, fd);
+//                foodDealMap.remove(i);
+//                foodDealMap.put(i,fd);
+            }
+        }
     }
     public void addFoodDeals(List<FoodDeal> fds){
         for (FoodDeal fd: fds) {
@@ -120,30 +127,56 @@ public class SingletonDataHolder {
     }
     public void removeFoodDeal(int Index){
         FoodDeal temp = foodDealList.remove(Index);
-        foodDealMap.remove(temp);
+//        foodDealMap.remove(Index);
     }
     public void clearFoodDealList(){
         foodDealList.clear();
-        foodDealMap.clear();
+//        foodDealMap.clear();
+    }
+
+    public void updateFoodDealRating(FoodDeal newfd){
+        for (int i = 0 ; i < foodDealList.size(); i++){
+            if(foodDealList.get(i).getId() != newfd.getId())
+                continue;
+            foodDealList.get(i).setRating(newfd.getRating());
+//            foodDealMap.get(i).setRating(newfd.getRating());
+        }
     }
 
     //FoodPlace
     public FoodPlace getFoodPlace(int Index){
         return foodPlaceList.get(Index);
     }
-    public FoodPlace getFoodPlacewithID(int id){
+    public FoodPlace getFoodPlaceWithID(int id){
         for (FoodPlace place: foodPlaceList) {
             if(place.getId() == id)
                 return place;
         }
         return null;
     }
+    public void findAndReplaceFoodPlace(FoodPlace fp){
+        for(int i =0; i<foodPlaceList.size();i++){
+            if(foodPlaceList.get(i).getId() == fp.getId()){
+                foodPlaceList.set(i, fp);
+//                foodPlaceMap.remove(i);
+//                foodPlaceMap.put(i,fp);
+            }
+        }
+    }
+    public void updateFoodPlaceRating(FoodPlace newfp){
+        for (int i = 0 ; i < foodPlaceList.size(); i++){
+            if(foodPlaceList.get(i).getId() != newfp.getId())
+                continue;
+            foodPlaceList.get(i).setRating(newfp.getRating());
+//            foodPlaceMap.get(i).setRating(newfp.getRating());
+        }
+    }
     public List<FoodPlace> getFoodPlaceList(){
         return foodPlaceList;
     }
     public void addFoodPlace(FoodPlace fp){
         foodPlaceList.add(fp);
-        foodPlaceMap.put(fp.getId(),fp);
+//        foodPlaceMap.put(fp.getId(),fp);
     }
     public void addFoodPlaces(List<FoodPlace> fps){
         for (FoodPlace fp: fps) {
@@ -152,11 +185,11 @@ public class SingletonDataHolder {
     }
     public void removeFoodPlacel(int Index){
         FoodPlace temp = foodPlaceList.remove(Index);
-        foodPlaceMap.remove(temp);
+//        foodPlaceMap.remove(Index);
     }
     public void clearFoodPlaceList(){
         foodPlaceList.clear();
-        foodPlaceMap.clear();
+//        foodPlaceMap.clear();
     }
 
 

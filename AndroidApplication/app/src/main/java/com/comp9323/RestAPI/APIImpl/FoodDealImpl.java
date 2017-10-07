@@ -18,7 +18,9 @@ import retrofit2.Response;
 
 public class FoodDealImpl {
     private static final FoodDealInterface apiInterface = RestClient.getClient().create(FoodDealInterface.class);
+    //23:59:59
     private static final String TIME_PATTERN = "^([01]?\\d|2[0-3]):([0-5]?\\d):([0-5]?\\d)$";
+    //YYYY-MM-DD
     private static final String DATE_PATTERN = "^(((((1[26]|2[048])00)|[12]\\d([2468][048]|[13579][26]|0[48]))-((((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01]))|((0[469]|11)-(0[1-9]|[12]\\d|30)))|(02-(0[1-9]|[12]\\d))))|((([12]\\d([02468][1235679]|[13579][01345789]))|((1[1345789]|2[1235679])00))-((((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01]))|((0[469]|11)-(0[1-9]|[12]\\d|30)))|(02-(0[1-9]|1\\d|2[0-8])))))$";
 
     public static boolean createFoodDeal(String postId, String message, String updateTime, String photoLink, String eventLink, String updateDate, String rating, String createdBy) throws Exception {
@@ -105,6 +107,7 @@ public class FoodDealImpl {
                     if (newPackage.getResults().size() != 0)
                         ifSuccess[0] = response.isSuccessful();
                     if(newPackage.getNextUrl() == null || newPackage.getNextUrl().compareTo("null") == 0)
+                    // if(newPackage.getCount() == SingletonDataHolder.getInstance().getFoodDealList().size())
                         MyFoodDealRecyclerViewAdapter.setIsReachEnd(true);
                     for (FoodDeal fd : newPackage.getResults()) {
                         SingletonDataHolder.getInstance().addFoodDeal(fd);
@@ -158,7 +161,7 @@ public class FoodDealImpl {
                 Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
                 FoodDeal fd = response.body();
                 if (fd != null) {
-                    SingletonDataHolder.getInstance().addFoodDeal(fd);//TODO Should i store like this
+                    SingletonDataHolder.getInstance().findAndReplaceFoodDeal(fd);//TODO Should i store like this
                     ifSuccess[0] = true;
                     Log.v("Rest Call", "End get Food Deals");
                 }

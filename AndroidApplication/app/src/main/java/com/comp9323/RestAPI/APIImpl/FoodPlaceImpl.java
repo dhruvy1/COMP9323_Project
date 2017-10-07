@@ -9,8 +9,6 @@ import com.comp9323.RestAPI.Beans.FoodPlace;
 import com.comp9323.RestAPI.Beans.PlaceListPackage;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 
-import java.util.Vector;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,7 +46,7 @@ public class FoodPlaceImpl{
     }
 
     public static boolean editFoodPlace(int id, String name, String location, String priceLevel, String googleRating, String latitude, String longitude, String photoLink, String rating, String createdBy ){
-        FoodPlace fp = SingletonDataHolder.getInstance().getFoodPlacewithID(id);
+        FoodPlace fp = SingletonDataHolder.getInstance().getFoodPlaceWithID(id);
         if(name != null && name.length() > 0)
             fp.setName(name);
         if(location != null && location.length() > 0)
@@ -138,7 +136,7 @@ public class FoodPlaceImpl{
                 Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
                 FoodPlace fd = response.body();
                 if (fd != null) {
-                    SingletonDataHolder.getInstance().addFoodPlace(fd);//TODO Should i store like this
+                    SingletonDataHolder.getInstance().findAndReplaceFoodPlace(fd);//TODO Should i store like this
                     ifSuccess[0] = true;
                     Log.v("Rest Call", "End get Food Deals");
                 }

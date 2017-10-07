@@ -7,5 +7,9 @@
     <string name="food_place_navigation">Food Place</string>
     <string name="food_deal_navigation">Food Deals</string>
     <string name="hello_blank_fragment">Hello Event</string>
+    <string name="food_place_address">Address:</string>
+    <string name="inapp_rating">In-app Rating:</string>
+    <string name="title_activity_maps">Map</string>
+
 </resources>
 

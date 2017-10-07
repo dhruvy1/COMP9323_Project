@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class FoodDeal implements Serializable
 {
+    public static final String FACEBOOK = "Facebook";
 
     @SerializedName("id")
     @Expose
