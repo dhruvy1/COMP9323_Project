@@ -29,6 +29,7 @@ public class EventImpl {
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
                 EventResponse responseData = response.body();
                 List<EventBean> events = responseData.getResults();
+                SingletonDataHolder.getInstance().clearEvents();
                 for (EventBean e : events) {
                     SingletonDataHolder.getInstance().addEvent(e);
                 }

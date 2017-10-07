@@ -1,5 +1,7 @@
 package com.comp9323.RestAPI.Beans;
 
+import android.util.Log;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -237,15 +239,30 @@ public class EventBean {
     }
 
     public String getEventTime() {
-        String startTime = this.getStartTime().substring(0, this.getStartTime().length()-3);
-        String endTime = this.getEndTime().substring(0, this.getEndTime().length()-3);
-        String time = startTime + " to " + endTime;
-        String date;
-        if (this.getStartDate().equals(this.getEndDate())) {
-            date = this.getStartDate();
-        } else {
-            date = this.getStartDate() + " to " + this.getEndDate();
+        DateFormat oTimeFormat = new SimpleDateFormat("HH:mm");
+        DateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat nTimeFormat = new SimpleDateFormat("hh:mma");
+        DateFormat nDateFormat = new SimpleDateFormat("MMM d");
+
+        try {
+            Date sDate = oDateFormat.parse(this.getStartDate());
+            Date eDate = oDateFormat.parse(this.getEndDate());
+            Date sTime = oTimeFormat.parse(this.getStartTime());
+            Date eTime = oTimeFormat.parse(this.getEndTime());
+            String startTime = "";
+            String endTime = "";
+
+            if (this.getStartDate().equals(this.getEndDate())) {
+                return (nDateFormat.format(sDate) + ", " + nTimeFormat.format(sTime)
+                        + " - " + nTimeFormat.format(eTime));
+            } else {
+                return (nDateFormat.format(sDate) + ", " + nTimeFormat.format(sTime)
+                        + " - " + nDateFormat.format(eDate) + ", " + nTimeFormat.format(eTime));
+            }
+        } catch (ParseException e) {
+            Log.d("Event Date Convert", "Parse Failed");
+            return "";
         }
-        return date + ", " + time;
     }
+
 }

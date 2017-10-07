@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.comp9323.AsycnTask.GetEventData;
 import com.comp9323.RestAPI.Beans.EventBean;
@@ -59,11 +61,11 @@ public class EventFragment extends Fragment {
         mListener = new OnListFragmentInteractionListener() {
             @Override
             public void onListFragmentInteraction(EventBean item, View view, int position) {
-                LinearLayout detail = view.findViewById(R.id.event_detail);
+                RelativeLayout detail = view.findViewById(R.id.event_details);
                 if (detail.getVisibility() != View.VISIBLE) {
                     detail.setVisibility(View.VISIBLE);
                     if (expandedView[0] != null) {
-                        expandedView[0].findViewById(R.id.event_detail).setVisibility(View.GONE);
+                        expandedView[0].findViewById(R.id.event_details).setVisibility(View.GONE);
                     }
                     expandedView[0] = view;
                 }else {

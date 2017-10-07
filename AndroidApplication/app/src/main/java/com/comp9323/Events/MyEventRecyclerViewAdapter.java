@@ -41,7 +41,7 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
         //holder.mContentView.setText(mValues.get(position).getPlaceName());
         holder.mItem = SingletonDataHolder.getInstance().getEvent(position);
         holder.mEventNameView.setText(holder.mItem.getName());
-        holder.mEventLocationView.setText(holder.mItem.getPlaceName());
+        holder.mEventLocationView.setText(holder.mItem.getPlaceName() + ", " + holder.mItem.getStreet());
         holder.mEventTimeView.setText(holder.mItem.getEventTime());
         holder.mEventDescription.setText(holder.mItem.getDescription());
         holder.mView.setOnClickListener(new View.OnClickListener() {

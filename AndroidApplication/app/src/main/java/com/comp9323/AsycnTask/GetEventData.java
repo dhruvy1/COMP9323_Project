@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import com.comp9323.Events.MyEventRecyclerViewAdapter;
 import com.comp9323.RestAPI.APIImpl.EventImpl;
 import com.comp9323.RestAPI.Beans.EventBean;
+import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
 
 /**
@@ -32,14 +33,20 @@ public class GetEventData extends AsyncTask<Integer, Void, Boolean> {
     protected Boolean doInBackground(Integer... integers) {
         Log.d("A", "Getting event data from server....");
         EventImpl.getEvents();
+        while(SingletonDataHolder.getInstance().getEvents() == null) {
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {}
+        }
         return true;
     }
 
     @Override
     protected void onPostExecute(Boolean b) {
 //        l.setVisibility(View.GONE);
-
-        mAdapter.notifyDataSetChanged();
-        Log.d("A*", "Event data extracted");
+        if (b) {
+            mAdapter.notifyDataSetChanged();
+            Log.d("A*", "Event data extracted");
+        }
     }
 }

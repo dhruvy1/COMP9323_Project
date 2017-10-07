@@ -1,74 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
-        xmlns:cardview="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cardview"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        cardview:cardBackgroundColor="@color/yellow"
+        android:layout_marginBottom="5dp"
         cardview:cardElevation="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/event_short"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:id="@+id/event_photo"
-                android:src="@drawable/images"/>
+                android:padding="12dp">
 
-            <TextView
-                android:id="@+id/event_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_toRightOf="@+id/event_photo"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:textAppearance="?attr/textAppearanceListItem" />
+                <ImageView
+                    android:id="@+id/event_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/dummy_event_mini" />
 
-            <TextView
-                android:id="@+id/event_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_toRightOf="@+id/event_photo"
-                android:layout_below="@+id/event_name"
-                android:textSize="12sp"
-                android:textAppearance="?attr/textAppearanceListItem" />
+                <TextView
+                    android:id="@+id/event_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/event_photo"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/location_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/event_name"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_toRightOf="@id/event_photo"
+                    android:src="@drawable/location_pin" />
+
+                <TextView
+                    android:id="@+id/event_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/event_name"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/location_pin"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/calendar_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/event_location"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_toRightOf="@id/event_photo"
+                    android:src="@drawable/calendar" />
+
+                <TextView
+                    android:id="@+id/event_timeframe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/event_location"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@+id/calendar_icon" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/event_details"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_toRightOf="@+id/event_photo"
-                android:layout_below="@+id/event_location"
-                android:id="@+id/event_timeframe"/>
+                android:layout_below="@+id/event_short"
+                android:padding="12dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/description_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="About the event:"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/event_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/description_label"
+                    android:layout_margin="5dp" />
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/event_detail"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:id="@+id/event_description"/>
-
-
-        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
 </LinearLayout>
