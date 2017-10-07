@@ -41,8 +41,9 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
         //holder.mContentView.setText(mValues.get(position).getPlaceName());
         EventBean eventBean = SingletonDataHolder.getInstance().getEvent(position);
         holder.mItem = eventBean;
-        holder.mIdView.setText(eventBean.getName());
-        holder.mContentView.setText(eventBean.getPlaceName());
+        holder.mEventNameView.setText(eventBean.getName());
+        holder.mEventLocationView.setText(eventBean.getPlaceName());
+        holder.mEventTimeView.setText(eventBean.getEventTime());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,20 +64,22 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mEventNameView;
+        public final TextView mEventLocationView;
+        public final TextView mEventTimeView;
         public EventBean mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.event_name);
-            mContentView = (TextView) view.findViewById(R.id.event_location);
+            mEventNameView = view.findViewById(R.id.event_name);
+            mEventLocationView = view.findViewById(R.id.event_location);
+            mEventTimeView = view.findViewById(R.id.event_timeframe);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mEventLocationView.getText() + "'";
         }
     }
 }

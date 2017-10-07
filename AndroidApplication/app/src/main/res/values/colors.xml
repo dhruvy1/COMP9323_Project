@@ -3,8 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
-    <item name="yellow" type="color">#e6b665</item>
+    <color name="colorWhite">#FFFFFF</color>
+    <item name="yellow" type="color">#c8def5</item>
     
     <integer-array name="colors">
         <item>@color/yellow</item>
