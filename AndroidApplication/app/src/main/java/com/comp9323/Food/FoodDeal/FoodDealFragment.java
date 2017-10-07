@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.comp9323.AsycnTask.FoodDealAsycn;
+import com.comp9323.Food.FoodPlace.MyFoodPlaceRecyclerViewAdapter;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
@@ -33,10 +34,10 @@ public class FoodDealFragment extends Fragment{
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private static int mPage = 1;
+    public static int mPage = 1;
 
     protected static OnListFooDealInteractionListener mListener;
-    protected MyFoodDealRecyclerViewAdapter mAdapter;
+    protected static MyFoodDealRecyclerViewAdapter mAdapter;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     /**
@@ -86,7 +87,7 @@ public class FoodDealFragment extends Fragment{
         };
         mAdapter = new MyFoodDealRecyclerViewAdapter(mListener);
 
-        fillDummyItem();
+
     }
     private void pullList(int newpage){
         mPage = newpage;
@@ -116,15 +117,12 @@ public class FoodDealFragment extends Fragment{
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(!mAdapter.ifReachEnd()) {
+                Log.d("if list end", ""+ MyFoodDealRecyclerViewAdapter.ifReachEnd());
+                if(!MyFoodDealRecyclerViewAdapter.ifReachEnd()) {
                     int totalItemCount = linearLayoutManager.getItemCount();
                     int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                     int visibleThreshold = 1;
                     if (!mAdapter.ifLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-//                    if (mAdapter.onLoadMoreListener != null) {
-//                        onLoadMoreListener.onLoadMore();
-//                    }
-                        //TODO change to multi fields
                         mPage++;
                         new FoodDealAsycn(mAdapter).execute(FoodDealAsycn.GET_LIST, mPage + "");
                     }
@@ -138,13 +136,21 @@ public class FoodDealFragment extends Fragment{
             @Override
             public void onRefresh() {
             SingletonDataHolder.getInstance().clearFoodDealList();
-            mAdapter.setIsReachEnd(false);
+            MyFoodDealRecyclerViewAdapter.setIsReachEnd(false);
             pullList(1);
             }
         });
+
+        //pull item from server after launch if no item in the list
+        if (SingletonDataHolder.getInstance().getFoodDealList().size() ==0){
+            pullList(1);
+        }
+
         return view;
     }
-
+    public void RatingFunction(String id, String rating){
+        new FoodDealAsycn(mAdapter).execute(FoodDealAsycn.RATING, id, rating);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -174,11 +180,5 @@ public class FoodDealFragment extends Fragment{
     public interface OnListFooDealInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(FoodDeal item);
-    }
-
-    public void fillDummyItem(){
-        for(int i =0; i<10;i++){
-            SingletonDataHolder.getInstance().addFoodDeal(new FoodDeal(i,i+"","this is " + i + " item","10:10:10","","","10-10-2012"));
-        }
     }
 }

@@ -1,20 +1,33 @@
 package com.comp9323.Food.FoodPlace;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.comp9323.AsycnTask.FoodPlaceAsycn;
+import com.comp9323.Food.FoodDeal.MyFoodDealRecyclerViewAdapter;
 import com.comp9323.RestAPI.Beans.FoodPlace;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.internal.IGoogleMapDelegate;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * A fragment representing a list of Items.
@@ -30,6 +43,8 @@ public class FoodPlaceFragment extends Fragment {
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected static MyFoodPlaceRecyclerViewAdapter mAdapter;
     private static OnListFoodPlaceInteractionListener mListener;
+    public static final View[] expandedView = {null};
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -50,13 +65,76 @@ public class FoodPlaceFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Bundle copy = savedInstanceState;
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         mListener = new OnListFoodPlaceInteractionListener() {
             @Override
-            public void onListFoodPlaceInteraction(FoodPlace item) {
-                //TODO
+            public void onListFoodPlaceInteraction(FoodPlace item, View view, int position) {
+                //expand and collapse item
+                final FoodPlace place = item;
+                LinearLayout detail = view.findViewById(R.id.FoodPlace_Item_Detail);
+                if (detail.getVisibility() != View.VISIBLE) {
+                    detail.setVisibility(View.VISIBLE);
+                    if (expandedView[0] != null) { //collapse other view
+                        expandedView[0].findViewById(R.id.FoodPlace_Item_Detail).setVisibility(View.GONE);
+                    }
+                    expandedView[0] = view;
+                    //set map
+                    MapView mapview = view.findViewById(R.id.FoodPlace_Map);
+                    if (mapview != null) {
+                        mapview.getMapAsync(new OnMapReadyCallback() {
+                            @Override
+                            public void onMapReady(GoogleMap googleMap) {
+                                googleMap.clear();
+                                LatLng position = new LatLng(Double.parseDouble(place.getLatitude()), Double.parseDouble(place.getLongitude()));
+                                googleMap.addMarker(
+                                        new MarkerOptions()
+                                                .position(position)
+                                                .title(place.getName())
+                                );
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+                            }
+                        });
+                    }
+                    mapview.onCreate(copy);
+                    mapview.onStart();
+
+                    mapview.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Uri gmmIntentUri = Uri.parse("geo:"+place.getLatitude()+","+place.getLongitude());
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            startActivity(mapIntent);
+                        }
+                    });
+                    //set voting button
+                    ImageButton dislike = view.findViewById(R.id.FoodPlace_Dislike_button);
+                    if(! dislike.hasOnClickListeners())
+                        dislike.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int id = place.getId();
+                            new FoodPlaceAsycn(mAdapter).execute(FoodPlaceAsycn.RATING, id+"", "-1");
+                        }
+                    });
+                    ImageButton like = view.findViewById(R.id.FoodPlace_Like_button);
+                    if(! like.hasOnClickListeners()){
+                        like.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                int id = place.getId();
+                                new FoodPlaceAsycn(mAdapter).execute(FoodPlaceAsycn.RATING, id+"", "1");
+                            }
+                        });
+                    }
+                }else {
+                    detail.setVisibility(View.GONE);
+
+                    expandedView[0] = null;
+                }
             }
         };
         mAdapter = new MyFoodPlaceRecyclerViewAdapter(mListener);
@@ -82,7 +160,7 @@ public class FoodPlaceFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy){
                 super.onScrolled(recyclerView, dx, dy);
-                if (!mAdapter.ifReachEnd()) {
+                if (!MyFoodPlaceRecyclerViewAdapter.ifReachEnd()) {
                     int totalItemCount = linearLayoutManager.getItemCount();
                     int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                     int visibleThreshold = 1;
@@ -98,12 +176,18 @@ public class FoodPlaceFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Log.d("Refrash", "call onRefresh");
                 SingletonDataHolder.getInstance().clearFoodPlaceList();
-                mAdapter.setIsReachEnd(false);
+                MyFoodPlaceRecyclerViewAdapter.setIsReachEnd(false);
                 pullList(1);
+                Log.d("Refresh", "end onRefresh");
             }
         });
 
+        //pull item from server after launch if no item in the list
+        if (SingletonDataHolder.getInstance().getFoodPlaceList().size() ==0){
+            pullList(1);
+        }
         return view;
     }
 
@@ -123,8 +207,10 @@ public class FoodPlaceFragment extends Fragment {
     private void pullList(int newPage){
         //TODO
         mPage = newPage;
+        Log.d("pull list", "start");
         new FoodPlaceAsycn(mAdapter).execute(FoodPlaceAsycn.GET_LIST, newPage+"");
         mSwipeRefreshLayout.setRefreshing(false);
+        Log.d("pull list", "end");
     }
 
     /**
@@ -139,6 +225,6 @@ public class FoodPlaceFragment extends Fragment {
      */
     public interface OnListFoodPlaceInteractionListener {
         // TODO: Update argument type and name
-        void onListFoodPlaceInteraction(FoodPlace item);
+        void onListFoodPlaceInteraction(FoodPlace item, View view, int position);
     }
 }

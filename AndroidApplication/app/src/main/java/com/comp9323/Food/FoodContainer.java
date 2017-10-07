@@ -88,6 +88,7 @@ public class FoodContainer extends Fragment{
         BottomNavigationView navigation = view.findViewById(R.id.food_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         this.mFoodContainer = (FrameLayout) view.findViewById(R.id.food_list_container);
+        openFoodDealAtFirstPlace();
         return view;
     }
     @Override
@@ -99,6 +100,15 @@ public class FoodContainer extends Fragment{
     public void onDetach() {
         super.onDetach();
     }
+
+    private void openFoodDealAtFirstPlace(){
+        FoodDealFragment newFragment = new FoodDealFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.food_list_container, newFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
 
     public interface OnFoodContainerInteractionListener {
         void onFragmentInteraction(Uri uri);
