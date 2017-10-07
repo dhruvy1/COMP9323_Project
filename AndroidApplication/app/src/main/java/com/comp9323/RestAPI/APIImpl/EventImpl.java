@@ -33,9 +33,7 @@ public class EventImpl {
                 for (EventBean e : events) {
                     SingletonDataHolder.getInstance().addEvent(e);
                 }
-//                SingletonDataHolder.getInstance().addEvents(events);
                 Log.d("REST CALL", "CALL SUCCESS!");
-                Log.d("EVENT DATA:", SingletonDataHolder.getInstance().getEvent(0).getName());
             }
 
             @Override
@@ -45,6 +43,15 @@ public class EventImpl {
                 call.cancel();
             }
         });
+    }
+
+    //TODO: filter lists by category
+    public static void filterEvents(String filter) {
+        List<EventBean> events = SingletonDataHolder.getInstance().getEvents();
+        List<EventBean> filteredEvents = new ArrayList<>();
+        for (EventBean e : events) {
+            if (true);
+        }
     }
 
     public void getEvent(int id) {
@@ -117,4 +124,5 @@ public class EventImpl {
             }
         });
     }
+
 }
