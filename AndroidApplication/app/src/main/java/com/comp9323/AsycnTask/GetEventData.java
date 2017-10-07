@@ -33,7 +33,7 @@ public class GetEventData extends AsyncTask<Integer, Void, Boolean> {
     protected Boolean doInBackground(Integer... integers) {
         Log.d("A", "Getting event data from server....");
         EventImpl.getEvents();
-        while(SingletonDataHolder.getInstance().getEvents() == null) {
+        while(SingletonDataHolder.getInstance().getEvents().isEmpty()) {
             try {
                 Thread.sleep(1000);
             } catch (Exception e) {}

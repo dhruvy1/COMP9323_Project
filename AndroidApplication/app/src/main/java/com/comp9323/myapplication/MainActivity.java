@@ -67,6 +67,10 @@ public class MainActivity extends AppCompatActivity implements FoodDealFragment.
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         this.mContentContainer = (FrameLayout) findViewById(R.id.content);
 
+        // Load up events on startup
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content, new EventFragment());
+        transaction.commit();
     }
 
     @Override

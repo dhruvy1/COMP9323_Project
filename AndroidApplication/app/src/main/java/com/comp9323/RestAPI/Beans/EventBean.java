@@ -249,8 +249,6 @@ public class EventBean {
             Date eDate = oDateFormat.parse(this.getEndDate());
             Date sTime = oTimeFormat.parse(this.getStartTime());
             Date eTime = oTimeFormat.parse(this.getEndTime());
-            String startTime = "";
-            String endTime = "";
 
             if (this.getStartDate().equals(this.getEndDate())) {
                 return (nDateFormat.format(sDate) + ", " + nTimeFormat.format(sTime)
