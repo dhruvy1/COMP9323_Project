@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">MyApplication</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="app_name">Campus Mate</string>
+    <string name="title_activity_main">Campus Mate</string>
     <string name="title_event">Event</string>
     <string name="title_food">Food</string>
     <string name="title_qna">Q&amp;A</string>
