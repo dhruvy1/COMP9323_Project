@@ -54,6 +54,24 @@ class EventCreateAPIView(CreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventCreateUpdateSerializer
 
+    # Custom POST method to check for already existing Event
+    def post(self, request, *args, **kwargs):
+
+        # Retrieve all Food deals from the DB
+        events = Event.objects.all()
+
+        for ev in events:
+            # If event in the request already exists in the DB
+            if request.data['facebook_id'] == ev.facebook_id:
+
+                # Return appropriate HTTP response
+                print(ev.facebook_id + ' Already exists')
+                content = {'Already exists': str(ev.facebook_id)}
+                return Response(content, status=status.HTTP_202_ACCEPTED)
+
+        # If event does not exist, add it to the DB
+        return self.create(request, *args, **kwargs)
+
 
 @permission_classes((AllowAny,))
 class EventUpdateAPIView(UpdateAPIView):
