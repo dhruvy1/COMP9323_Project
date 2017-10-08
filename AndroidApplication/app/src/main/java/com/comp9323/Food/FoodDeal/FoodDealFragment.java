@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.comp9323.AsycnTask.FoodDealAsycn;
-import com.comp9323.Food.FoodPlace.MyFoodPlaceRecyclerViewAdapter;
 import com.comp9323.RestAPI.Beans.FoodDeal;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
@@ -30,15 +29,15 @@ import com.comp9323.myapplication.R;
  */
 public class FoodDealFragment extends Fragment{
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+
     private int mColumnCount = 1;
     public static int mPage = 1;
 
     protected static OnListFooDealInteractionListener mListener;
     protected static MyFoodDealRecyclerViewAdapter mAdapter;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -47,7 +46,6 @@ public class FoodDealFragment extends Fragment{
     public FoodDealFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static FoodDealFragment newInstance(int columnCount) {
         FoodDealFragment fragment = new FoodDealFragment();
@@ -102,28 +100,25 @@ public class FoodDealFragment extends Fragment{
 
         // Set the adapter
         Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fooddeal_list);
+        RecyclerView recyclerView = view.findViewById(R.id.fooddeal_list);
         if (mColumnCount <= 1) {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        Log.d("FoodDealFragment", "size "+SingletonDataHolder.getInstance().getFoodDealList().size());
 
         recyclerView.setAdapter(mAdapter);
-        //set onloadListener for checking if list end
+
+        //set onLoadListener for checking if list end
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Log.d("if list end", ""+ MyFoodDealRecyclerViewAdapter.ifReachEnd());
-                if(!MyFoodDealRecyclerViewAdapter.ifReachEnd()) {
-                    int totalItemCount = linearLayoutManager.getItemCount();
-                    int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                    int visibleThreshold = 1;
-                    if (!mAdapter.ifLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                if(!MyFoodDealRecyclerViewAdapter.ifReachEnd() && !mAdapter.ifLoading()) {
+                    if (linearLayoutManager.getItemCount() <= (linearLayoutManager.findLastVisibleItemPosition() + 1)) {
                         mPage++;
+                        mAdapter.setIsLoading(true);
                         new FoodDealAsycn(mAdapter).execute(FoodDealAsycn.GET_LIST, mPage + "");
                     }
                 }
@@ -148,9 +143,6 @@ public class FoodDealFragment extends Fragment{
 
         return view;
     }
-    public void RatingFunction(String id, String rating){
-        new FoodDealAsycn(mAdapter).execute(FoodDealAsycn.RATING, id, rating);
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -164,9 +156,6 @@ public class FoodDealFragment extends Fragment{
         SingletonDataHolder.getInstance().clearFoodDealList();
     }
 
-    public void setListener(OnListFooDealInteractionListener listener){
-        mListener = listener;
-    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -178,7 +167,6 @@ public class FoodDealFragment extends Fragment{
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFooDealInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(FoodDeal item);
     }
 }
