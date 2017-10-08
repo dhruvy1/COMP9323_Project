@@ -135,6 +135,23 @@ class FoodPlaceCreateAPIView(CreateAPIView):
     queryset = FoodPlace.objects.all()
     serializer_class = FoodPlaceCreateUpdateSerializer
 
+    # Custom POST method to check for already existing Food Place
+    def post(self, request, *args, **kwargs):
+        # Retrieve all Food deals from the DB
+        foodplaces = FoodPlace.objects.all()
+
+        for fp in foodplaces:
+            # If Place name in the request already exists in the DB
+            if request.data['name'] == fp.name:
+                # Return appropriate HTTP response
+                print(fp.name + ' Already exists')
+                content = {'Already exists': str(fp.post_id)}
+                print(len(foodplaces))
+                return Response(content, status=status.HTTP_202_ACCEPTED)
+
+        # If name does not exist, add it to the DB
+        return self.create(request, *args, **kwargs)
+
 
 @permission_classes((AllowAny,))
 class FoodPlaceUpdateAPIView(UpdateAPIView):
