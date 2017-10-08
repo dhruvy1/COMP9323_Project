@@ -1,21 +1,16 @@
 package com.comp9323.Food.FoodDeal;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,15 +22,13 @@ import com.comp9323.myapplication.R;
 import com.comp9323.Food.FoodDeal.FoodDealFragment.OnListFooDealInteractionListener;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link FoodDeal} and makes a call to the
  * specified {@link OnListFooDealInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDealRecyclerViewAdapter.FoodDealViewHolder> {
 
@@ -43,6 +36,7 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
     private static boolean mIsLoading = false;
     private static boolean mIsReachEnd = false;
     private final OnListFooDealInteractionListener FoodDeal_Fragment_listener;
+    private final ThreadPoolExecutor mThreadPool = new ThreadPoolExecutor(1, 1, (long) 2, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
 //    private final int VIEW_TYPE_ITEM = 0;
 //    private final int VIEW_TYPE_LOADING = 1;
 
@@ -72,11 +66,21 @@ public class MyFoodDealRecyclerViewAdapter extends RecyclerView.Adapter<MyFoodDe
         holder.mTextView.setText(holder.mFoodDeal.getMessage());
         holder.mRating.setText((holder.mFoodDeal.getRating()));
         //Set pulled image
-        //TODO function is working, but it will take up lots of processing time and messed other Asycn 
-//        if (holder.mFoodDeal.getPhotoLink().length() > 0 ){
-//            //slow if first load
-//            new DownloadPhoto(holder.mImageView, FoodDealFragment.mAdapter).execute(holder.mFoodDeal.getPhotoLink());
-//        }
+        //TODO function is working, but it will take up lots of processing time and messed other Asycn
+        if (holder.mFoodDeal.getPhotoLink().length() > 0 ){
+            //slow if first load
+            mThreadPool.execute(
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            new DownloadPhoto(holder.mImageView, FoodDealFragment.mAdapter).execute(holder.mFoodDeal.getPhotoLink());
+                        }
+                    })
+            );
+         //   new DownloadPhoto(holder.mImageView, FoodDealFragment.mAdapter).execute(holder.mFoodDeal.getPhotoLink());
+        }else{
+           holder.mImageView.setImageBitmap(BitmapFactory.decodeResource(SingletonDataHolder.getInstance().getContext().getResources(), R.drawable.dealimg_placeholder) );
+        }
 
         //like and dislike button
         holder.mLikeButton.setOnClickListener(new View.OnClickListener() {
