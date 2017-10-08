@@ -1,6 +1,6 @@
 package com.comp9323.restclient.api;
 
-import com.comp9323.data.beans.DealListPackage;
+import com.comp9323.data.beans.FoodDealResponse;
 import com.comp9323.data.beans.FoodDeal;
 
 import retrofit2.Call;
@@ -23,7 +23,7 @@ public interface FoodDealAPI {
     Call<FoodDeal> getFoodDeal(@Path("id") int id);
 
     @GET("/api/food_deals/all/")
-    Call<DealListPackage> getFoodDeals(@Query("limit") int limit, @Query("offset") int offset);
+    Call<FoodDealResponse> getFoodDeals(@Query("limit") int limit, @Query("offset") int offset);
 
     @POST("/api/food_deals/")
     Call<FoodDeal> postFoodDeal(@Body FoodDeal foodDeal);

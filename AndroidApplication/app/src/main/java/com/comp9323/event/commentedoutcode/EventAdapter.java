@@ -1,4 +1,5 @@
-package com.comp9323.event;
+/**
+package com.comp9323.Events;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,21 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.comp9323.data.beans.Event;
-import com.comp9323.main.R;
+import com.comp9323.RestAPI.Beans.EventBean;
+import com.comp9323.myapplication.R;
 
 import java.util.List;
 
 /**
  * Created by timta on 15/09/2017.
- */
+ /
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    private List<Event> eventList;
+    private List<EventBean> eventList;
     private static MyClickListener myClickListener;
 
-    public EventAdapter(List<Event> eventList) {
+    public EventAdapter(List<EventBean> eventList) {
         this.eventList = eventList;
     }
 
@@ -31,13 +32,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     @Override
     public EventAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_event_item, parent, false);
+                .inflate(R.layout.event_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(EventAdapter.ViewHolder holder, int position) {
-        Event event = eventList.get(position);
+        EventBean event = eventList.get(position);
         holder.event_title.setText(event.getName());
         holder.event_loc.setText(event.getPlaceName() + event.getStreet());
         holder.event_start.setText(event.getStartTime());
@@ -53,9 +54,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            event_title = itemView.findViewById(R.id.event_item_name);
-            event_loc = itemView.findViewById(R.id.event_item_location);
-            event_start = itemView.findViewById(R.id.event_item_start);
+            event_title = itemView.findViewById(R.id.event_name);
+            event_loc = itemView.findViewById(R.id.event_location);
+            event_start = itemView.findViewById(R.id.event_start);
         }
     }
 
@@ -63,3 +64,4 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         void onItemClick(int position, View v);
     }
 }
+*/

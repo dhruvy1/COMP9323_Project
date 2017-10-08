@@ -1,8 +1,7 @@
 package com.comp9323.restclient.api;
 
 import com.comp9323.data.beans.Event;
-
-import java.util.List;
+import com.comp9323.data.beans.EventResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,21 +17,22 @@ import retrofit2.http.Path;
  */
 
 public interface EventAPI {
-    @GET("/api/events/{id}")
-    Call<Event> getEvent(@Path("id") String eventName);
 
-    @GET("/api/events/all/")
-    Call<List<Event>> getEvents();
+    @GET("events/{id}")
+    Call<Event> getEvent(@Path("id") int eventId);
 
-    @POST("/api/events/")
+    @GET("events/all/")
+    Call<EventResponse> getEvents();
+
+    @POST("events")
     Call<Event> postEvent(@Body Event event);
 
-    @DELETE("/api/events/{id}")
-    Call<Event> deleteEvent(@Path("id") String eventName);
+    @DELETE("events/{id}")
+    Call<Event> deleteEvent(@Path("id") int eventId);
 
-    @PATCH("/api/events/{id}")
-    Call<Event> patchEvent(@Path("id") String eventName, @Body Event event);
+    @PUT("events/{id}")
+    Call<Event> putEvent(@Path("id") int eventId, @Body Event event);
 
-    @PUT("/api/events/{id}")
-    Call<Event> putEvent(@Path("id") String eventName, @Body Event event);
+    @PATCH("events/{id}")
+    Call<Event> patchEvent(@Path("id") int eventId, @Body Event event);
 }

@@ -1,5 +1,6 @@
 package com.comp9323.food.fooddeal;
 
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -13,17 +14,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.comp9323.asynctask.DownloadPhotoAsyncTask;
 import com.comp9323.asynctask.FoodDealAsyncTask;
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodDeal;
 import com.comp9323.main.R;
 import com.comp9323.food.fooddeal.FoodDealFragment.Listener;
 
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.ViewHolder> {
 
     private static boolean isReachEnd = false;
     private static boolean isLoading = false;
     private final Listener foodDealFragmentListener;
+    private final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, (long) 2, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
 
     public FoodDealRvAdapter(Listener listener) {
         foodDealFragmentListener = listener;
@@ -43,11 +50,20 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
         holder.mRating.setText((holder.mFoodDeal.getRating()));
 
         //Set pulled image
-        //TODO function is working, but it will take up lots of processing time and messed other Asycn 
-//        if (holder.mFoodDeal.getPhotoLink().length() > 0 ){
-//            //slow if first load
-//            new downloadPhoto(holder.mImageView, FoodDealFragment.adapter).execute(holder.mFoodDeal.getPhotoLink());
-//        }
+        //TODO function is working, but it will take up lots of processing time and messed other Async
+        if (holder.mFoodDeal.getPhotoLink().length() > 0) {
+            //slow if first load
+            threadPool.execute(
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            new DownloadPhotoAsyncTask(holder.mImageView, FoodDealFragment.adapter).execute(holder.mFoodDeal.getPhotoLink());
+                        }
+                    })
+            );
+        } else {
+            holder.mImageView.setImageBitmap(BitmapFactory.decodeResource(DataHolder.getInstance().getContext().getResources(), R.drawable.food_deal_placeholder));
+        }
 
         //like and dislike button
         holder.mLikeButton.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +114,14 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
         isReachEnd = bool;
     }
 
+    public void setIsLoading(boolean isLoading) {
+        this.isLoading = isLoading;
+    }
+
+    public boolean ifLoading() {
+        return isLoading;
+    }
+
     private SpannableStringBuilder addIconAtBeginning(CharSequence s, int resId) {
         Drawable icon;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -109,14 +133,6 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
         SpannableStringBuilder sb = new SpannableStringBuilder().append("  ").append(s);
         sb.setSpan(new ImageSpan(icon), 0, 1, Spanned.SPAN_COMPOSING);
         return sb;
-    }
-
-    public void setIsLoading(boolean isLoading) {
-        this.isLoading = isLoading;
-    }
-
-    public boolean ifLoading() {
-        return isLoading;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

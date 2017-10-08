@@ -1,7 +1,7 @@
 package com.comp9323.restclient.api;
 
 import com.comp9323.data.beans.FoodPlace;
-import com.comp9323.data.beans.PlaceListPackage;
+import com.comp9323.data.beans.FoodPlaceResponse;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -23,7 +23,7 @@ public interface FoodPlaceAPI {
     Call<FoodPlace> getFoodPlace(@Path("id") int id);
 
     @GET("/api/food_places/all/")
-    Call<PlaceListPackage> getFoodPlaces(@Query("limit") int limit, @Query("offset") int offset);
+    Call<FoodPlaceResponse> getFoodPlaces(@Query("limit") int limit, @Query("offset") int offset);
 
     @POST("/api/food_places/")
     Call<FoodPlace> postFoodPlace(@Body FoodPlace foodPlace);

@@ -1,7 +1,14 @@
 package com.comp9323.data.beans;
 
+import android.util.Log;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by timta on 11/09/2017.
@@ -248,6 +255,31 @@ public class Event {
 
     public void setSourceUrl(String sourceUrl) {
         this.sourceUrl = sourceUrl;
+    }
+
+    public String getEventTime() {
+        DateFormat oTimeFormat = new SimpleDateFormat("HH:mm");
+        DateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat nTimeFormat = new SimpleDateFormat("hh:mma");
+        DateFormat nDateFormat = new SimpleDateFormat("MMM d");
+
+        try {
+            Date sDate = oDateFormat.parse(this.getStartDate());
+            Date eDate = oDateFormat.parse(this.getEndDate());
+            Date sTime = oTimeFormat.parse(this.getStartTime());
+            Date eTime = oTimeFormat.parse(this.getEndTime());
+
+            if (this.getStartDate().equals(this.getEndDate())) {
+                return (nDateFormat.format(sDate) + ", " + nTimeFormat.format(sTime)
+                        + " - " + nTimeFormat.format(eTime));
+            } else {
+                return (nDateFormat.format(sDate) + ", " + nTimeFormat.format(sTime)
+                        + " - " + nDateFormat.format(eDate) + ", " + nTimeFormat.format(eTime));
+            }
+        } catch (ParseException e) {
+            Log.d("Event Date Convert", "Parse Failed");
+            return "";
+        }
     }
 
 }

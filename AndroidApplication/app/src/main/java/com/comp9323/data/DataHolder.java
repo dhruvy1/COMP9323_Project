@@ -1,13 +1,12 @@
 package com.comp9323.data;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.comp9323.data.beans.Event;
 import com.comp9323.data.beans.FoodDeal;
 import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.data.beans.User;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Vector;
 
@@ -19,40 +18,39 @@ import java.util.Vector;
 public class DataHolder {
 
     private static final DataHolder DH = new DataHolder();
-    private User userSelf;
+
+    private User user;
     private Context context;
-    //Map<String, WeakReference<Object>> or Vector<WeakReference<Object>> objectData; //using "weakreference" allow destroy data when quit activities
-    //vector<Object> ObjectData;
-    //remember to initialize object list/map
-    private List<WeakReference<User>> userList;
     private List<FoodDeal> foodDealList;
-    //    private Map<Integer, FoodDeal> foodDealMap;
     private final Vector<FoodPlace> foodPlaceList;
-//    private final HashMap<Integer, FoodPlace> foodPlaceMap;
+    private List<Event> events;
+    private boolean eventResponse;
 
     private DataHolder() {
-        userList = new Vector<>();
         foodDealList = new Vector<>();
-        //   foodDealMap = new HashMap<>();
         foodPlaceList = new Vector<>();
-//        foodPlaceMap = new HashMap<>();
-        //...
+        events = new Vector<>();
+        eventResponse = false;
     }
 
     public static DataHolder getInstance() {
         return DH;
     }
 
-    //self
-    public User getUserSelf() {
-        return this.userSelf;
+    /**
+     * Self
+     */
+    public User getUser() {
+        return this.user;
     }
 
     public void setUser(User user) {
-        this.userSelf = user;
+        this.user = user;
     }
 
-    //base comtext
+    /**
+     * base context
+     */
     public Context getContext() {
         return context;
     }
@@ -61,43 +59,9 @@ public class DataHolder {
         this.context = context;
     }
 
-    //User List
-    public WeakReference<User> getUser(int Index) {
-        return userList.get(Index);
-    }
-
-    public List<WeakReference<User>> getUserListRef() {
-        return userList;
-    }
-
-    public List<User> getUserList() {
-        List<User> temp = new Vector<>();
-        for (WeakReference<User> ref : userList) {
-            temp.add(ref.get());
-        }
-        return temp;
-    }
-
-    public void addUser(User user) {
-        userList.add(new WeakReference<>(user));
-    }
-
-    public void addUsers(List<User> users) {
-        for (User user : users) {
-            userList.add(new WeakReference<>(user));
-        }
-    }
-
-    public void removeUser(int Index) {
-        userList.remove(Index);
-    }
-
-    public void clearUserList() {
-        userList.clear();
-    }
-
-
-    //FOOD DEALS
+    /**
+     * FOOD DEALS
+     */
     public FoodDeal getFoodDeal(int Index) {
         return foodDealList.get(Index);
     }
@@ -116,15 +80,12 @@ public class DataHolder {
 
     public void addFoodDeal(FoodDeal fd) {
         foodDealList.add(fd);
-//        foodDealMap.put(fd.getId(),fd);
     }
 
     public void findAndReplaceFoodDeal(FoodDeal fd) {
         for (int i = 0; i < foodDealList.size(); i++) {
             if (foodDealList.get(i).getId() == fd.getId()) {
                 foodDealList.set(i, fd);
-//                foodDealMap.remove(i);
-//                foodDealMap.put(i,fd);
             }
         }
     }
@@ -136,13 +97,11 @@ public class DataHolder {
     }
 
     public void removeFoodDeal(int Index) {
-        FoodDeal temp = foodDealList.remove(Index);
-//        foodDealMap.remove(Index);
+        foodDealList.remove(Index);
     }
 
     public void clearFoodDealList() {
         foodDealList.clear();
-//        foodDealMap.clear();
     }
 
     public void updateFoodDealRating(FoodDeal newfd) {
@@ -150,11 +109,12 @@ public class DataHolder {
             if (foodDealList.get(i).getId() != newfd.getId())
                 continue;
             foodDealList.get(i).setRating(newfd.getRating());
-//            foodDealMap.get(i).setRating(newfd.getRating());
         }
     }
 
-    //FoodPlace
+    /**
+     * FoodPlace
+     */
     public FoodPlace getFoodPlace(int Index) {
         return foodPlaceList.get(Index);
     }
@@ -171,8 +131,6 @@ public class DataHolder {
         for (int i = 0; i < foodPlaceList.size(); i++) {
             if (foodPlaceList.get(i).getId() == fp.getId()) {
                 foodPlaceList.set(i, fp);
-//                foodPlaceMap.remove(i);
-//                foodPlaceMap.put(i,fp);
             }
         }
     }
@@ -182,7 +140,6 @@ public class DataHolder {
             if (foodPlaceList.get(i).getId() != newfp.getId())
                 continue;
             foodPlaceList.get(i).setRating(newfp.getRating());
-//            foodPlaceMap.get(i).setRating(newfp.getRating());
         }
     }
 
@@ -192,7 +149,6 @@ public class DataHolder {
 
     public void addFoodPlace(FoodPlace fp) {
         foodPlaceList.add(fp);
-//        foodPlaceMap.put(fp.getId(),fp);
     }
 
     public void addFoodPlaces(List<FoodPlace> fps) {
@@ -202,12 +158,46 @@ public class DataHolder {
     }
 
     public void removeFoodPlacel(int Index) {
-        FoodPlace temp = foodPlaceList.remove(Index);
-//        foodPlaceMap.remove(Index);
+        foodPlaceList.remove(Index);
     }
 
     public void clearFoodPlaceList() {
         foodPlaceList.clear();
-//        foodPlaceMap.clear();
+    }
+
+
+    /**
+     * Event functions
+     */
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public Event getEvent(int position) {
+        return events.get(position);
+    }
+
+    public void addEvent(Event event) {
+        events.add(event);
+    }
+
+    public void addEvents(List<Event> events) {
+        events.addAll(events);
+    }
+
+    public void removeEvent(int position) {
+        events.remove(position);
+    }
+
+    public void clearEvents() {
+        events.clear();
+    }
+
+    public void saveEventResponse(boolean success) {
+        eventResponse = success;
+    }
+
+    public boolean checkEventResponse(boolean success) {
+        return eventResponse = success;
     }
 }

@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
             SharedPreferences sp = getSharedPreferences(getString(R.string.user_pref), Context.MODE_PRIVATE);
             DataHolder.getInstance().setUser(new User(sp.getInt("id", -1), sp.getString("username", null), sp.getString("uuid", null)));
 
-            String welcome = "Welcome " + DataHolder.getInstance().getUserSelf().getUsername() + "!";
+            String welcome = "Welcome " + DataHolder.getInstance().getUser().getUsername() + "!";
             Toast.makeText(DataHolder.getInstance().getContext(), welcome, Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(this, MainActivity.class);

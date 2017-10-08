@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.comp9323.food.fooddeal.FoodDealRvAdapter;
 import com.comp9323.data.DataHolder;
-import com.comp9323.data.beans.DealListPackage;
+import com.comp9323.data.beans.FoodDealResponse;
 import com.comp9323.data.beans.FoodDeal;
 import com.comp9323.restclient.RestClient;
 
@@ -126,11 +126,11 @@ public class FoodDealAPIImpl {
         Log.v("Rest Call", "Start Create Food Deal");
         final boolean[] ifSuccess = {false};
         final boolean[] ifNdone = {true};
-        api.getFoodDeals(3, (page - 1) * 3).enqueue(new Callback<DealListPackage>() {
+        api.getFoodDeals(3, (page - 1) * 3).enqueue(new Callback<FoodDealResponse>() {
             @Override
-            public void onResponse(Call<DealListPackage> call, Response<DealListPackage> response) {
+            public void onResponse(Call<FoodDealResponse> call, Response<FoodDealResponse> response) {
                 Log.d("Rest Call", "Is response success? " + response.isSuccessful());
-                DealListPackage newPackage = response.body();
+                FoodDealResponse newPackage = response.body();
                 if (newPackage != null) {
                     if (newPackage.getResults().size() != 0)
                         ifSuccess[0] = response.isSuccessful();
@@ -147,7 +147,7 @@ public class FoodDealAPIImpl {
             }
 
             @Override
-            public void onFailure(Call<DealListPackage> call, Throwable t) {
+            public void onFailure(Call<FoodDealResponse> call, Throwable t) {
                 Log.d("Rest Call", "~~FAILED~~");
                 ifNdone[0] = false;
                 call.cancel();

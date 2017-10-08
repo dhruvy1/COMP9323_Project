@@ -6,7 +6,7 @@ import java.util.Vector;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PlaceListPackage implements Serializable {
+public class FoodPlaceResponse implements Serializable {
     private final static long serialVersionUID = -3411571719605032865L;
 
     @SerializedName("count")
@@ -25,10 +25,10 @@ public class PlaceListPackage implements Serializable {
     @Expose
     private Vector<FoodPlace> results = null;
 
-    public PlaceListPackage() {
+    public FoodPlaceResponse() {
     }
 
-    public PlaceListPackage(Integer count, String nextUrl, String previous, Vector<FoodPlace> results) {
+    public FoodPlaceResponse(Integer count, String nextUrl, String previous, Vector<FoodPlace> results) {
         this.count = count;
         this.nextUrl = nextUrl;
         this.previousUrl = previous;
@@ -43,7 +43,7 @@ public class PlaceListPackage implements Serializable {
         this.count = count;
     }
 
-    public PlaceListPackage withCount(Integer count) {
+    public FoodPlaceResponse withCount(Integer count) {
         this.count = count;
         return this;
     }
@@ -56,7 +56,7 @@ public class PlaceListPackage implements Serializable {
         this.nextUrl = nextUrl;
     }
 
-    public PlaceListPackage withNextUrl(String nextUrl) {
+    public FoodPlaceResponse withNextUrl(String nextUrl) {
         this.nextUrl = nextUrl;
         return this;
     }
@@ -69,7 +69,7 @@ public class PlaceListPackage implements Serializable {
         this.previousUrl = previousUrl;
     }
 
-    public PlaceListPackage withPrevious(String previous) {
+    public FoodPlaceResponse withPrevious(String previous) {
         this.previousUrl = previous;
         return this;
     }
@@ -82,7 +82,7 @@ public class PlaceListPackage implements Serializable {
         this.results = results;
     }
 
-    public PlaceListPackage withResults(Vector<FoodPlace> results) {
+    public FoodPlaceResponse withResults(Vector<FoodPlace> results) {
         this.results = results;
         return this;
     }

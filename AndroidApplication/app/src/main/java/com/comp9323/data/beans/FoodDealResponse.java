@@ -6,7 +6,7 @@ import java.util.Vector;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DealListPackage implements Serializable {
+public class FoodDealResponse implements Serializable {
     private final static long serialVersionUID = 8664749458471685386L;
 
     @SerializedName("count")
@@ -25,10 +25,10 @@ public class DealListPackage implements Serializable {
     @Expose
     private Vector<FoodDeal> results = null;
 
-    public DealListPackage() {
+    public FoodDealResponse() {
     }
 
-    public DealListPackage(Integer count, String nextUrl, String previousUrl, Vector<FoodDeal> results) {
+    public FoodDealResponse(Integer count, String nextUrl, String previousUrl, Vector<FoodDeal> results) {
         this.count = count;
         this.nextUrl = nextUrl;
         this.previousUrl = previousUrl;
@@ -43,7 +43,7 @@ public class DealListPackage implements Serializable {
         this.count = count;
     }
 
-    public DealListPackage withCount(Integer count) {
+    public FoodDealResponse withCount(Integer count) {
         this.count = count;
         return this;
     }
@@ -56,7 +56,7 @@ public class DealListPackage implements Serializable {
         this.nextUrl = nextUrl;
     }
 
-    public DealListPackage withNextUrl(String next) {
+    public FoodDealResponse withNextUrl(String next) {
         this.nextUrl = nextUrl;
         return this;
     }
@@ -69,7 +69,7 @@ public class DealListPackage implements Serializable {
         this.previousUrl = previousUrl;
     }
 
-    public DealListPackage withPreviousUrl(String previous) {
+    public FoodDealResponse withPreviousUrl(String previous) {
         this.previousUrl = previousUrl;
         return this;
     }
@@ -82,7 +82,7 @@ public class DealListPackage implements Serializable {
         this.results = results;
     }
 
-    public DealListPackage withResults(Vector<FoodDeal> results) {
+    public FoodDealResponse withResults(Vector<FoodDeal> results) {
         this.results = results;
         return this;
     }

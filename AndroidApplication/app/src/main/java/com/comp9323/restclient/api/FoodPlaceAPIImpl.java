@@ -5,7 +5,7 @@ import android.util.Log;
 import com.comp9323.food.foodplace.FoodPlaceRvAdapter;
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodPlace;
-import com.comp9323.data.beans.PlaceListPackage;
+import com.comp9323.data.beans.FoodPlaceResponse;
 import com.comp9323.restclient.RestClient;
 
 import retrofit2.Call;
@@ -105,11 +105,11 @@ public class FoodPlaceAPIImpl {
         Log.v("Rest Call", "Start get Food place");
         final boolean[] ifSuccess = {false};
         final boolean[] ifNdone = {true};
-        api.getFoodPlaces(20, (page - 1) * 20).enqueue(new Callback<PlaceListPackage>() {
+        api.getFoodPlaces(20, (page - 1) * 20).enqueue(new Callback<FoodPlaceResponse>() {
             @Override
-            public void onResponse(Call<PlaceListPackage> call, Response<PlaceListPackage> response) {
+            public void onResponse(Call<FoodPlaceResponse> call, Response<FoodPlaceResponse> response) {
                 Log.d("Rest Call", "Is response success? " + response.isSuccessful());
-                PlaceListPackage newPackage = response.body();
+                FoodPlaceResponse newPackage = response.body();
                 if (newPackage != null) {
                     if (newPackage.getResults().size() != 0)
                         ifSuccess[0] = response.isSuccessful();
@@ -125,7 +125,7 @@ public class FoodPlaceAPIImpl {
             }
 
             @Override
-            public void onFailure(Call<PlaceListPackage> call, Throwable t) {
+            public void onFailure(Call<FoodPlaceResponse> call, Throwable t) {
                 Log.d("Rest Fail", "" + t.getStackTrace().toString());
                 Log.d("Rest Call", "~~FAILED~~");
                 ifNdone[0] = false;

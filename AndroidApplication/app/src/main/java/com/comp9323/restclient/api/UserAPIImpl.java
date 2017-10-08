@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import java.util.HashMap;
-import java.util.UUID;
-import java.util.Vector;
-
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.User;
 import com.comp9323.main.R;
 import com.comp9323.restclient.RestClient;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,12 +25,12 @@ public class UserAPIImpl {
     }
 
     public static boolean deleteUser() {
-        return deleteUser(DataHolder.getInstance().getUserSelf().getId());
+        return deleteUser(DataHolder.getInstance().getUser().getId());
     }
 
     public static boolean patchUser(HashMap<String, String> couples) {
         //create new user template
-        int Id = DataHolder.getInstance().getUserSelf().getId();
+        int Id = DataHolder.getInstance().getUser().getId();
         User templateUser = new User();
         for (String item : couples.keySet()) {
             String value = couples.get(item);
@@ -47,7 +46,7 @@ public class UserAPIImpl {
 
     public static boolean putUser(HashMap<String, String> couples) {
         //load user
-        User userSelf = DataHolder.getInstance().getUserSelf();
+        User userSelf = DataHolder.getInstance().getUser();
         //set fields
         for (String item : couples.keySet()) {
             String value = couples.get(item);
@@ -61,57 +60,55 @@ public class UserAPIImpl {
         return putUser(userSelf.getId(), userSelf);
     }
 
-    public static boolean getUser(int id) {
-        Log.v("Rest Call", "Start Get User");
-        final boolean[] ifSuccess = {false};
-        api.getUser(id).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
-                User user = response.body();
-                Log.d("Rest Debug print", user.toString());
-                DataHolder.getInstance().addUser(user);//TODO Should i store it?
-                ifSuccess[0] = true;
-                Log.v("Rest Call", "End Get User");
-            }
+//    public static boolean getUser(int id) {
+//        Log.v("Rest Call", "Start Get User");
+//        final boolean[] ifSuccess = {false};
+//        apiInterface.getUser(id).enqueue(new Callback<User>() {
+//            @Override
+//            public void onResponse(Call<User> call, Response<User> response) {
+//                Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
+//                User user = response.body();
+//                Log.d("Rest Debug print", user.toString());
+//                SingletonDataHolder.getInstance().addUser(user); // TODO need to store it!
+//                ifSuccess[0] = true;
+//                Log.v("Rest Call", "End Get User");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<User> call, Throwable t) {
+//                Log.d("REST CALL", "~~FAILED~~");
+//                call.cancel();
+//            }
+//        });
+//        return ifSuccess[0];
+//    }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.d("REST CALL", "~~FAILED~~");
-                call.cancel();
-            }
-        });
-
-        return ifSuccess[0];
-    }
-
-    public static boolean getUsers() {
-        Log.v("Rest Call", "Start Load All User");
-        final boolean[] ifSuccess = {false};
-        api.getUsers().enqueue(new Callback<Vector<User>>() {
-            @Override
-            public void onResponse(Call<Vector<User>> call, Response<Vector<User>> response) {
-                Log.d("Rest Call", "Is response success? " + response.isSuccessful());
-                Vector<User> users = response.body();
-                if (users != null) {
-                    DataHolder.getInstance().addUsers(users);
-                    ifSuccess[0] = true;
-                    for (User u : users) {
-                        Log.d("Rest Debug Print", u.toString());
-                    }
-                }
-                Log.v("Rest Call", "End get User list");
-            }
-
-            @Override
-            public void onFailure(Call<Vector<User>> call, Throwable t) {
-                Log.d("Rest Call", "~~FAILED~~");
-                call.cancel();
-            }
-        });
-
-        return ifSuccess[0];
-    }
+//    public static boolean getUsers() {
+//        Log.v("Rest Call", "Start Load All User");
+//        final boolean[] ifSuccess = {false};
+//        apiInterface.getUsers().enqueue(new Callback<Vector<User>>() {
+//            @Override
+//            public void onResponse(Call<Vector<User>> call, Response<Vector<User>> response) {
+//                Log.d("Rest Call", "Is response success? " + response.isSuccessful());
+//                Vector<User> users = response.body();
+//                if (users != null) {
+//                    SingletonDataHolder.getInstance().addUsers(users);
+//                    ifSuccess[0] = true;
+//                    for (User u : users) {
+//                        Log.d("Rest Debug Print", u.toString());
+//                    }
+//                }
+//                Log.v("Rest Call", "End get User list");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Vector<User>> call, Throwable t) {
+//                Log.d("Rest Call", "~~FAILED~~");
+//                call.cancel();
+//            }
+//        });
+//        return ifSuccess[0];
+//    }
 
     private static boolean postUser(User user) {
         //final DataHolder DH = DataHolder.getInstance();
@@ -150,7 +147,7 @@ public class UserAPIImpl {
             Log.i("Waiting", "REST resposne is not run yet");
         }
         Log.v("Rest Call Debug", "End Create User, committing:" + ifSuccess[0]);
-        Log.v("Rest Call Debug", "username:" + DataHolder.getInstance().getUserSelf().getUsername());
+        Log.v("Rest Call Debug", "username:" + DataHolder.getInstance().getUser().getUsername());
 
         return ifSuccess[0];
     }

@@ -28,7 +28,7 @@ public class UserAsyncTask extends AsyncTask<String, Void, Boolean> {
         Intent intent = null;
         if (bool) {
             Log.d("A*", "end create user");
-            CharSequence welcome = "Welcome " + DataHolder.getInstance().getUserSelf().getUsername() + "!";
+            CharSequence welcome = "Welcome " + DataHolder.getInstance().getUser().getUsername() + "!";
             Toast toast = Toast.makeText(DataHolder.getInstance().getContext(), welcome, Toast.LENGTH_SHORT);
             toast.show();
             intent = new Intent(DataHolder.getInstance().getContext(), MainActivity.class);

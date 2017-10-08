@@ -12,13 +12,7 @@
         android:id="@+id/main_placeholder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <ListView
-            android:id="@+id/main_event_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+        android:layout_weight="1"/>
 
 
     <android.support.design.widget.BottomNavigationView

@@ -62,7 +62,8 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                app:srcCompat="@drawable/food_deal_placeholder" />
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/place_holder" />
 
             <TextView
                 android:id="@+id/food_deal_name"
@@ -72,9 +73,5 @@
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textSize="18sp" />
         </LinearLayout>
-
-
     </LinearLayout>
-
-
 </FrameLayout>
