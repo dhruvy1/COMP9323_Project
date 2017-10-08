@@ -1,15 +1,22 @@
 package com.comp9323.Events;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.comp9323.Events.EventFragment.OnListFragmentInteractionListener;
 import com.comp9323.RestAPI.Beans.EventBean;
 import com.comp9323.RestAPI.DataHolder.SingletonDataHolder;
 import com.comp9323.myapplication.R;
+
+import java.io.InputStream;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link EventBean} and makes a call to the
@@ -44,6 +51,7 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
         holder.mEventLocationView.setText(holder.mItem.getPlaceName() + ", " + holder.mItem.getStreet());
         holder.mEventTimeView.setText(holder.mItem.getEventTime());
         holder.mEventDescription.setText(holder.mItem.getDescription());
+        new DownloadImageTask(holder.mEventImage, this).execute(holder.mItem.getSourceUrl());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +76,7 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
         public final TextView mEventLocationView;
         public final TextView mEventTimeView;
         public final TextView mEventDescription;
+        public final ImageView mEventImage;
         public EventBean mItem;
 
         public ViewHolder(View view) {
@@ -77,11 +86,41 @@ public class MyEventRecyclerViewAdapter extends RecyclerView.Adapter<MyEventRecy
             mEventLocationView = view.findViewById(R.id.event_location);
             mEventTimeView = view.findViewById(R.id.event_timeframe);
             mEventDescription = view.findViewById(R.id.event_description);
+            mEventImage = view.findViewById(R.id.event_photo);
         }
 
         @Override
         public String toString() {
             return super.toString() + " '" + mEventLocationView.getText() + "'";
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+        MyEventRecyclerViewAdapter mlistener;
+
+        public DownloadImageTask(ImageView imageView, MyEventRecyclerViewAdapter listener) {
+            bmImage = imageView;
+            mlistener = listener;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+                //mIcon11 = Bitmap.createScaledBitmap(mIcon11, 120, 120, false);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            mlistener.notifyDataSetChanged();
         }
     }
 }
