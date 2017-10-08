@@ -145,7 +145,7 @@ class FoodPlaceCreateAPIView(CreateAPIView):
             if request.data['name'] == fp.name:
                 # Return appropriate HTTP response
                 print(fp.name + ' Already exists')
-                content = {'Already exists': str(fp.post_id)}
+                content = {'Already exists': str(fp.name)}
                 print(len(foodplaces))
                 return Response(content, status=status.HTTP_202_ACCEPTED)
 
