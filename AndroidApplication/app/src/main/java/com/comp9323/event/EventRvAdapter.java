@@ -55,7 +55,6 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        //return mValues.size();
         return DataHolder.getInstance().getEvents().size();
     }
 
@@ -76,11 +75,6 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
             mEventTimeView = view.findViewById(R.id.event_time_frame);
             mEventDescription = view.findViewById(R.id.event_description);
             mEventImage = view.findViewById(R.id.event_photo);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mEventLocationView.getText() + "'";
         }
     }
 

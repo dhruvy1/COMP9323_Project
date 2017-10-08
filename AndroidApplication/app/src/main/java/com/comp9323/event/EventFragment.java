@@ -54,11 +54,6 @@ public class EventFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         DataHolder.getInstance().clearEvents();
