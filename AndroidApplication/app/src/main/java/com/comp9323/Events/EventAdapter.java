@@ -1,19 +1,20 @@
-package com.comp9323.myapplication;
+/**
+package com.comp9323.Events;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.comp9323.RestAPI.Beans.EventBean;
+import com.comp9323.myapplication.R;
 
 import java.util.List;
 
 /**
  * Created by timta on 15/09/2017.
- */
+ /
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
@@ -63,3 +64,4 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         void onItemClick(int position, View v);
     }
 }
+*/

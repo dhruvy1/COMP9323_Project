@@ -7,50 +7,24 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.comp9323.AnQ.QnAWebView;
 import com.comp9323.Food.FoodContainer;
-import com.comp9323.Food.FoodDeal.FoodDealFragment;
-import com.comp9323.Food.FoodPlace.FoodPlaceFragment;
-import com.comp9323.RestAPI.APIInterface.EventAPI;
-import com.comp9323.RestAPI.APIInterface.RestClient;
-import com.comp9323.RestAPI.Beans.EventBean;
-import com.comp9323.RestAPI.Beans.FoodDeal;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
+import com.comp9323.Events.EventFragment;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity{
 
     public static final String USR_PERF = "APP_USR_INFO";
-    private EventAPI eventAPI;
     private ListView mList;
     public enum Page{ EVENT,DEAL, PLACE, QNA };
     //determine which page is user current is
     public static final Page[] CURRENT_PAGE = {Page.EVENT};
-    public static final OnMapReadyCallback mOnMapReadyCallBack= new OnMapReadyCallback(){
 
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-            if(CURRENT_PAGE[0] == Page.PLACE){
-
-            }
-        }
-    };
     private FrameLayout mContentContainer;
-    //private RecyclerView mList;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -63,22 +37,12 @@ public class MainActivity extends AppCompatActivity{
                     //set user current page
                     CURRENT_PAGE[0] = Page.EVENT;
 
-                    mList = (ListView) findViewById(R.id.listview);
-                    mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                            EventBean event = (EventBean) adapterView.getItemAtPosition(i);
-
-                            Toast clicked = Toast.makeText(getApplicationContext(), "Item selected " + event.getName(), Toast.LENGTH_LONG);
-                            clicked.show();
-
-                            //EventItemFragment eventPage = new EventItemFragment();
-                    }
-                    });
-
-                    eventAPI.getEvents().enqueue(eventsCallback);
+                    EventFragment eventFragment = new EventFragment();
+                    FragmentTransaction eventTransaction = getSupportFragmentManager().beginTransaction();
+                    eventTransaction.replace(R.id.content, eventFragment);
+                    eventTransaction.addToBackStack(null).commit();
                     return true;
+
                 case R.id.navigation_food:
                     //set user current page
                     CURRENT_PAGE[0] = Page.DEAL;
@@ -117,42 +81,13 @@ public class MainActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_main);
 
-        createEventAPI();
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         this.mContentContainer = (FrameLayout) findViewById(R.id.content);
 
+        // Load up events on startup
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content, new EventFragment());
+        transaction.commit();
     }
-
-    private void createEventAPI() {
-        eventAPI = RestClient.getClient().create(EventAPI.class);
-    }
-
-    Callback<List<EventBean>> eventsCallback = new Callback<List<EventBean>>() {
-        @Override
-        public void onResponse(Call<List<EventBean>> call, Response<List<EventBean>> response) {
-            if (response.isSuccessful()) {
-                ArrayList<EventBean> events = (ArrayList) response.body();
-/**
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                mList.setLayoutManager(layoutManager);
-
-                RecyclerView.Adapter mAdapter = new EventAdapter(events);
-
-                mList.setAdapter(mAdapter);
-**/
-                EventArrayAdapter apiArrayAdapter = new EventArrayAdapter(getApplicationContext(), 0, events);
-                mList.setAdapter(apiArrayAdapter);
-
-            } else {
-                Log.d("EventsCallback", "Code: " + response.code() + " Message: " + response.message());
-            }
-        }
-
-        @Override
-        public void onFailure(Call<List<EventBean>> call, Throwable t) {
-            Log.d("Error",t.getMessage());
-        }
-    };
 }

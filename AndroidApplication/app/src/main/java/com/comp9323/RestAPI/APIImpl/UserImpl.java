@@ -64,55 +64,55 @@ public class UserImpl {
 
     }
 
-    public static boolean getUsers() {
-        Log.v("Rest Call", "Start Load All User");
-        final boolean[] ifSuccess = {false};
-        apiInterface.getUsers().enqueue(new Callback<Vector<User>>() {
-            @Override
-            public void onResponse(Call<Vector<User>> call, Response<Vector<User>> response) {
-                Log.d("Rest Call", "Is response success? " + response.isSuccessful());
-                Vector<User> users = response.body();
-                if (users != null) {
-                    SingletonDataHolder.getInstance().addUsers(users);
-                    ifSuccess[0] = true;
-                    for (User u : users) {
-                        Log.d("Rest Debug Print", u.toString());
-                    }
-                }
-                Log.v("Rest Call", "End get User list");
-            }
+//    public static boolean getUsers() {
+//        Log.v("Rest Call", "Start Load All User");
+//        final boolean[] ifSuccess = {false};
+//        apiInterface.getUsers().enqueue(new Callback<Vector<User>>() {
+//            @Override
+//            public void onResponse(Call<Vector<User>> call, Response<Vector<User>> response) {
+//                Log.d("Rest Call", "Is response success? " + response.isSuccessful());
+//                Vector<User> users = response.body();
+//                if (users != null) {
+//                    SingletonDataHolder.getInstance().addUsers(users);
+//                    ifSuccess[0] = true;
+//                    for (User u : users) {
+//                        Log.d("Rest Debug Print", u.toString());
+//                    }
+//                }
+//                Log.v("Rest Call", "End get User list");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Vector<User>> call, Throwable t) {
+//                Log.d("Rest Call", "~~FAILED~~");
+//                call.cancel();
+//            }
+//        });
+//        return ifSuccess[0];
+//    }
 
-            @Override
-            public void onFailure(Call<Vector<User>> call, Throwable t) {
-                Log.d("Rest Call", "~~FAILED~~");
-                call.cancel();
-            }
-        });
-        return ifSuccess[0];
-    }
-
-    public static boolean getUser(int id) {
-        Log.v("Rest Call", "Start Get User");
-        final boolean[] ifSuccess = {false};
-        apiInterface.getUser(id).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
-                User user = response.body();
-                Log.d("Rest Debug print", user.toString());
-                SingletonDataHolder.getInstance().addUser(user);//TODO Should i store it?
-                ifSuccess[0] = true;
-                Log.v("Rest Call", "End Get User");
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.d("REST CALL", "~~FAILED~~");
-                call.cancel();
-            }
-        });
-        return ifSuccess[0];
-    }
+//    public static boolean getUser(int id) {
+//        Log.v("Rest Call", "Start Get User");
+//        final boolean[] ifSuccess = {false};
+//        apiInterface.getUser(id).enqueue(new Callback<User>() {
+//            @Override
+//            public void onResponse(Call<User> call, Response<User> response) {
+//                Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
+//                User user = response.body();
+//                Log.d("Rest Debug print", user.toString());
+//                SingletonDataHolder.getInstance().addUser(user);//TODO Should i store it?
+//                ifSuccess[0] = true;
+//                Log.v("Rest Call", "End Get User");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<User> call, Throwable t) {
+//                Log.d("REST CALL", "~~FAILED~~");
+//                call.cancel();
+//            }
+//        });
+//        return ifSuccess[0];
+//    }
 
     private static boolean CreateUser(User user) {
         //final SingletonDataHolder DH = SingletonDataHolder.getInstance();
