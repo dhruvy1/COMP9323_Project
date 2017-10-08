@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cardview"
+        android:id="@+id/event_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -40,7 +40,7 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/location_pin"
+                    android:id="@+id/event_location_pin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_name"
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_name"
                     android:layout_margin="5dp"
-                    android:layout_toRightOf="@+id/location_pin"
+                    android:layout_toRightOf="@+id/event_location_pin"
                     android:textAppearance="?attr/textAppearanceListItem"
                     android:textSize="12sp" />
 
@@ -70,13 +70,12 @@
                     android:src="@drawable/calendar" />
 
                 <TextView
-                    android:id="@+id/event_timeframe"
+                    android:id="@+id/event_time_frame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_location"
                     android:layout_margin="5dp"
                     android:layout_toRightOf="@+id/calendar_icon" />
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -88,7 +87,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/description_label"
+                    android:id="@+id/event_description_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -100,13 +99,9 @@
                     android:id="@+id/event_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/description_label"
+                    android:layout_below="@+id/event_description_label"
                     android:layout_margin="5dp" />
-
             </RelativeLayout>
-
         </RelativeLayout>
-
     </android.support.v7.widget.CardView>
-
 </LinearLayout>

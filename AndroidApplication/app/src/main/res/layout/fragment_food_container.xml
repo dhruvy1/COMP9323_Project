@@ -5,15 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.comp9323.Food.FoodContainer">
+    tools:context="com.comp9323.food.FoodContainer">
 
     <FrameLayout
-        android:id="@+id/food_list_container"
+        android:id="@+id/food_deal_placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="99">
-
-    </FrameLayout>
+        android:layout_weight="99" />
 
     <android.support.design.widget.BottomNavigationView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

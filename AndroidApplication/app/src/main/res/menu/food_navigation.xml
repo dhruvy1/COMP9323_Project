@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_fooddeal"
+        android:id="@+id/navigation_food_deal"
         android:icon="@android:drawable/star_big_off"
         android:title="@string/food_deal_navigation" />
     <item
-        android:id="@+id/navigation_foodplace"
+        android:id="@+id/navigation_food_place"
         android:icon="@android:drawable/btn_radio"
         android:title="@string/food_place_navigation" />
 </menu>

@@ -10,6 +10,6 @@
     <string name="food_place_address">Address:</string>
     <string name="inapp_rating">In-app Rating:</string>
     <string name="title_activity_maps">Map</string>
-
+    <string name="user_pref">APP_USR_INFO</string>
 </resources>
 
