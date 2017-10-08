@@ -2,9 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.comp9323.myapplication.EventFragment">
+    tools:context="com.comp9323.main.EventFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <Button
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,17 +22,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/event_name" />
+        android:id="@+id/event_item_name" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/event_location" />
+        android:id="@+id/event_item_location" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/event_start" />
+        android:id="@+id/event_item_start" />
 
     <TextView
         android:layout_width="match_parent"
@@ -44,6 +43,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/description" />
-
-
 </FrameLayout>
