@@ -2,6 +2,7 @@ package com.comp9323.data.beans;
 
 import java.io.Serializable;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -187,6 +188,11 @@ public class FoodDeal implements Serializable {
     public FoodDeal withCreatedBy(String createdBy) {
         this.createdBy = createdBy;
         return this;
+    }
+
+    public String toString(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
 }

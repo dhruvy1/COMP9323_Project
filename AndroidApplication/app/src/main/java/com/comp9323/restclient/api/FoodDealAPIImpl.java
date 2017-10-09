@@ -234,6 +234,7 @@ public class FoodDealAPIImpl {
     }
 
     private static boolean patchFoodDeal(int id, FoodDeal foodDeal) {
+        Log.d("Rest call", "id: " + id + " " +foodDeal.toString());
         Log.v("Rest Call", "start Edit FoodDeal By Fields");
         final boolean[] ifSuccess = {false};
         api.patchFoodDeal(id, foodDeal).enqueue(new Callback<FoodDeal>() {
@@ -247,6 +248,7 @@ public class FoodDealAPIImpl {
             @Override
             public void onFailure(Call<FoodDeal> call, Throwable t) {
                 Log.d("REST CALL", "~~FAILED~~");
+                Log.d("REST CALL", t.getStackTrace().toString());
                 call.cancel();
             }
         });

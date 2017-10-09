@@ -51,19 +51,19 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
 
         //Set pulled image
         //TODO function is working, but it will take up lots of processing time and messed other Async
-        if (holder.mFoodDeal.getPhotoLink().length() > 0) {
-            //slow if first load
-            threadPool.execute(
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            new DownloadPhotoAsyncTask(holder.mImageView, FoodDealFragment.adapter).execute(holder.mFoodDeal.getPhotoLink());
-                        }
-                    })
-            );
-        } else {
-            holder.mImageView.setImageBitmap(BitmapFactory.decodeResource(DataHolder.getInstance().getContext().getResources(), R.drawable.food_deal_placeholder));
-        }
+//        if (holder.mFoodDeal.getPhotoLink().length() > 0) {
+//            //slow if first load
+//            threadPool.execute(
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            new DownloadPhotoAsyncTask(holder.mImageView, FoodDealFragment.adapter).execute(holder.mFoodDeal.getPhotoLink());
+//                        }
+//                    })
+//            );
+//        } else {
+//            holder.mImageView.setImageBitmap(BitmapFactory.decodeResource(DataHolder.getInstance().getContext().getResources(), R.drawable.food_deal_placeholder));
+//        }
 
         //like and dislike button
         holder.mLikeButton.setOnClickListener(new View.OnClickListener() {
