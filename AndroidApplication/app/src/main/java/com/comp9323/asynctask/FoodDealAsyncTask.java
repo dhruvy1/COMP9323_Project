@@ -2,6 +2,7 @@ package com.comp9323.asynctask;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.comp9323.food.fooddeal.FoodDealFragment;
 import com.comp9323.food.fooddeal.FoodDealRvAdapter;
@@ -46,13 +47,13 @@ public class FoodDealAsyncTask extends AsyncTask<String, Void, Boolean> {
             fd.setRating("" + (Integer.parseInt(fd.getRating()) + rating));
             DataHolder.getInstance().updateFoodDealRating(fd);
             //update server
-//            try {
-//                return FoodDealAPIImpl.patchFoodDeal(id, null, null, null, null, null, null,fd.getRating(), null);
-//            } catch (Exception e) {
-//                Toast.makeText(DataHolder.getInstance().getContext(), "Date or Time format not match", Toast.LENGTH_SHORT).show();
-//                return false;
-//            }
-            return true;
+            try {
+                return FoodDealAPIImpl.patchFoodDeal(id, null, null, null, null, null, null,fd.getRating(), null);
+            } catch (Exception e) {
+                Toast.makeText(DataHolder.getInstance().getContext(), "Date or Time format not match", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+          //  return true;
         } else {
             //TODO add more type of actions
             return false;

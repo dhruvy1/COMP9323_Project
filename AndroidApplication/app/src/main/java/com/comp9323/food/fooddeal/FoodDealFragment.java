@@ -49,6 +49,7 @@ public class FoodDealFragment extends Fragment {
                     int visibleThreshold = 1;
                     if (totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                         page++;
+                        adapter.setIsLoading(true);
                         new FoodDealAsyncTask(adapter).execute(FoodDealAsyncTask.GET_LIST, page + "");
                     }
                 }
@@ -86,6 +87,9 @@ public class FoodDealFragment extends Fragment {
             public void onFoodDealItemClicked(FoodDeal item) {
                 String link = item.getEventLink();
                 if (link.length() > 0) {
+                    if (!link.startsWith("http")){
+                        link = "http://" + link;
+                    }
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                    intent.setPackage("com.android.chrome");

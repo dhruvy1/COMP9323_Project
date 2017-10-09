@@ -7,9 +7,12 @@
     <color name="colorCharcoal">#333333</color>
     <item name="yellow" type="color">#c8def5</item>
     <item name="charcoal" type="color">#333333</item>
+    <item name="blue" type="color">#4622b1</item>
 
     <integer-array name="colors">
         <item>@color/yellow</item>
         <item>@color/charcoal</item>
+        <item>@color/blue</item>
+
     </integer-array>
 </resources>
