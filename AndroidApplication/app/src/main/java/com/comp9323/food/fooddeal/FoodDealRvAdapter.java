@@ -1,6 +1,5 @@
 package com.comp9323.food.fooddeal;
 
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -14,12 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.comp9323.asynctask.DownloadPhotoAsyncTask;
+import com.bumptech.glide.Glide;
 import com.comp9323.asynctask.FoodDealAsyncTask;
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodDeal;
-import com.comp9323.main.R;
 import com.comp9323.food.fooddeal.FoodDealFragment.Listener;
+import com.comp9323.main.R;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -49,20 +48,24 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
         holder.mTextView.setText(holder.mFoodDeal.getMessage());
         holder.mRating.setText((holder.mFoodDeal.getRating()));
 
-        //Set pulled image
-        //TODO function is working, but it will take up lots of processing time and messed other Async
+//        //Set pulled image
+//        //TODO function is working, but it will take up lots of processing time and messed other Async
+//        if (holder.mFoodDeal.getPhotoLink().length() > 0) {
+//            //slow if first load
+//            threadPool.execute(
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            new DownloadPhotoAsyncTask(holder.mImageView, FoodDealFragment.adapter).execute(holder.mFoodDeal.getPhotoLink());
+//                        }
+//                    })
+//            );
+//        } else {
+//            holder.mImageView.setImageBitmap(BitmapFactory.decodeResource(DataHolder.getInstance().getContext().getResources(), R.drawable.food_deal_placeholder));
+//        }
+
         if (holder.mFoodDeal.getPhotoLink().length() > 0) {
-            //slow if first load
-            threadPool.execute(
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            new DownloadPhotoAsyncTask(holder.mImageView, FoodDealFragment.adapter).execute(holder.mFoodDeal.getPhotoLink());
-                        }
-                    })
-            );
-        } else {
-            holder.mImageView.setImageBitmap(BitmapFactory.decodeResource(DataHolder.getInstance().getContext().getResources(), R.drawable.food_deal_placeholder));
+            Glide.with(holder.mImageView.getContext()).load(holder.mFoodDeal.getPhotoLink()).into(holder.mImageView);
         }
 
         //like and dislike button

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
@@ -40,7 +41,12 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         holder.mEventLocationView.setText(holder.mItem.getPlaceName() + ", " + holder.mItem.getStreet());
         holder.mEventTimeView.setText(holder.mItem.getEventTime());
         holder.mEventDescription.setText(holder.mItem.getDescription());
-        new DownloadImageTask(holder.mEventImage, this).execute(holder.mItem.getSourceUrl());
+//        new DownloadImageTask(holder.mEventImage, this).execute(holder.mItem.getSourceUrl());
+
+        if (holder.mItem.getSourceUrl().length() > 0) {
+            Glide.with(holder.mEventImage.getContext()).load(holder.mItem.getSourceUrl()).into(holder.mEventImage);
+        }
+
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

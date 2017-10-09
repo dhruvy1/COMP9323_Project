@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.data.DataHolder;
 import com.comp9323.main.R;
@@ -51,8 +52,12 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         }
 
         //set photo
+//        if (holder.mPlace.getPhotoLink().length() > 0) {
+//            downloadPhoto(holder.mPhotoView, holder.mPlace.getPhotoLink());
+//        }
+
         if (holder.mPlace.getPhotoLink().length() > 0) {
-            downloadPhoto(holder.mPhotoView, holder.mPlace.getPhotoLink());
+            Glide.with(holder.mPhotoView.getContext()).load(holder.mPlace.getPhotoLink()).into(holder.mPhotoView);
         }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
