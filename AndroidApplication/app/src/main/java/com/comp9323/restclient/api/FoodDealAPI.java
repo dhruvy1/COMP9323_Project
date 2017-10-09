@@ -31,9 +31,9 @@ public interface FoodDealAPI {
     @DELETE("/api/food_deals/{id}/")
     Call<Response<Void>> deleteFoodDeal(@Path("id") int id);
 
-    @PUT("/api/food_deals/{id}/")
+    @PUT("/api/food_deals/{id}")
     Call<FoodDeal> putFoodDeal(@Path("id") int id, @Body FoodDeal foodDeal);
 
-    @PATCH("/api/food_deals/{id}/")
+    @PATCH("/api/food_deals/{id}")
     Call<FoodDeal> patchFoodDeal(@Path("id") int id, @Body FoodDeal foodDeal);
 }

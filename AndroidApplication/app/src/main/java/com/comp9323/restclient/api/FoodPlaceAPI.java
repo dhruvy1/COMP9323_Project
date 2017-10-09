@@ -31,10 +31,10 @@ public interface FoodPlaceAPI {
     @DELETE("/api/food_places/{id}/")
     Call<Response<Void>> deleteFoodPlace(@Path("id") int id);
 
-    @PATCH("/api/food_places/{id}/")
+    @PATCH("/api/food_places/{id}")
     Call<FoodPlace> patchFoodPlace(@Path("id") int id, @Body FoodPlace foodPlace);
 
-    @PUT("/api/food_places/{id}/")
+    @PUT("/api/food_places/{id}")
     Call<FoodPlace> putFoodPlace(@Path("id") int id, @Body FoodPlace foodPlace);
 
 }

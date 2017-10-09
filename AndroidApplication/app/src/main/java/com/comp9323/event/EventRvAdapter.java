@@ -40,7 +40,6 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         holder.mEventLocationView.setText(holder.mItem.getPlaceName() + ", " + holder.mItem.getStreet());
         holder.mEventTimeView.setText(holder.mItem.getEventTime());
         holder.mEventDescription.setText(holder.mItem.getDescription());
-        new DownloadImageTask(holder.mEventImage, this).execute(holder.mItem.getSourceUrl());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
