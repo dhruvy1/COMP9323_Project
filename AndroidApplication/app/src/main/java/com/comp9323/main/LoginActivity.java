@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-         deleteSharedPreferences(); // DEBUG USE
+//         deleteSharedPreferences(); // DEBUG USE
 
         if (isFirstLogin()) {
             findViewById(R.id.login_sign_up_btn).setVisibility(View.VISIBLE);
@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
     }
 
     private boolean isFirstLogin() {

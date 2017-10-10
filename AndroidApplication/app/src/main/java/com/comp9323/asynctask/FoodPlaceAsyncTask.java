@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.comp9323.food.foodplace.FoodPlaceRvAdapter;
 import com.comp9323.data.DataHolder;
-import com.comp9323.restclient.api.FoodPlaceAPIImpl;
+import com.comp9323.restclient.api.FoodPlaceApiImpl;
 import com.comp9323.data.beans.FoodPlace;
 
 /**
@@ -32,20 +32,20 @@ public class FoodPlaceAsyncTask extends AsyncTask<String, Void, Boolean> {
 
             if (method.equals(GET_LIST)) {
                 int pageNumber = Integer.parseInt(strings[1]);
-                return FoodPlaceAPIImpl.getFoodPlaces(pageNumber);
+                return FoodPlaceApiImpl.getFoodPlaces(pageNumber);
             } else if (method.equals(RATING)) {
                 int id = Integer.parseInt(strings[1]);
                 int rating = Integer.parseInt(strings[2]);
                 int counter = 0;
                 //****This may casing error if Internet Error or Concurrency problem
                 //get newest version from database
-                FoodPlaceAPIImpl.getFoodPlace(id);
+                FoodPlaceApiImpl.getFoodPlace(id);
                 //update local item
                 FoodPlace fp = DataHolder.getInstance().getFoodPlaceWithID(id);
                 fp.setRating("" + (Integer.parseInt(fp.getRating()) + rating));
                 DataHolder.getInstance().updateFoodPlaceRating(fp);
                 //update server
-                return FoodPlaceAPIImpl.patchFoodPlace(id, null, null, null, null, null, null, null, fp.getRating(), null);
+                return FoodPlaceApiImpl.patchFoodPlace(id, null, null, null, null, null, null, null, fp.getRating(), null);
             } else {
                 //TODO add more type of actions
             }

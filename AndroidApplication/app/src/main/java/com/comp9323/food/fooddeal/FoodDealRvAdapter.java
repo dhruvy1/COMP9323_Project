@@ -11,28 +11,25 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.comp9323.asynctask.FoodDealAsyncTask;
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodDeal;
-import com.comp9323.food.fooddeal.FoodDealFragment.Listener;
+import com.comp9323.data.beans.FoodDealResponse;
 import com.comp9323.main.R;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.ViewHolder> {
+    private static final String TAG = "FoodDealRvAdapter";
 
-    private static boolean isReachEnd = false;
-    private static boolean isLoading = false;
-    private final Listener foodDealFragmentListener;
-    private final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, (long) 2, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>());
+    private FoodDealResponse foodDealResponse;
+    private Listener listener;
 
-    public FoodDealRvAdapter(Listener listener) {
-        foodDealFragmentListener = listener;
+    public FoodDealRvAdapter() {
+        foodDealResponse = new FoodDealResponse();
+    }
+
+    public void setFoodDealResponse(FoodDealResponse foodDealResponse) {
+        this.foodDealResponse = foodDealResponse;
     }
 
     @Override
@@ -43,86 +40,72 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        // set value that display in the list
-        holder.mFoodDeal = DataHolder.getInstance().getFoodDealList().get(position);
-        holder.mTextView.setText(holder.mFoodDeal.getMessage());
-        holder.mRating.setText((holder.mFoodDeal.getRating()));
+        holder.foodDeal = foodDealResponse.getResults().get(position);
 
-//        //Set pulled image
-//        //TODO function is working, but it will take up lots of processing time and messed other Async
-//        if (holder.mFoodDeal.getPhotoLink().length() > 0) {
-//            //slow if first load
-//            threadPool.execute(
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            new DownloadPhotoAsyncTask(holder.mImageView, FoodDealFragment.adapter).execute(holder.mFoodDeal.getPhotoLink());
-//                        }
-//                    })
-//            );
-//        } else {
-//            holder.mImageView.setImageBitmap(BitmapFactory.decodeResource(DataHolder.getInstance().getContext().getResources(), R.drawable.food_deal_placeholder));
-//        }
+        holder.foodDealMessage.setText(holder.foodDeal.getMessage());
+        holder.foodDealRating.setText((holder.foodDeal.getRating()));
 
-        if (holder.mFoodDeal.getPhotoLink().length() > 0) {
-            Glide.with(holder.mImageView.getContext()).load(holder.mFoodDeal.getPhotoLink()).into(holder.mImageView);
-        }
+        loadFoodDealImage(holder);
 
-        //like and dislike button
-        holder.mLikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(DataHolder.getInstance().getContext(), "onclick", Toast.LENGTH_SHORT).show();
-                new FoodDealAsyncTask(FoodDealFragment.adapter).execute(FoodDealAsyncTask.RATING, "" + holder.mFoodDeal.getId(), "1");
-            }
-        });
-        holder.mDislikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new FoodDealAsyncTask(FoodDealFragment.adapter).execute(FoodDealAsyncTask.RATING, "" + holder.mFoodDeal.getId(), "-1");
-            }
-        });
+        initFoodDealLikeBtn(holder);
+        initFoodDealDislikeBtn(holder);
+        initFoodDealViewClick(holder);
 
-        //hyper_link image
-        if (holder.mFoodDeal.getCreatedBy().compareTo(FoodDeal.FACEBOOK) == 0) {
-            if (holder.mFoodDeal.getEventLink().length() > 0) {
-                holder.mTextView.setText(addIconAtBeginning(holder.mTextView.getText(), R.drawable.hyper_link));
-            }
-        } else {
-            holder.mTextView.setText(addIconAtBeginning(holder.mTextView.getText(), R.drawable.internal_link));
-        }
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != foodDealFragmentListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    foodDealFragmentListener.onFoodDealItemClicked(holder.mFoodDeal);
-                }
-            }
-        });
+        addEventLinkPlaceHolder(holder);
     }
 
     @Override
     public int getItemCount() {
-        return DataHolder.getInstance().getFoodDealList().size();
+        return foodDealResponse.getResults().size();
     }
 
-    public static boolean ifReachEnd() {
-        return isReachEnd;
+    private void loadFoodDealImage(ViewHolder holder) {
+        if (holder.foodDeal.getPhotoLink().length() > 0) {
+            holder.foodDealImage.setVisibility(View.VISIBLE);
+            Glide.with(holder.foodDealImage.getContext()).load(holder.foodDeal.getPhotoLink()).into(holder.foodDealImage);
+        } else {
+            holder.foodDealImage.setVisibility(View.GONE);
+        }
     }
 
-    public static void setIsReachEnd(boolean bool) {
-        isReachEnd = bool;
+    private void initFoodDealLikeBtn(final ViewHolder holder) {
+        holder.foodDealLikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onFoodDealLikeBtnClicked(holder.foodDeal.getId(), holder.foodDeal.getRating());
+            }
+        });
     }
 
-    public void setIsLoading(boolean isLoading) {
-        this.isLoading = isLoading;
+    private void initFoodDealDislikeBtn(final ViewHolder holder) {
+        holder.foodDealDislikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onFoodDealDislikeBtnClicked(holder.foodDeal.getId(), holder.foodDeal.getRating());
+            }
+        });
     }
 
-    public boolean ifLoading() {
-        return isLoading;
+    private void initFoodDealViewClick(final ViewHolder holder) {
+        holder.foodDealView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onFoodDealViewClicked(holder.foodDeal);
+            }
+        });
+    }
+
+    private void addEventLinkPlaceHolder(ViewHolder holder) {
+        // Add hyper link icon to front of event links
+        if (holder.foodDeal.getCreatedBy().compareTo(FoodDeal.FACEBOOK) == 0) {
+            // event link to Facebook
+            if (holder.foodDeal.getEventLink().length() > 0) {
+                holder.foodDealMessage.setText(addIconAtBeginning(holder.foodDealMessage.getText(), R.drawable.hyper_link));
+            }
+        } else {
+            // event link not to Facebook
+            holder.foodDealMessage.setText(addIconAtBeginning(holder.foodDealMessage.getText(), R.drawable.internal_link));
+        }
     }
 
     private SpannableStringBuilder addIconAtBeginning(CharSequence s, int resId) {
@@ -139,22 +122,35 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mTextView;
-        public final ImageView mImageView;
-        public FoodDeal mFoodDeal;
-        public final ImageButton mLikeButton;
-        public final ImageButton mDislikeButton;
-        public final TextView mRating;
+        public FoodDeal foodDeal;
+
+        public final View foodDealView;
+        public final TextView foodDealMessage;
+        public final ImageView foodDealImage;
+        public final ImageButton foodDealLikeBtn;
+        public final ImageButton foodDealDislikeBtn;
+        public final TextView foodDealRating;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
-            mTextView = view.findViewById(R.id.food_deal_name);
-            mImageView = view.findViewById(R.id.food_deal_image);
-            mLikeButton = view.findViewById(R.id.food_deal_like_btn);
-            mDislikeButton = view.findViewById(R.id.food_deal_dislike_btn);
-            mRating = view.findViewById(R.id.food_deal_rating);
+            this.foodDealView = view;
+            foodDealMessage = view.findViewById(R.id.food_deal_message);
+            foodDealImage = view.findViewById(R.id.food_deal_image);
+            foodDealLikeBtn = view.findViewById(R.id.food_deal_like_btn);
+            foodDealDislikeBtn = view.findViewById(R.id.food_deal_dislike_btn);
+            foodDealRating = view.findViewById(R.id.food_deal_rating);
         }
+    }
+
+    public interface Listener {
+        void onFoodDealLikeBtnClicked(Integer id, String rating);
+
+        void onFoodDealDislikeBtnClicked(Integer id, String rating);
+
+        void onFoodDealViewClicked(FoodDeal foodDeal);
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 }

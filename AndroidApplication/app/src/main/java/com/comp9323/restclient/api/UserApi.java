@@ -18,7 +18,7 @@ import retrofit2.http.Path;
  * Created by thomas on 10/9/2017.
  */
 
-public interface UserAPI {
+public interface UserApi {
     @GET("/api/mobile_users/{id}/")
     Call<User> getUser(@Path("id") int id);
 

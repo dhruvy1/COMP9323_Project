@@ -13,8 +13,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class FoodPlaceAPIImpl {
-    private static final FoodPlaceAPI api = RestClient.getClient().create(FoodPlaceAPI.class);
+public class FoodPlaceApiImpl {
+    private static final FoodPlaceApi api = RestClient.getClient().create(FoodPlaceApi.class);
 
     public static boolean postFoodPlace(String name, String location, String priceLevel,
                                         String googleRating, String latitude, String longitude,

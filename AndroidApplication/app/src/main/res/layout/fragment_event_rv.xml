@@ -9,4 +9,4 @@
     android:background="@color/colorWhite"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.comp9323.event.EventFragment"
-    tools:listitem="@layout/fragment_event" />
+    tools:listitem="@layout/fragment_event_rv_item" />

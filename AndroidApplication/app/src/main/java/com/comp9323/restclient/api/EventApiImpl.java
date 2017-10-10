@@ -17,31 +17,31 @@ import retrofit2.Response;
 /**
  * Created by timta on 28/09/2017.
  */
-public class EventImpl {
+public class EventApiImpl {
 
-    private static final EventAPI eventAPI = RestClient.getClient().create(EventAPI.class);
+    private static final EventApi eventAPI = RestClient.getClient().create(EventApi.class);
 
-    public static void getEvents() {
-        eventAPI.getEvents().enqueue(new Callback<EventResponse>() {
-            @Override
-            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
-                EventResponse responseData = response.body();
-                List<Event> events = responseData.getResults();
-                DataHolder.getInstance().clearEvents();
-                for (Event e : events) {
-                    DataHolder.getInstance().addEvent(e);
-                }
-                Log.d("REST CALL", "CALL SUCCESS!");
-            }
-
-            @Override
-            public void onFailure(Call<EventResponse> call, Throwable t) {
-                Log.d("REST CALL", t.getStackTrace().toString() + "");
-                Log.d("REST CALL", "~~Fail CALL~~");
-                call.cancel();
-            }
-        });
-    }
+//    public static void getEvents() {
+//        eventAPI.getEvents().enqueue(new Callback<EventResponse>() {
+//            @Override
+//            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+//                EventResponse responseData = response.body();
+//                List<Event> events = responseData.getResults();
+//                DataHolder.getInstance().clearEvents();
+//                for (Event e : events) {
+//                    DataHolder.getInstance().addEvent(e);
+//                }
+//                Log.d("REST CALL", "CALL SUCCESS!");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<EventResponse> call, Throwable t) {
+//                Log.d("REST CALL", t.getStackTrace().toString() + "");
+//                Log.d("REST CALL", "~~Fail CALL~~");
+//                call.cancel();
+//            }
+//        });
+//    }
 
     //TODO: filter lists by category
     public static void filterEvents(String filter) {

@@ -31,7 +31,7 @@ public class EventArrayAdapter extends ArrayAdapter<EventBean> {
         //TODO:: CLEANUP CODE
         // Get the data item for this position
         EventBean event = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
+        // Check if an existing foodDealView is being reused, otherwise inflate the foodDealView
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_item, parent, false);
         }

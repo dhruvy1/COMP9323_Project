@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.comp9323.restclient.api.UserAPIImpl;
+import com.comp9323.restclient.api.UserApiImpl;
 import com.comp9323.data.DataHolder;
 import com.comp9323.main.MainActivity;
 
@@ -19,7 +19,7 @@ public class UserAsyncTask extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... strings) {
         Log.d("A*", "start create user");
         String username = strings[0];
-        return UserAPIImpl.postUser(username);
+        return UserApiImpl.postUser(username);
     }
 
     @Override

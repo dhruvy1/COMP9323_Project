@@ -25,10 +25,10 @@ public class QAWebView extends Fragment {
         //set starting url
         webView.loadUrl("http://52.65.129.3:8080/questions/");
 
-        //set allow js in this web view
+        //set allow js in this web foodDealView
         webView.getSettings().setJavaScriptEnabled(true);
 
-        //set load url content in this web view
+        //set load url content in this web foodDealView
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {

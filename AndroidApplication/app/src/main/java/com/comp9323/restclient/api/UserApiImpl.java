@@ -17,8 +17,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class UserAPIImpl {
-    private static final UserAPI api = RestClient.getClient().create(UserAPI.class);
+public class UserApiImpl {
+    private static final UserApi api = RestClient.getClient().create(UserApi.class);
 
     public static boolean postUser(String username) {
         return postUser(new User(username, createUUID()));

@@ -1,10 +1,6 @@
 package com.comp9323.event;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,36 +8,39 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.Event;
+import com.comp9323.data.beans.EventResponse;
 import com.comp9323.main.R;
 
-import java.io.InputStream;
-
 public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHolder> {
+    private static final String TAG = "EventRvAdapter";
 
     private final EventFragment.Listener mListener;
+    private EventResponse eventResponse = new EventResponse();
 
     public EventRvAdapter(EventFragment.Listener listener) {
         mListener = listener;
     }
 
+    public void setEventResponse(EventResponse eventResponse) {
+        this.eventResponse = eventResponse;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_event, parent, false);
+                .inflate(R.layout.fragment_event_rv_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mItem = DataHolder.getInstance().getEvent(position);
+        holder.mItem = eventResponse.getResults().get(position);
+
         holder.mEventNameView.setText(holder.mItem.getName());
         holder.mEventLocationView.setText(holder.mItem.getPlaceName() + ", " + holder.mItem.getStreet());
         holder.mEventTimeView.setText(holder.mItem.getEventTime());
         holder.mEventDescription.setText(holder.mItem.getDescription());
-//        new DownloadImageTask(holder.mEventImage, this).execute(holder.mItem.getSourceUrl());
 
         if (holder.mItem.getSourceUrl().length() > 0) {
             Glide.with(holder.mEventImage.getContext()).load(holder.mItem.getSourceUrl()).into(holder.mEventImage);
@@ -61,7 +60,7 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return DataHolder.getInstance().getEvents().size();
+        return eventResponse.getResults().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -81,35 +80,6 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
             mEventTimeView = view.findViewById(R.id.event_time_frame);
             mEventDescription = view.findViewById(R.id.event_description);
             mEventImage = view.findViewById(R.id.event_photo);
-        }
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        EventRvAdapter mlistener;
-
-        public DownloadImageTask(ImageView imageView, EventRvAdapter listener) {
-            bmImage = imageView;
-            mlistener = listener;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-                //mIcon11 = Bitmap.createScaledBitmap(mIcon11, 120, 120, false);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            mlistener.notifyDataSetChanged();
         }
     }
 }

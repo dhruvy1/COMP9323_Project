@@ -23,7 +23,7 @@ public class FoodDealResponse implements Serializable {
 
     @SerializedName("results")
     @Expose
-    private Vector<FoodDeal> results = null;
+    private Vector<FoodDeal> results = new Vector<>();
 
     public FoodDealResponse() {
     }
