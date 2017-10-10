@@ -15,21 +15,23 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodDeal;
-import com.comp9323.data.beans.FoodDealResponse;
 import com.comp9323.main.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.ViewHolder> {
     private static final String TAG = "FoodDealRvAdapter";
 
-    private FoodDealResponse foodDealResponse;
+    private List<FoodDeal> foodDeals;
     private Listener listener;
 
     public FoodDealRvAdapter() {
-        foodDealResponse = new FoodDealResponse();
+        foodDeals = new ArrayList<>();
     }
 
-    public void setFoodDealResponse(FoodDealResponse foodDealResponse) {
-        this.foodDealResponse = foodDealResponse;
+    public void setFoodDeals(List<FoodDeal> foodDeals) {
+        this.foodDeals = foodDeals;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.foodDeal = foodDealResponse.getResults().get(position);
+        holder.foodDeal = foodDeals.get(position);
 
         holder.foodDealMessage.setText(holder.foodDeal.getMessage());
         holder.foodDealRating.setText((holder.foodDeal.getRating()));
@@ -56,7 +58,7 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return foodDealResponse.getResults().size();
+        return foodDeals.size();
     }
 
     private void loadFoodDealImage(ViewHolder holder) {

@@ -3,6 +3,9 @@ package com.comp9323.restclient.api;
 import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.data.beans.FoodPlaceResponse;
 
+import java.util.List;
+
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -23,7 +26,7 @@ public interface FoodPlaceApi {
     Call<FoodPlace> getFoodPlace(@Path("id") int id);
 
     @GET("/api/food_places/all/")
-    Call<FoodPlaceResponse> getFoodPlaces(@Query("limit") int limit, @Query("offset") int offset);
+    Observable<List<FoodPlace>> getFoodPlaces();
 
     @POST("/api/food_places/")
     Call<FoodPlace> postFoodPlace(@Body FoodPlace foodPlace);

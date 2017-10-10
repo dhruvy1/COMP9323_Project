@@ -3,6 +3,8 @@ package com.comp9323.restclient.api;
 import com.comp9323.data.beans.Event;
 import com.comp9323.data.beans.EventResponse;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,7 +25,7 @@ public interface EventApi {
     Call<Event> getEvent(@Path("id") int eventId);
 
     @GET("events/all/")
-    Observable<EventResponse> getEvents();
+    Observable<List<Event>> getEvents();
 
     @POST("events")
     Call<Event> postEvent(@Body Event event);

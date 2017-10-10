@@ -14,12 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.comp9323.data.beans.FoodDeal;
-import com.comp9323.data.beans.FoodDealResponse;
 import com.comp9323.main.R;
 import com.comp9323.restclient.RestClient;
 import com.comp9323.restclient.api.FoodDealApi;
 import com.comp9323.restclient.api.FoodDealApiImpl;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -34,20 +34,20 @@ import io.reactivex.schedulers.Schedulers;
 public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.Listener {
     private static final String TAG = "FoodDealFragment";
 
-    private RecyclerView recyclerView;
+    private static final int SECONDS_TO_POLL_SERVER = 1;
+
     private FoodDealRvAdapter adapter;
+    private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    private CompositeDisposable mCompositeDisposable;
-
-    private int limit = 0; // amount of results to get back from server
+    private CompositeDisposable compositeDisposable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_deal_rv, container, false);
 
-        mCompositeDisposable = new CompositeDisposable();
+        compositeDisposable = new CompositeDisposable();
 
         initRvAdapter();
         initRecyclerView(view);
@@ -61,7 +61,18 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mCompositeDisposable.clear();
+        compositeDisposable.clear();
+    }
+
+    private void initRvAdapter() {
+        adapter = new FoodDealRvAdapter();
+        adapter.setListener(this);
+    }
+
+    private void initRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.food_deal_rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setAdapter(adapter);
     }
 
     private void initSwipeRefreshLayout(View view) {
@@ -72,63 +83,28 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
                 // reset the whole adapter
                 initRvAdapter();
                 recyclerView.setAdapter(adapter);
-                limit = 0; // reset limit
                 getFoodDeals();
             }
         });
     }
 
-    private void initRecyclerView(View view) {
-        recyclerView = view.findViewById(R.id.food_deal_rv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        recyclerView.setAdapter(adapter);
-
-        // set scroll listener, used to get more items when user reaches end of list
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                // get the layout manager
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                // get number of food deals currently in the adapter
-                int foodDealCount = adapter.getItemCount();
-                int positionOfLastSeenFoodDeal = linearLayoutManager.findLastVisibleItemPosition();
-                // using 2 to give more time to get data -> smoother scrolling
-                int thresholdToGetMoreItems = 2;
-
-                if (foodDealCount <= positionOfLastSeenFoodDeal + thresholdToGetMoreItems) {
-                    getFoodDeals();
-                }
-            }
-        });
-    }
-
-    private void initRvAdapter() {
-        adapter = new FoodDealRvAdapter();
-        adapter.setListener(this);
-    }
-
     private void getFoodDeals() {
         FoodDealApi api = RestClient.getClient().create(FoodDealApi.class);
-        limit += 10; // prob the database for the next 10 items
-        mCompositeDisposable.clear(); // clear previous async tasks
-        mCompositeDisposable.add(api.getFoodDeals(limit, 0)
+        compositeDisposable.clear(); // clear previous async tasks
+        compositeDisposable.add(api.getFoodDeals()
                 .repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
                     @Override
                     public ObservableSource<?> apply(@NonNull Observable<Object> objectObservable) throws Exception {
-                        return objectObservable.delay(1, TimeUnit.SECONDS); // polls server every # seconds
+                        // polls server every # seconds
+                        return objectObservable.delay(SECONDS_TO_POLL_SERVER, TimeUnit.SECONDS);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread()) // indicate the subscribe will be on the main thread
                 .subscribeOn(Schedulers.io()) // do async in the io thread
-                .subscribe(new Consumer<FoodDealResponse>() { // add a listener to the observable
+                .subscribe(new Consumer<List<FoodDeal>>() { // add a listener to the observable
                     @Override
-                    public void accept(FoodDealResponse foodDealResponse) throws Exception {
-                        int resultSize = foodDealResponse.getResults().size();
-                        if (resultSize < limit) {
-                            // ensure that the limit stays within max items in the database
-                            limit = resultSize;
-                        }
-                        updateAdapter(foodDealResponse); // update adapter
+                    public void accept(List<FoodDeal> foodDeals) throws Exception {
+                        updateAdapter(foodDeals); // update adapter
                         if (swipeRefreshLayout.isRefreshing()) {
                             // turn off refresh animation on swipe ups, if its on
                             swipeRefreshLayout.setRefreshing(false);
@@ -137,8 +113,8 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
                 }));
     }
 
-    private void updateAdapter(FoodDealResponse foodDealResponse) {
-        adapter.setFoodDealResponse(foodDealResponse);
+    private void updateAdapter(List<FoodDeal> foodDeals) {
+        adapter.setFoodDeals(foodDeals);
         adapter.notifyDataSetChanged();
     }
 

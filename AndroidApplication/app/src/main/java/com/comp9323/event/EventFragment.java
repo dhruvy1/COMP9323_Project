@@ -14,6 +14,8 @@ import com.comp9323.main.R;
 import com.comp9323.restclient.RestClient;
 import com.comp9323.restclient.api.EventApi;
 
+import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -65,16 +67,16 @@ public class EventFragment extends Fragment {
         mCompositeDisposable.add(api.getEvents()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<EventResponse>() {
+                .subscribe(new Consumer<List<Event>>() {
                     @Override
-                    public void accept(EventResponse eventResponse) throws Exception {
-                        updateAdapter(eventResponse);
+                    public void accept(List<Event> events) throws Exception {
+                        updateAdapter(events);
                     }
                 }));
     }
 
-    private void updateAdapter(EventResponse eventResponse) {
-        mAdapter.setEventResponse(eventResponse);
+    private void updateAdapter(List<Event> events) {
+        mAdapter.setEventResponse(events);
         mAdapter.notifyDataSetChanged();
     }
 

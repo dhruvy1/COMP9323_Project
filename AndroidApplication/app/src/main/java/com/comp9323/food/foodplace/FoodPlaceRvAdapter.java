@@ -1,134 +1,147 @@
 package com.comp9323.food.foodplace;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.app.Activity;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.comp9323.data.beans.FoodPlace;
-import com.comp9323.data.DataHolder;
 import com.comp9323.main.R;
-import com.comp9323.food.foodplace.FoodPlaceFragment.Listener;
-import com.google.android.gms.maps.MapView;
 
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.ViewHolder> {
+    private static final String TAG = "FoodPlaceRvAdapter";
 
-    private static boolean mIsLoading = false;
-    private static boolean mIsReachEnd = false;
-    private final Listener mListener;
+    private Context context;
+    private Listener listener;
+    private List<FoodPlace> foodPlaces;
+    private SparseArray<FoodPlaceDetailFragment> expandedList;
 
-    public FoodPlaceRvAdapter(Listener listener) {
-        mListener = listener;
+    public FoodPlaceRvAdapter(Context context) {
+        this.context = context;
+        foodPlaces = new ArrayList<>();
+        expandedList = new SparseArray<>();
+    }
+
+    public void setFoodPlaces(List<FoodPlace> foodPlaces) {
+        this.foodPlaces = foodPlaces;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_food_place_rv_item, parent, false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mPlace = DataHolder.getInstance().getFoodPlace(position);
-        holder.mNameView.setText(holder.mPlace.getName());
-        holder.mAddressView.setText(holder.mPlace.getLocation());
-        holder.mAppRatingView.setText(holder.mPlace.getRating());
+        holder.foodPlace = foodPlaces.get(position);
+        holder.nameView.setText(holder.foodPlace.getName());
 
-        //set google rating if found
-        if (holder.mPlace.getGoogleRating().length() > 0) {
-            holder.mRatingView.setRating(Float.parseFloat(holder.mPlace.getGoogleRating()));
-        }
+        setGoogleRatingBar(holder);
+
+        initFoodPlaceViewClick(holder, position);
+
+
+//        holder.appRatingView.setText(holder.foodPlace.getRating());
+//        holder.addressView.setText(holder.foodPlace.getLocation());
+
 
         //set photo
-//        if (holder.mPlace.getPhotoLink().length() > 0) {
-//            downloadPhoto(holder.mPhotoView, holder.mPlace.getPhotoLink());
+//        if (holder.foodPlace.getPhotoLink().length() > 0) {
+//            downloadPhoto(holder.photoView, holder.foodPlace.getPhotoLink());
 //        }
 
-        if (holder.mPlace.getPhotoLink().length() > 0) {
-            Glide.with(holder.mPhotoView.getContext()).load(holder.mPlace.getPhotoLink()).into(holder.mPhotoView);
-        }
+//        if (holder.foodPlace.getPhotoLink().length() > 0) {
+//            Glide.with(holder.photoView.getContext()).load(holder.foodPlace.getPhotoLink()).into(holder.photoView);
+//        }
+    }
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public int getItemCount() {
+        return foodPlaces.size();
+    }
+
+    private void initFoodPlaceViewClick(final ViewHolder holder, final int position) {
+        holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    mListener.onFoodPlaceItemClicked(holder.mPlace, holder.mView, position);
+            public void onClick(View view) {
+                if (expandedList.get(position) != null) {
+                    // remove from list
+                    removeFoodPlaceDetails(expandedList.get(position));
+                } else {
+                    // add to list
+                    FoodPlaceDetailFragment fragment = new FoodPlaceDetailFragment();
+                    fragment.setFoodPlace(holder.foodPlace);
+                    expandedList.put(position, fragment);
+                    showFoodPlaceDetails(fragment);
                 }
             }
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return DataHolder.getInstance().getFoodPlaceList().size();
+    private void showFoodPlaceDetails(FoodPlaceDetailFragment fragment) {
+        android.app.FragmentManager fm = ((Activity) context).getFragmentManager();
+        android.app.FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.food_place_item_detail_placeholder, fragment);
+        ft.commit();
     }
 
-    public boolean ifLoading() {
-        return mIsLoading;
+    private void removeFoodPlaceDetails(FoodPlaceDetailFragment fragment) {
+        android.app.FragmentManager fm = ((Activity) context).getFragmentManager();
+        android.app.FragmentTransaction ft = fm.beginTransaction();
+        ft.remove(fragment);
+        ft.commit();
     }
 
-    public void setIsLoading(boolean bool) {
-        mIsLoading = bool;
-    }
-
-    public static boolean ifReachEnd() {
-        return mIsReachEnd;
-    }
-
-    public static void setIsReachEnd(boolean bool) {
-        mIsReachEnd = bool;
+    private void setGoogleRatingBar(ViewHolder holder) {
+        if (holder.foodPlace.getGoogleRating().length() > 0) {
+            holder.ratingView.setRating(Float.parseFloat(holder.foodPlace.getGoogleRating()));
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mNameView;
-        public final TextView mAddressView;
-        public final TextView mAppRatingView;
-        public final MapView mMapView;
-        public final RatingBar mRatingView;
-        public final ImageView mPhotoView;
-        public final ImageButton mLikeButton;
-        public final ImageButton mDislikeButton;
+        public FoodPlace foodPlace;
+        public final View view;
+        public final TextView nameView;
+        public final RatingBar ratingView;
 
-        public FoodPlace mPlace;
+//        public final TextView appRatingView;
+//        public final TextView addressView;
+//        public final MapView mapView;
+//        public final ImageView photoView;
+//        public final ImageButton likeBtn;
+//        public final ImageButton dislikeBtn;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
-            mNameView = view.findViewById(R.id.food_place_item_name);
-            mAddressView = view.findViewById(R.id.food_place_item_address);
-            mAppRatingView = view.findViewById(R.id.food_place_item_in_app_rating);
-            mRatingView = view.findViewById(R.id.food_place_item_rating_bar);
-            mMapView = view.findViewById(R.id.food_place_item_map);
-            mPhotoView = view.findViewById(R.id.food_place_item_image);
-            mLikeButton = view.findViewById(R.id.food_place_item_like_button);
-            mDislikeButton = view.findViewById(R.id.food_place_item_dislike_button);
+            this.view = view;
+            nameView = view.findViewById(R.id.food_place_item_name);
+            ratingView = view.findViewById(R.id.food_place_item_rating_bar);
+
+//            appRatingView = view.findViewById(R.id.food_place_item_in_app_rating);
+//            addressView = view.findViewById(R.id.food_place_item_address);
+//            mapView = view.findViewById(R.id.food_place_item_map);
+//            photoView = view.findViewById(R.id.food_place_item_img);
+//            likeBtn = view.findViewById(R.id.food_place_item_like_btn);
+//            dislikeBtn = view.findViewById(R.id.food_place_item_dislike_btn);
         }
     }
 
-    public static void downloadPhoto(final ImageView imageView, String url) {
-        Bitmap photo = null;
-        try {
-            InputStream in = new java.net.URL(url).openStream();
-            photo = BitmapFactory.decodeStream(in);
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
-        }
-        if (photo != null) {
-            imageView.setImageBitmap(photo);
-        }
+    public interface Listener {
+
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 }
