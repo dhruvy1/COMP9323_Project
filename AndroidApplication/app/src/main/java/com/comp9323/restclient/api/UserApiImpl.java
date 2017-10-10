@@ -18,6 +18,8 @@ import retrofit2.Response;
 
 
 public class UserApiImpl {
+    private static final String TAG = "UserApiImpl";
+
     private static final UserApi api = RestClient.getClient().create(UserApi.class);
 
     public static boolean postUser(String username) {
@@ -26,22 +28,6 @@ public class UserApiImpl {
 
     public static boolean deleteUser() {
         return deleteUser(DataHolder.getInstance().getUser().getId());
-    }
-
-    public static boolean patchUser(HashMap<String, String> couples) {
-        //create new user template
-        int Id = DataHolder.getInstance().getUser().getId();
-        User templateUser = new User();
-        for (String item : couples.keySet()) {
-            String value = couples.get(item);
-            if (item.equals("username")) {
-                templateUser.setUsername(value);
-            } else if (item.equals("deviceid")) {
-                templateUser.setDeviceId(value);
-            }
-        }
-
-        return patchUser(Id, templateUser);
     }
 
     public static boolean putUser(HashMap<String, String> couples) {
@@ -60,8 +46,24 @@ public class UserApiImpl {
         return putUser(userSelf.getId(), userSelf);
     }
 
+    public static boolean patchUser(HashMap<String, String> couples) {
+        //create new user template
+        int Id = DataHolder.getInstance().getUser().getId();
+        User templateUser = new User();
+        for (String item : couples.keySet()) {
+            String value = couples.get(item);
+            if (item.equals("username")) {
+                templateUser.setUsername(value);
+            } else if (item.equals("deviceid")) {
+                templateUser.setDeviceId(value);
+            }
+        }
+
+        return patchUser(Id, templateUser);
+    }
+
 //    public static boolean getUser(int id) {
-//        Log.v("Rest Call", "Start Get User");
+//        Log.v(TAG, "Start Get User");
 //        final boolean[] ifSuccess = {false};
 //        apiInterface.getUser(id).enqueue(new Callback<User>() {
 //            @Override
@@ -71,12 +73,12 @@ public class UserApiImpl {
 //                Log.d("Rest Debug print", user.toString());
 //                SingletonDataHolder.getInstance().addUser(user); // TODO need to store it!
 //                ifSuccess[0] = true;
-//                Log.v("Rest Call", "End Get User");
+//                Log.v(TAG, "End Get User");
 //            }
 //
 //            @Override
 //            public void onFailure(Call<User> call, Throwable t) {
-//                Log.d("REST CALL", "~~FAILED~~");
+//                Log.d(TAG, "~~FAILED~~");
 //                call.cancel();
 //            }
 //        });
@@ -84,12 +86,12 @@ public class UserApiImpl {
 //    }
 
 //    public static boolean getUsers() {
-//        Log.v("Rest Call", "Start Load All User");
+//        Log.v(TAG, "Start Load All User");
 //        final boolean[] ifSuccess = {false};
 //        apiInterface.getUsers().enqueue(new Callback<Vector<User>>() {
 //            @Override
 //            public void onResponse(Call<Vector<User>> call, Response<Vector<User>> response) {
-//                Log.d("Rest Call", "Is response success? " + response.isSuccessful());
+//                Log.d(TAG, "Is response success? " + response.isSuccessful());
 //                Vector<User> users = response.body();
 //                if (users != null) {
 //                    SingletonDataHolder.getInstance().addUsers(users);
@@ -98,12 +100,12 @@ public class UserApiImpl {
 //                        Log.d("Rest Debug Print", u.toString());
 //                    }
 //                }
-//                Log.v("Rest Call", "End get User list");
+//                Log.v(TAG, "End get User list");
 //            }
 //
 //            @Override
 //            public void onFailure(Call<Vector<User>> call, Throwable t) {
-//                Log.d("Rest Call", "~~FAILED~~");
+//                Log.d(TAG, "~~FAILED~~");
 //                call.cancel();
 //            }
 //        });
@@ -112,7 +114,7 @@ public class UserApiImpl {
 
     private static boolean postUser(User user) {
         //final DataHolder DH = DataHolder.getInstance();
-        Log.v("Rest Call", "Start Create User");
+        Log.v(TAG, "Start Create User");
         final boolean[] ifSuccess = {false};
         final User[] users = new User[1];
         api.postUser(user).enqueue(new Callback<User>() {
@@ -133,12 +135,12 @@ public class UserApiImpl {
                 ifSuccess[0] = editor.commit();
 
                 users[0] = user;
-                Log.v("Rest Call", "End Create User, commiting:" + ifSuccess[0]);
+                Log.v(TAG, "End Create User, commiting:" + ifSuccess[0]);
             }
 
             @Override
             public void onFailure(Call call, Throwable t) {
-                Log.d("REST CALL", "~~FAILED~~");
+                Log.d(TAG, "~~FAILED~~");
                 users[0] = new User();
                 call.cancel();
             }
@@ -153,19 +155,19 @@ public class UserApiImpl {
     }
 
     private static boolean deleteUser(int id) {
-        Log.v("Rest Call", "Start Delete User (self)");
+        Log.v(TAG, "Start Delete User (self)");
         final boolean[] ifSuccess = {false};
         api.deleteUser(id).enqueue(new Callback<Response<Void>>() {
             @Override
             public void onResponse(Call<Response<Void>> call, Response<Response<Void>> response) {
                 Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
                 ifSuccess[0] = response.isSuccessful();
-                Log.v("Rest Call", "End Delete User(self)");
+                Log.v(TAG, "End Delete User(self)");
             }
 
             @Override
             public void onFailure(Call<Response<Void>> call, Throwable t) {
-                Log.d("REST CALL", "~~FAILED~~");
+                Log.d(TAG, "~~FAILED~~");
                 call.cancel();
             }
         });
@@ -174,19 +176,19 @@ public class UserApiImpl {
     }
 
     private static boolean putUser(int id, User user) {
-        Log.v("Rest Call", "start Edit User");
+        Log.v(TAG, "start Edit User");
         final boolean[] ifSuccess = {false};
         api.putUser(id, user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
                 ifSuccess[0] = response.isSuccessful();
-                Log.v("Rest Call", "End Edit User");
+                Log.v(TAG, "End Edit User");
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.d("REST CALL", "~~FAILED~~");
+                Log.d(TAG, "~~FAILED~~");
                 call.cancel();
             }
         });
@@ -195,19 +197,19 @@ public class UserApiImpl {
     }
 
     private static boolean patchUser(int id, User user) {
-        Log.v("Rest Call", "start Edit Fields");
+        Log.v(TAG, "start Edit Fields");
         final boolean[] ifSuccess = {false};
         api.patchUser(id, user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 Log.d("LOG_TAG", "Is response success? " + response.isSuccessful());
                 ifSuccess[0] = response.isSuccessful();
-                Log.v("Rest Call", "End Edit Fields");
+                Log.v(TAG, "End Edit Fields");
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.d("REST CALL", "~~FAILED~~");
+                Log.d(TAG, "~~FAILED~~");
                 call.cancel();
             }
         });

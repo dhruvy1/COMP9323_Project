@@ -30,7 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Listener {
     private static final String TAG = "FoodPlaceFragment";
 
-    private static final int SECONDS_TO_POLL_SERVER = 1;
+    private static final int MILLISECONDS_TO_POLL_SERVER = 15000;
 
     private FoodPlaceRvAdapter adapter;
     private RecyclerView recyclerView;
@@ -86,12 +86,12 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
 
     private void getFoodPlaces() {
         FoodPlaceApi api = RestClient.getClient().create(FoodPlaceApi.class);
-        compositeDisposable.clear();
         compositeDisposable.add(api.getFoodPlaces()
                 .repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
                     @Override
                     public ObservableSource<?> apply(@NonNull Observable<Object> objectObservable) throws Exception {
-                        return objectObservable.delay(SECONDS_TO_POLL_SERVER, TimeUnit.SECONDS);
+                        // polls server every # seconds
+                        return objectObservable.delay(MILLISECONDS_TO_POLL_SERVER, TimeUnit.MILLISECONDS);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -115,16 +115,14 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
     @Override
     public void onFoodPlaceLikeBtnClicked(Integer id, String rating) {
         FoodPlace foodPlace = new FoodPlace();
-        foodPlace.setRating(Integer.toString(Integer.parseInt(rating) + 1));
-        FoodPlaceApiImpl fpai = new FoodPlaceApiImpl();
-        fpai.patchFoodPlace(id, foodPlace);
+        foodPlace.setRating(rating);
+        FoodPlaceApiImpl.patchFoodPlace(id, foodPlace);
     }
 
     @Override
     public void onFoodPlaceDislikeBtnClicked(Integer id, String rating) {
         FoodPlace foodPlace = new FoodPlace();
-        foodPlace.setRating(Integer.toString(Integer.parseInt(rating) - 1));
-        FoodPlaceApiImpl fpai = new FoodPlaceApiImpl();
-        fpai.patchFoodPlace(id, foodPlace);
+        foodPlace.setRating(rating);
+        FoodPlaceApiImpl.patchFoodPlace(id, foodPlace);
     }
 }

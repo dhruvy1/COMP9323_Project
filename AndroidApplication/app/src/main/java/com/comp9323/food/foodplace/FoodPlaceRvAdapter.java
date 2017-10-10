@@ -68,19 +68,18 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     private void showFoodPlaceDetails(ViewHolder holder, int position) {
         if (expandedList.contains(position)) {
             holder.foodPlaceItemDetailContainer.setVisibility(View.VISIBLE);
-            initFoodPlaceDetails(holder);
+            initFoodPlaceDetails(holder, position);
         } else {
             holder.foodPlaceItemDetailContainer.setVisibility(View.GONE);
         }
     }
 
-    private void initFoodPlaceDetails(final ViewHolder holder) {
+    private void initFoodPlaceDetails(final ViewHolder holder, final int position) {
         // set image
         if (holder.foodPlace.getPhotoLink().length() > 0) {
             Glide.with(holder.photoView.getContext()).load(holder.foodPlace.getPhotoLink()).into(holder.photoView);
         }
 
-        // set texts
         holder.addressView.setText(holder.foodPlace.getLocation());
         holder.appRatingView.setText(holder.foodPlace.getRating());
 
@@ -88,7 +87,9 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                holder.foodPlace.setRating(Integer.toString(Integer.parseInt(holder.foodPlace.getRating()) + 1));
                 listener.onFoodPlaceLikeBtnClicked(holder.foodPlace.getId(), holder.foodPlace.getRating());
+                notifyItemChanged(position);
             }
         });
 
@@ -96,7 +97,9 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                holder.foodPlace.setRating(Integer.toString(Integer.parseInt(holder.foodPlace.getRating()) - 1));
                 listener.onFoodPlaceDislikeBtnClicked(holder.foodPlace.getId(), holder.foodPlace.getRating());
+                notifyItemChanged(position);
             }
         });
 

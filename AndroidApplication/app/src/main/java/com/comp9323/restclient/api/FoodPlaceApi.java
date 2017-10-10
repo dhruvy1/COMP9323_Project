@@ -1,7 +1,6 @@
 package com.comp9323.restclient.api;
 
 import com.comp9323.data.beans.FoodPlace;
-import com.comp9323.data.beans.FoodPlaceResponse;
 
 import java.util.List;
 
@@ -15,7 +14,6 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * Created by thomas on 2/10/2017.

@@ -1,7 +1,6 @@
 package com.comp9323.restclient.api;
 
 import com.comp9323.data.beans.Event;
-import com.comp9323.data.beans.EventResponse;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ import retrofit2.http.Path;
  */
 
 public interface EventApi {
-
     @GET("events/{id}")
     Call<Event> getEvent(@Path("id") int eventId);
 

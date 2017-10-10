@@ -34,7 +34,7 @@ import io.reactivex.schedulers.Schedulers;
 public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.Listener {
     private static final String TAG = "FoodDealFragment";
 
-    private static final int SECONDS_TO_POLL_SERVER = 1;
+    private static final int MILLISECONDS_TO_POLL_SERVER = 15000;
 
     private FoodDealRvAdapter adapter;
     private RecyclerView recyclerView;
@@ -96,7 +96,7 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
                     @Override
                     public ObservableSource<?> apply(@NonNull Observable<Object> objectObservable) throws Exception {
                         // polls server every # seconds
-                        return objectObservable.delay(SECONDS_TO_POLL_SERVER, TimeUnit.SECONDS);
+                        return objectObservable.delay(MILLISECONDS_TO_POLL_SERVER, TimeUnit.MILLISECONDS);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread()) // indicate the subscribe will be on the main thread
@@ -122,16 +122,14 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     public void onFoodDealLikeBtnClicked(Integer id, String rating) {
         FoodDeal foodDeal = new FoodDeal();
         foodDeal.setRating(Integer.toString(Integer.parseInt(rating) + 1));
-        FoodDealApiImpl fdai = new FoodDealApiImpl();
-        fdai.patchFoodDeal(id, foodDeal);
+        FoodDealApiImpl.patchFoodDeal(id, foodDeal);
     }
 
     @Override
     public void onFoodDealDislikeBtnClicked(Integer id, String rating) {
         FoodDeal foodDeal = new FoodDeal();
         foodDeal.setRating(Integer.toString(Integer.parseInt(rating) - 1));
-        FoodDealApiImpl fdai = new FoodDealApiImpl();
-        fdai.patchFoodDeal(id, foodDeal);
+        FoodDealApiImpl.patchFoodDeal(id, foodDeal);
     }
 
     @Override
