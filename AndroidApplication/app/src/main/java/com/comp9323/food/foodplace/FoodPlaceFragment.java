@@ -14,9 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.comp9323.asynctask.FoodPlaceAsyncTask;
-import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.data.DataHolder;
+import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.main.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,31 +51,31 @@ public class FoodPlaceFragment extends Fragment {
                     int totalItemCount = linearLayoutManager.getItemCount();
                     int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                     int visibleThreshold = 1;
-                    if (!adapter.ifLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                        page++;
-                        new FoodPlaceAsyncTask(adapter).execute(FoodPlaceAsyncTask.GET_LIST, page + "");
-                    }
+//                    if (!adapter.ifLoading() && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+//                        page++;
+//                        new FoodPlaceAsyncTask(adapter).execute(FoodPlaceAsyncTask.GET_LIST, page + "");
+//                    }
                 }
             }
         });
 
         //set refresh listener
         swipeRefreshLayout = view.findViewById(R.id.food_place_swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Log.d("Refresh", "call onRefresh");
-                DataHolder.getInstance().clearFoodPlaceList();
-                FoodPlaceRvAdapter.setIsReachEnd(false);
-                pullList(1);
-                Log.d("Refresh", "end onRefresh");
-            }
-        });
-
-        //pull item from server after launch if no item in the list
-        if (DataHolder.getInstance().getFoodPlaceList().size() == 0) {
-            pullList(1);
-        }
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                Log.d("Refresh", "call onRefresh");
+//                DataHolder.getInstance().clearFoodPlaceList();
+//                FoodPlaceRvAdapter.setIsReachEnd(false);
+//                pullList(1);
+//                Log.d("Refresh", "end onRefresh");
+//            }
+//        });
+//
+//        //pull item from server after launch if no item in the list
+//        if (DataHolder.getInstance().getFoodPlaceList().size() == 0) {
+//            pullList(1);
+//        }
 
         return view;
     }
@@ -136,25 +135,25 @@ public class FoodPlaceFragment extends Fragment {
 
                     //set voting button
                     ImageButton dislike = view.findViewById(R.id.food_place_item_dislike_button);
-                    if (!dislike.hasOnClickListeners())
-                        dislike.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                int id = place.getId();
-                                new FoodPlaceAsyncTask(adapter).execute(FoodPlaceAsyncTask.RATING, id + "", "-1");
-                            }
-                        });
-
-                    ImageButton like = view.findViewById(R.id.food_place_item_like_button);
-                    if (!like.hasOnClickListeners()) {
-                        like.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                int id = place.getId();
-                                new FoodPlaceAsyncTask(adapter).execute(FoodPlaceAsyncTask.RATING, id + "", "1");
-                            }
-                        });
-                    }
+//                    if (!dislike.hasOnClickListeners())
+//                        dislike.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                int id = place.getId();
+//                                new FoodPlaceAsyncTask(adapter).execute(FoodPlaceAsyncTask.RATING, id + "", "-1");
+//                            }
+//                        });
+//
+//                    ImageButton like = view.findViewById(R.id.food_place_item_like_button);
+//                    if (!like.hasOnClickListeners()) {
+//                        like.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                int id = place.getId();
+//                                new FoodPlaceAsyncTask(adapter).execute(FoodPlaceAsyncTask.RATING, id + "", "1");
+//                            }
+//                        });
+//                    }
                 } else {
                     detail.setVisibility(View.GONE);
                     expandedView[0] = null;
@@ -164,11 +163,11 @@ public class FoodPlaceFragment extends Fragment {
         adapter = new FoodPlaceRvAdapter(listener);
     }
 
-    private void pullList(int newPage) {
-        page = newPage;
-        new FoodPlaceAsyncTask(adapter).execute(FoodPlaceAsyncTask.GET_LIST, newPage + "");
-        swipeRefreshLayout.setRefreshing(false);
-    }
+//    private void pullList(int newPage) {
+//        page = newPage;
+//        new FoodPlaceAsyncTask(adapter).execute(FoodPlaceAsyncTask.GET_LIST, newPage + "");
+//        swipeRefreshLayout.setRefreshing(false);
+//    }
 
     public interface Listener {
         // TODO: Update argument type and name

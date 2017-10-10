@@ -3,6 +3,8 @@ package com.comp9323.restclient.api;
 import com.comp9323.data.beans.FoodDealResponse;
 import com.comp9323.data.beans.FoodDeal;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -24,7 +26,7 @@ public interface FoodDealApi {
     Call<FoodDeal> getFoodDeal(@Path("id") int id);
 
     @GET("/api/food_deals/all/")
-    Observable<FoodDealResponse> getFoodDeals(@Query("limit") int limit, @Query("offset") int offset);
+    Observable<List<FoodDeal>> getFoodDeals();
 
     @POST("/api/food_deals/")
     Call<FoodDeal> postFoodDeal(@Body FoodDeal foodDeal);

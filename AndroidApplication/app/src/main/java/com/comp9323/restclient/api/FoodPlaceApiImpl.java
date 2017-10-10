@@ -101,43 +101,43 @@ public class FoodPlaceApiImpl {
         return ifSuccess[0];
     }
 
-    public static boolean getFoodPlaces(int page) {
-        Log.v("Rest Call", "Start get Food place");
-        final boolean[] ifSuccess = {false};
-        final boolean[] ifNdone = {true};
-        api.getFoodPlaces(20, (page - 1) * 20).enqueue(new Callback<FoodPlaceResponse>() {
-            @Override
-            public void onResponse(Call<FoodPlaceResponse> call, Response<FoodPlaceResponse> response) {
-                Log.d("Rest Call", "Is response success? " + response.isSuccessful());
-                FoodPlaceResponse newPackage = response.body();
-                if (newPackage != null) {
-                    if (newPackage.getResults().size() != 0)
-                        ifSuccess[0] = response.isSuccessful();
-                    if (newPackage.getNextUrl() == null || newPackage.getNextUrl().compareTo("null") == 0)
-                        FoodPlaceRvAdapter.setIsReachEnd(true);
-                    for (FoodPlace fd : newPackage.getResults()) {
-                        DataHolder.getInstance().addFoodPlace(fd);
-                        Log.d("Rest Debug Print", fd.getId() + "");
-                    }
-                }
-                ifNdone[0] = false;
-                Log.v("Rest Call", "End pulling Food place");
-            }
-
-            @Override
-            public void onFailure(Call<FoodPlaceResponse> call, Throwable t) {
-                Log.d("Rest Fail", "" + t.getStackTrace().toString());
-                Log.d("Rest Call", "~~FAILED~~");
-                ifNdone[0] = false;
-                call.cancel();
-            }
-        });
-        while (ifNdone[0]) {
-            Log.d("Rest call", "Size of list :" + DataHolder.getInstance().getFoodPlaceList().size());
-        }
-
-        return ifSuccess[0];
-    }
+//    public static boolean getFoodPlaces(int page) {
+//        Log.v("Rest Call", "Start get Food place");
+//        final boolean[] ifSuccess = {false};
+//        final boolean[] ifNdone = {true};
+//        api.getFoodPlaces(20, (page - 1) * 20).enqueue(new Callback<FoodPlaceResponse>() {
+//            @Override
+//            public void onResponse(Call<FoodPlaceResponse> call, Response<FoodPlaceResponse> response) {
+//                Log.d("Rest Call", "Is response success? " + response.isSuccessful());
+//                FoodPlaceResponse newPackage = response.body();
+//                if (newPackage != null) {
+//                    if (newPackage.getResults().size() != 0)
+//                        ifSuccess[0] = response.isSuccessful();
+//                    if (newPackage.getNextUrl() == null || newPackage.getNextUrl().compareTo("null") == 0)
+//                        FoodPlaceRvAdapter.setIsReachEnd(true);
+//                    for (FoodPlace fd : newPackage.getResults()) {
+//                        DataHolder.getInstance().addFoodPlace(fd);
+//                        Log.d("Rest Debug Print", fd.getId() + "");
+//                    }
+//                }
+//                ifNdone[0] = false;
+//                Log.v("Rest Call", "End pulling Food place");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<FoodPlaceResponse> call, Throwable t) {
+//                Log.d("Rest Fail", "" + t.getStackTrace().toString());
+//                Log.d("Rest Call", "~~FAILED~~");
+//                ifNdone[0] = false;
+//                call.cancel();
+//            }
+//        });
+//        while (ifNdone[0]) {
+//            Log.d("Rest call", "Size of list :" + DataHolder.getInstance().getFoodPlaceList().size());
+//        }
+//
+//        return ifSuccess[0];
+//    }
 
     private static boolean postFoodPlace(FoodPlace fp) {
         Log.v("Rest Call", "Start Create Food Place");

@@ -12,18 +12,22 @@ import com.comp9323.data.beans.Event;
 import com.comp9323.data.beans.EventResponse;
 import com.comp9323.main.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHolder> {
     private static final String TAG = "EventRvAdapter";
 
     private final EventFragment.Listener mListener;
-    private EventResponse eventResponse = new EventResponse();
+    private List<Event> events;
 
     public EventRvAdapter(EventFragment.Listener listener) {
         mListener = listener;
+        events = new ArrayList<>();
     }
 
-    public void setEventResponse(EventResponse eventResponse) {
-        this.eventResponse = eventResponse;
+    public void setEventResponse(List<Event> events) {
+        this.events = events;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mItem = eventResponse.getResults().get(position);
+        holder.mItem = events.get(position);
 
         holder.mEventNameView.setText(holder.mItem.getName());
         holder.mEventLocationView.setText(holder.mItem.getPlaceName() + ", " + holder.mItem.getStreet());
@@ -60,7 +64,7 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return eventResponse.getResults().size();
+        return events.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

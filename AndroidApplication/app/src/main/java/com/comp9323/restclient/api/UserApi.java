@@ -2,6 +2,7 @@ package com.comp9323.restclient.api;
 
 import com.comp9323.data.beans.User;
 
+import java.util.List;
 import java.util.Vector;
 
 import retrofit2.Call;
@@ -23,7 +24,7 @@ public interface UserApi {
     Call<User> getUser(@Path("id") int id);
 
     @GET("/api/mobile_users/all/")
-    Call<Vector<User>> getUsers();
+    Call<List<User>> getUsers();
 
     @POST("/api/mobile_users/")
     Call<User> postUser(@Body User user);
