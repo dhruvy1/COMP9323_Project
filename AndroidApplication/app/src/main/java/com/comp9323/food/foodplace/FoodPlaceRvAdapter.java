@@ -1,13 +1,10 @@
 package com.comp9323.food.foodplace;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,12 +109,9 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 googleMap.clear();
-                LatLng position = new LatLng(Double.parseDouble(holder.foodPlace.getLatitude()), Double.parseDouble(holder.foodPlace.getLongitude()));
-                googleMap.addMarker(
-                        new MarkerOptions()
-                                .position(position)
-                                .title(holder.foodPlace.getName())
-                );
+                LatLng position = new LatLng(Double.parseDouble(holder.foodPlace.getLatitude()),
+                        Double.parseDouble(holder.foodPlace.getLongitude()));
+                googleMap.addMarker(new MarkerOptions().position(position).title(holder.foodPlace.getName()));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 16.0f));
             }
