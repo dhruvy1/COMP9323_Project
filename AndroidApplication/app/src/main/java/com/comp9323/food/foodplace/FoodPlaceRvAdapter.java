@@ -2,17 +2,30 @@ package com.comp9323.food.foodplace;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.main.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +35,15 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
 
     private Context context;
     private Listener listener;
+    private Bundle savedInstance;
+
     private List<FoodPlace> foodPlaces;
-    private SparseArray<FoodPlaceDetailFragment> expandedList;
+    private List<Integer> expandedList;
 
     public FoodPlaceRvAdapter(Context context) {
         this.context = context;
         foodPlaces = new ArrayList<>();
-        expandedList = new SparseArray<>();
+        expandedList = new ArrayList<>();
     }
 
     public void setFoodPlaces(List<FoodPlace> foodPlaces) {
@@ -50,20 +65,75 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         setGoogleRatingBar(holder);
 
         initFoodPlaceViewClick(holder, position);
+        showFoodPlaceDetails(holder, position);
+    }
 
+    private void showFoodPlaceDetails(ViewHolder holder, int position) {
+        if (expandedList.contains(position)) {
+            holder.foodPlaceItemDetailContainer.setVisibility(View.VISIBLE);
+            initFoodPlaceDetails(holder);
+        } else {
+            holder.foodPlaceItemDetailContainer.setVisibility(View.GONE);
+        }
+    }
 
-//        holder.appRatingView.setText(holder.foodPlace.getRating());
-//        holder.addressView.setText(holder.foodPlace.getLocation());
+    private void initFoodPlaceDetails(final ViewHolder holder) {
+        // set image
+        if (holder.foodPlace.getPhotoLink().length() > 0) {
+            Glide.with(holder.photoView.getContext()).load(holder.foodPlace.getPhotoLink()).into(holder.photoView);
+        }
 
+        // set texts
+        holder.addressView.setText(holder.foodPlace.getLocation());
+        holder.appRatingView.setText(holder.foodPlace.getRating());
 
-        //set photo
-//        if (holder.foodPlace.getPhotoLink().length() > 0) {
-//            downloadPhoto(holder.photoView, holder.foodPlace.getPhotoLink());
-//        }
+        // set like btn onclick listener
+        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onFoodPlaceLikeBtnClicked(holder.foodPlace.getId(), holder.foodPlace.getRating());
+            }
+        });
 
-//        if (holder.foodPlace.getPhotoLink().length() > 0) {
-//            Glide.with(holder.photoView.getContext()).load(holder.foodPlace.getPhotoLink()).into(holder.photoView);
-//        }
+        // set dislike btn onclick listener
+        holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onFoodPlaceDislikeBtnClicked(holder.foodPlace.getId(), holder.foodPlace.getRating());
+            }
+        });
+
+        initMap(holder);
+    }
+
+    private void initMap(final ViewHolder holder) {
+        MapView mapview = holder.mapView;
+        mapview.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                googleMap.clear();
+                LatLng position = new LatLng(Double.parseDouble(holder.foodPlace.getLatitude()), Double.parseDouble(holder.foodPlace.getLongitude()));
+                googleMap.addMarker(
+                        new MarkerOptions()
+                                .position(position)
+                                .title(holder.foodPlace.getName())
+                );
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, 16.0f));
+            }
+        });
+        mapview.onCreate(savedInstance);
+        mapview.onStart();
+
+        mapview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse("geo:" + holder.foodPlace.getLatitude() + "," + holder.foodPlace.getLongitude());
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                context.startActivity(mapIntent);
+            }
+        });
     }
 
     @Override
@@ -75,32 +145,14 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (expandedList.get(position) != null) {
-                    // remove from list
-                    removeFoodPlaceDetails(expandedList.get(position));
+                if (expandedList.contains(position)) {
+                    expandedList.remove(Integer.valueOf(position));
                 } else {
-                    // add to list
-                    FoodPlaceDetailFragment fragment = new FoodPlaceDetailFragment();
-                    fragment.setFoodPlace(holder.foodPlace);
-                    expandedList.put(position, fragment);
-                    showFoodPlaceDetails(fragment);
+                    expandedList.add(position);
                 }
+                showFoodPlaceDetails(holder, position);
             }
         });
-    }
-
-    private void showFoodPlaceDetails(FoodPlaceDetailFragment fragment) {
-        android.app.FragmentManager fm = ((Activity) context).getFragmentManager();
-        android.app.FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.food_place_item_detail_placeholder, fragment);
-        ft.commit();
-    }
-
-    private void removeFoodPlaceDetails(FoodPlaceDetailFragment fragment) {
-        android.app.FragmentManager fm = ((Activity) context).getFragmentManager();
-        android.app.FragmentTransaction ft = fm.beginTransaction();
-        ft.remove(fragment);
-        ft.commit();
     }
 
     private void setGoogleRatingBar(ViewHolder holder) {
@@ -109,18 +161,24 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         }
     }
 
+    public void setBundle(Bundle savedInstance) {
+        this.savedInstance = savedInstance;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public FoodPlace foodPlace;
         public final View view;
         public final TextView nameView;
         public final RatingBar ratingView;
 
-//        public final TextView appRatingView;
-//        public final TextView addressView;
-//        public final MapView mapView;
-//        public final ImageView photoView;
-//        public final ImageButton likeBtn;
-//        public final ImageButton dislikeBtn;
+        public LinearLayout foodPlaceItemDetailContainer;
+
+        public final ImageView photoView;
+        public final TextView addressView;
+        public final TextView appRatingView;
+        public final ImageButton likeBtn;
+        public final ImageButton dislikeBtn;
+        public final MapView mapView;
 
         public ViewHolder(View view) {
             super(view);
@@ -128,17 +186,21 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
             nameView = view.findViewById(R.id.food_place_item_name);
             ratingView = view.findViewById(R.id.food_place_item_rating_bar);
 
-//            appRatingView = view.findViewById(R.id.food_place_item_in_app_rating);
-//            addressView = view.findViewById(R.id.food_place_item_address);
-//            mapView = view.findViewById(R.id.food_place_item_map);
-//            photoView = view.findViewById(R.id.food_place_item_img);
-//            likeBtn = view.findViewById(R.id.food_place_item_like_btn);
-//            dislikeBtn = view.findViewById(R.id.food_place_item_dislike_btn);
+            foodPlaceItemDetailContainer = view.findViewById(R.id.food_place_item_detail_container);
+
+            photoView = view.findViewById(R.id.food_place_item_img);
+            addressView = view.findViewById(R.id.food_place_item_address);
+            appRatingView = view.findViewById(R.id.food_place_item_in_app_rating);
+            likeBtn = view.findViewById(R.id.food_place_item_like_btn);
+            dislikeBtn = view.findViewById(R.id.food_place_item_dislike_btn);
+            mapView = view.findViewById(R.id.food_place_item_map);
         }
     }
 
     public interface Listener {
+        void onFoodPlaceLikeBtnClicked(Integer id, String rating);
 
+        void onFoodPlaceDislikeBtnClicked(Integer id, String rating);
     }
 
     public void setListener(Listener listener) {

@@ -15,6 +15,7 @@ import retrofit2.Response;
 
 public class FoodPlaceApiImpl {
     private final static String TAG = "FoodPlaceApiImpl";
+
     private static final FoodPlaceApi api = RestClient.getClient().create(FoodPlaceApi.class);
 
 //    public static boolean postFoodPlace(String name, String location, String priceLevel,
@@ -208,24 +209,21 @@ public class FoodPlaceApiImpl {
 //        return ifSuccess[0];
 //    }
 
-    private static boolean patchFoodPlace(int id, FoodPlace fp) {
-        Log.v(TAG, "start Edit FoodPlace By Fields");
-        final boolean[] ifSuccess = {false};
-        api.patchFoodPlace(id, fp).enqueue(new Callback<FoodPlace>() {
+    public void patchFoodPlace(int id, FoodPlace foodPlace) {
+        Log.v(TAG, "Start Patching Food Place");
+        api.patchFoodPlace(id, foodPlace).enqueue(new Callback<FoodPlace>() {
             @Override
             public void onResponse(Call<FoodPlace> call, Response<FoodPlace> response) {
-                Log.d(TAG, "Is response success? " + response.isSuccessful());
-                ifSuccess[0] = response.isSuccessful();
-                Log.v(TAG, "End Edit FoodPlace By Fields");
+                Log.d(TAG, "Response is successful? " + response.isSuccessful());
+                Log.v(TAG, "~~End Patching Food Place~~");
             }
 
             @Override
             public void onFailure(Call<FoodPlace> call, Throwable t) {
                 Log.d(TAG, "~~FAILED~~");
+                Log.d(TAG, t.toString());
                 call.cancel();
             }
         });
-
-        return ifSuccess[0];
     }
 }

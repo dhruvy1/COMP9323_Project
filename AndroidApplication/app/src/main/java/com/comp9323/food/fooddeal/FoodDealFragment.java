@@ -122,16 +122,16 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     public void onFoodDealLikeBtnClicked(Integer id, String rating) {
         FoodDeal foodDeal = new FoodDeal();
         foodDeal.setRating(Integer.toString(Integer.parseInt(rating) + 1));
-        FoodDealApiImpl fai = new FoodDealApiImpl();
-        fai.patchFoodDeal(id, foodDeal);
+        FoodDealApiImpl fdai = new FoodDealApiImpl();
+        fdai.patchFoodDeal(id, foodDeal);
     }
 
     @Override
     public void onFoodDealDislikeBtnClicked(Integer id, String rating) {
         FoodDeal foodDeal = new FoodDeal();
         foodDeal.setRating(Integer.toString(Integer.parseInt(rating) - 1));
-        FoodDealApiImpl fai = new FoodDealApiImpl();
-        fai.patchFoodDeal(id, foodDeal);
+        FoodDealApiImpl fdai = new FoodDealApiImpl();
+        fdai.patchFoodDeal(id, foodDeal);
     }
 
     @Override
