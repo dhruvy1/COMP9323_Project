@@ -16,16 +16,16 @@ public class FoodPlaceApiImpl {
     private static final FoodPlaceApi api = RestClient.getClient().create(FoodPlaceApi.class);
 
     public static void postFoodPlace(String name, String location, String priceLevel,
-                                        String googleRating, String latitude, String longitude,
-                                        String photoLink, String rating, String createdBy) {
+                                     String googleRating, String latitude, String longitude,
+                                     String photoLink, String rating, String createdBy) {
         FoodPlace fp = new FoodPlace(name, location, priceLevel, googleRating, latitude, longitude, photoLink, rating, createdBy);
 
         postFoodPlace(fp);
     }
 
     public static void putFoodPlace(int id, String name, String location, String priceLevel,
-                                       String googleRating, String latitude, String longitude,
-                                       String photoLink, String rating, String createdBy) {
+                                    String googleRating, String latitude, String longitude,
+                                    String photoLink, String rating, String createdBy) {
         FoodPlace fp = new FoodPlace();
         if (name != null && name.length() > 0)
             fp.setName(name);
@@ -50,8 +50,8 @@ public class FoodPlaceApiImpl {
     }
 
     public static void patchFoodPlace(int id, String name, String location, String priceLevel,
-                                         String googleRating, String latitude, String longitude,
-                                         String photoLink, String rating, String createdBy) {
+                                      String googleRating, String latitude, String longitude,
+                                      String photoLink, String rating, String createdBy) {
         FoodPlace template = new FoodPlace();
         if (name != null && name.length() > 0)
             template.setName(name);
