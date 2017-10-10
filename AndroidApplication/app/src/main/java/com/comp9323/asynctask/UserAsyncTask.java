@@ -5,9 +5,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.comp9323.restclient.api.UserApiImpl;
 import com.comp9323.data.DataHolder;
 import com.comp9323.main.MainActivity;
+import com.comp9323.restclient.api.UserApiImpl;
 
 /**
  * Created by thomas on 20/9/2017.

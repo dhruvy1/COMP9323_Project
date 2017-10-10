@@ -35,21 +35,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.main_navigation_event:
                 EventFragment eventFragment = new EventFragment();
                 ft.replace(R.id.main_placeholder, eventFragment);
-                ft.addToBackStack(null);
                 ft.commit();
 
                 return true;
             case R.id.main_navigation_food:
                 FoodContainer fragment = new FoodContainer();
                 ft.replace(R.id.main_placeholder, fragment);
-                ft.addToBackStack(null);
                 ft.commit();
 
                 return true;
             case R.id.main_navigation_qa:
                 QAWebView webView = new QAWebView();
                 ft.replace(R.id.main_placeholder, webView);
-                ft.addToBackStack(null);
                 ft.commit();
 
                 return true;

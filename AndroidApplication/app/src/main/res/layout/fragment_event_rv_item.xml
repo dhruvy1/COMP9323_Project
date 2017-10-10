@@ -76,7 +76,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/event_details"
+                android:id="@+id/event_details_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/event_short"

@@ -34,18 +34,20 @@ import io.reactivex.schedulers.Schedulers;
 public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.Listener {
     private static final String TAG = "FoodDealFragment";
 
-    private RecyclerView recyclerView;
+    private static final int MILLISECONDS_TO_POLL_SERVER = 15000;
+
     private FoodDealRvAdapter adapter;
+    private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    private CompositeDisposable mCompositeDisposable;
+    private CompositeDisposable compositeDisposable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_deal_rv, container, false);
 
-        mCompositeDisposable = new CompositeDisposable();
+        compositeDisposable = new CompositeDisposable();
 
         initRvAdapter();
         initRecyclerView(view);
@@ -59,7 +61,18 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mCompositeDisposable.clear();
+        compositeDisposable.clear();
+    }
+
+    private void initRvAdapter() {
+        adapter = new FoodDealRvAdapter();
+        adapter.setListener(this);
+    }
+
+    private void initRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.food_deal_rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setAdapter(adapter);
     }
 
     private void initSwipeRefreshLayout(View view) {
@@ -75,43 +88,15 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
         });
     }
 
-    private void initRecyclerView(View view) {
-        recyclerView = view.findViewById(R.id.food_deal_rv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        recyclerView.setAdapter(adapter);
-
-        // set scroll listener, used to get more items when user reaches end of list
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                // get the layout manager
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                // get number of food deals currently in the adapter
-                int foodDealCount = adapter.getItemCount();
-                int positionOfLastSeenFoodDeal = linearLayoutManager.findLastVisibleItemPosition();
-                // using 2 to give more time to get data -> smoother scrolling
-                int thresholdToGetMoreItems = 2;
-
-                if (foodDealCount <= positionOfLastSeenFoodDeal + thresholdToGetMoreItems) {
-                    getFoodDeals();
-                }
-            }
-        });
-    }
-
-    private void initRvAdapter() {
-        adapter = new FoodDealRvAdapter();
-        adapter.setListener(this);
-    }
-
     private void getFoodDeals() {
         FoodDealApi api = RestClient.getClient().create(FoodDealApi.class);
-        mCompositeDisposable.clear(); // clear previous async tasks
-        mCompositeDisposable.add(api.getFoodDeals()
+        compositeDisposable.clear(); // clear previous async tasks
+        compositeDisposable.add(api.getFoodDeals()
                 .repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
                     @Override
                     public ObservableSource<?> apply(@NonNull Observable<Object> objectObservable) throws Exception {
-                        return objectObservable.delay(1, TimeUnit.SECONDS); // polls server every # seconds
+                        // polls server every # seconds
+                        return objectObservable.delay(MILLISECONDS_TO_POLL_SERVER, TimeUnit.MILLISECONDS);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread()) // indicate the subscribe will be on the main thread
@@ -119,7 +104,6 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
                 .subscribe(new Consumer<List<FoodDeal>>() { // add a listener to the observable
                     @Override
                     public void accept(List<FoodDeal> foodDeals) throws Exception {
-                        int resultSize = foodDeals.size();
                         updateAdapter(foodDeals); // update adapter
                         if (swipeRefreshLayout.isRefreshing()) {
                             // turn off refresh animation on swipe ups, if its on
@@ -130,7 +114,7 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     }
 
     private void updateAdapter(List<FoodDeal> foodDeals) {
-        adapter.setFoodDealResponse(foodDeals);
+        adapter.setFoodDeals(foodDeals);
         adapter.notifyDataSetChanged();
     }
 
@@ -138,16 +122,14 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     public void onFoodDealLikeBtnClicked(Integer id, String rating) {
         FoodDeal foodDeal = new FoodDeal();
         foodDeal.setRating(Integer.toString(Integer.parseInt(rating) + 1));
-        FoodDealApiImpl fai = new FoodDealApiImpl();
-        fai.patchFoodDeal(id, foodDeal);
+        FoodDealApiImpl.patchFoodDeal(id, foodDeal);
     }
 
     @Override
     public void onFoodDealDislikeBtnClicked(Integer id, String rating) {
         FoodDeal foodDeal = new FoodDeal();
         foodDeal.setRating(Integer.toString(Integer.parseInt(rating) - 1));
-        FoodDealApiImpl fai = new FoodDealApiImpl();
-        fai.patchFoodDeal(id, foodDeal);
+        FoodDealApiImpl.patchFoodDeal(id, foodDeal);
     }
 
     @Override

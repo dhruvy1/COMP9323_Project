@@ -30,7 +30,7 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
         foodDeals = new ArrayList<>();
     }
 
-    public void setFoodDealResponse(List<FoodDeal> foodDeals) {
+    public void setFoodDeals(List<FoodDeal> foodDeals) {
         this.foodDeals = foodDeals;
     }
 

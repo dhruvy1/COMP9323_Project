@@ -31,8 +31,8 @@
 //            String method = strings[0];
 //
 //            if (method.equals(GET_LIST)) {
-////                int pageNumber = Integer.parseInt(strings[1]);
-//                return FoodPlaceApiImpl.getFoodPlaces();
+//                int pageNumber = Integer.parseInt(strings[1]);
+//                return FoodPlaceApiImpl.getFoodPlaces(pageNumber);
 //            } else if (method.equals(RATING)) {
 //                int id = Integer.parseInt(strings[1]);
 //                int rating = Integer.parseInt(strings[2]);

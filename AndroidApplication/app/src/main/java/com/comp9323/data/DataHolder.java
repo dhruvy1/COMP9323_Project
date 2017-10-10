@@ -21,14 +21,10 @@ public class DataHolder {
 
     private User user;
     private Context context;
-    private List<FoodDeal> foodDealList;
-    private final Vector<FoodPlace> foodPlaceList;
     private List<Event> events;
     private boolean eventResponse;
 
     private DataHolder() {
-        foodDealList = new Vector<>();
-        foodPlaceList = new Vector<>();
         events = new Vector<>();
         eventResponse = false;
     }
@@ -58,60 +54,6 @@ public class DataHolder {
     public void setContext(Context context) {
         this.context = context;
     }
-
-    /**
-     * FoodPlace
-     */
-    public FoodPlace getFoodPlace(int Index) {
-        return foodPlaceList.get(Index);
-    }
-
-    public FoodPlace getFoodPlaceWithID(int id) {
-        for (FoodPlace place : foodPlaceList) {
-            if (place.getId() == id)
-                return place;
-        }
-        return null;
-    }
-
-    public void findAndReplaceFoodPlace(FoodPlace fp) {
-        for (int i = 0; i < foodPlaceList.size(); i++) {
-            if (foodPlaceList.get(i).getId() == fp.getId()) {
-                foodPlaceList.set(i, fp);
-            }
-        }
-    }
-
-    public void updateFoodPlaceRating(FoodPlace newfp) {
-        for (int i = 0; i < foodPlaceList.size(); i++) {
-            if (foodPlaceList.get(i).getId() != newfp.getId())
-                continue;
-            foodPlaceList.get(i).setRating(newfp.getRating());
-        }
-    }
-
-    public List<FoodPlace> getFoodPlaceList() {
-        return foodPlaceList;
-    }
-
-    public void addFoodPlace(FoodPlace fp) {
-        foodPlaceList.add(fp);
-    }
-
-    public void addFoodPlaces(List<FoodPlace> fps) {
-        for (FoodPlace fp : fps) {
-            addFoodPlace(fp);
-        }
-    }
-
-    public void removeFoodPlacel(int Index) {
-        foodPlaceList.remove(Index);
-    }
-
-    public void clearFoodPlaceList() {
-        foodPlaceList.clear();
-    }
-
 
     /**
      * Event functions
