@@ -60,59 +60,6 @@ public class DataHolder {
     }
 
     /**
-     * FOOD DEALS
-     */
-    public FoodDeal getFoodDeal(int Index) {
-        return foodDealList.get(Index);
-    }
-
-    public FoodDeal getFoodDealwithID(int id) {
-        for (FoodDeal ref : foodDealList) {
-            if (ref.getId() == id)
-                return ref;
-        }
-        return null;
-    }
-
-    public List<FoodDeal> getFoodDealList() {
-        return foodDealList;
-    }
-
-    public void addFoodDeal(FoodDeal fd) {
-        foodDealList.add(fd);
-    }
-
-    public void findAndReplaceFoodDeal(FoodDeal fd) {
-        for (int i = 0; i < foodDealList.size(); i++) {
-            if (foodDealList.get(i).getId() == fd.getId()) {
-                foodDealList.set(i, fd);
-            }
-        }
-    }
-
-    public void addFoodDeals(List<FoodDeal> fds) {
-        for (FoodDeal fd : fds) {
-            addFoodDeal(fd);
-        }
-    }
-
-    public void removeFoodDeal(int Index) {
-        foodDealList.remove(Index);
-    }
-
-    public void clearFoodDealList() {
-        foodDealList.clear();
-    }
-
-    public void updateFoodDealRating(FoodDeal newfd) {
-        for (int i = 0; i < foodDealList.size(); i++) {
-            if (foodDealList.get(i).getId() != newfd.getId())
-                continue;
-            foodDealList.get(i).setRating(newfd.getRating());
-        }
-    }
-
-    /**
      * FoodPlace
      */
     public FoodPlace getFoodPlace(int Index) {

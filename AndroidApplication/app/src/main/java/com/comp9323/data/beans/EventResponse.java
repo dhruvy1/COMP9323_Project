@@ -3,6 +3,7 @@ package com.comp9323.data.beans;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class EventResponse {
 
     @SerializedName("results")
     @Expose
-    private List<Event> results = null;
+    private List<Event> results = new ArrayList<>();
 
     public Integer getCount() {
         return count;

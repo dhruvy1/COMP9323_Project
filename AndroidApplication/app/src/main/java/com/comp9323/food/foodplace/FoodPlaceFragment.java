@@ -98,7 +98,7 @@ public class FoodPlaceFragment extends Fragment {
                 if (detail.getVisibility() != View.VISIBLE) {
                     detail.setVisibility(View.VISIBLE);
 
-                    if (expandedView[0] != null) { //collapse other view
+                    if (expandedView[0] != null) { //collapse other foodDealView
                         expandedView[0].findViewById(R.id.food_place_item_detail_container).setVisibility(View.GONE);
                     }
                     expandedView[0] = view;

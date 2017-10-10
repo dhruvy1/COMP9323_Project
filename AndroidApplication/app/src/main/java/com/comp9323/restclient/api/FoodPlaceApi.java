@@ -18,7 +18,7 @@ import retrofit2.http.Query;
  * Created by thomas on 2/10/2017.
  */
 
-public interface FoodPlaceAPI {
+public interface FoodPlaceApi {
     @GET("/api/food_places/{id}/")
     Call<FoodPlace> getFoodPlace(@Path("id") int id);
 

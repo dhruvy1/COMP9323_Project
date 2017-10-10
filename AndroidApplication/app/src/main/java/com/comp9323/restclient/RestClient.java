@@ -3,6 +3,7 @@ package com.comp9323.restclient;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -15,15 +16,23 @@ public class RestClient {
 
     public static Retrofit getClient() {
 
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        if (retrofit == null) {
+            // Logging for  HTTP requests and responses
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
+            // HTTP client to make rest calls
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+            // Retrofit used to generates URIs and parses Json using Gson
+            // Retrofit uses OkHttpClient to make HTTP calls to REST server
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(client)
+                    .build();
+        }
 
         return retrofit;
     }
