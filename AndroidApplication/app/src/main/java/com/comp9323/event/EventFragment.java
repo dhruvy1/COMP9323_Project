@@ -51,7 +51,7 @@ public class EventFragment extends Fragment {
 
         adapter = new EventRvAdapter();
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.event_list);
+        RecyclerView recyclerView = view.findViewById(R.id.event_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -70,10 +70,12 @@ public class EventFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_events:
-                // Do stuff for search
+
                 return true;
             case R.id.add_event:
                 // Do stuff for adding events
+                NewEventFormFragment eventFormFragment = new NewEventFormFragment();
+                eventFormFragment.show(getFragmentManager(), "Event Dialog Fragment");
                 return true;
             default:
                 // Let the superclass handle it since the item is not recognised
