@@ -1,6 +1,7 @@
 package com.comp9323.event;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -75,6 +76,7 @@ public class EventFragment extends Fragment {
             case R.id.add_event:
                 // Do stuff for adding events
                 NewEventFormFragment eventFormFragment = new NewEventFormFragment();
+                eventFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
                 eventFormFragment.show(getFragmentManager(), "Event Dialog Fragment");
                 return true;
             default:
