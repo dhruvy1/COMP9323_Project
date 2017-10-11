@@ -20,10 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.comp9323.main.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_main" />
         <activity
-            android:name="com.comp9323.main.LoginActivity"
+            android:name=".LoginActivity"
             android:label="Campus Mate">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
