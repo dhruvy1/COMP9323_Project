@@ -2,9 +2,13 @@ package com.comp9323.event;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -37,6 +41,10 @@ public class EventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event_rv, container, false);
+        setHasOptionsMenu(true);
+
+        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.main_toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         compositeDisposable = new CompositeDisposable();
 
@@ -49,6 +57,12 @@ public class EventFragment extends Fragment {
         getEvents();
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_events, menu);
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
     private void getEvents() {
