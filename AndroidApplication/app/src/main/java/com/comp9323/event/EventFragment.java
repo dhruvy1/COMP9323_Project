@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -43,7 +44,7 @@ public class EventFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_event_rv, container, false);
         setHasOptionsMenu(true);
 
-        Toolbar toolbar = (Toolbar) ((AppCompatActivity)getActivity()).findViewById(R.id.main_toolbar);
+        Toolbar toolbar = getActivity().findViewById(R.id.main_toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         compositeDisposable = new CompositeDisposable();
@@ -63,6 +64,26 @@ public class EventFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_events, menu);
         super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search_events:
+                // Do stuff for search
+                return true;
+            case R.id.add_event:
+                // Do stuff for adding events
+                return true;
+            default:
+                // Let the superclass handle it since the item is not recognised
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        compositeDisposable.clear();
     }
 
     private void getEvents() {
@@ -91,9 +112,4 @@ public class EventFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        compositeDisposable.clear();
-    }
 }

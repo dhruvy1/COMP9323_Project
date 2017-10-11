@@ -5,6 +5,7 @@
     <string name="title_food">Food</string>
     <string name="title_qna">Q&amp;A</string>
     <string name="add">Add</string>
+    <string name="search">Search</string>
     <string name="event_desc_label">About the event:</string>
     <string name="food_place_navigation">Food Place</string>
     <string name="food_deal_navigation">Food Deals</string>
