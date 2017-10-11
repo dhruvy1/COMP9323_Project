@@ -32,7 +32,7 @@
                     android:id="@+id/event_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="12dp"
                     android:layout_below="@+id/event_photo"
                     android:textAppearance="?attr/textAppearanceListItem"
                     android:textSize="18sp"
@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_name"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="12dp"
                     android:layout_marginRight="2dp"
                     android:src="@drawable/location_pin" />
 
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_location"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="12dp"
                     android:layout_marginRight="2dp"
                     android:src="@drawable/calendar" />
 
@@ -88,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="About the event:"
+                    android:text="@string/event_desc_label"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 

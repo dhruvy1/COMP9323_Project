@@ -27,12 +27,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        DataHolder.getInstance().setContext(getApplicationContext());
-
         Button button = findViewById(R.id.login_sign_up_btn);
         button.setOnClickListener(this);
 
-        deleteSharedPreferences(); // DEBUG USE
+//        deleteSharedPreferences(); // DEBUG USE
 
         if (isFirstLogin()) {
             // first login
@@ -74,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         DataHolder.getInstance().setUser(user);
 
         String welcome = "Welcome " + user.getUsername() + "!";
-        Toast.makeText(DataHolder.getInstance().getContext(), welcome, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), welcome, Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

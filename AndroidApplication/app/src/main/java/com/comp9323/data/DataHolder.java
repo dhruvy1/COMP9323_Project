@@ -20,13 +20,8 @@ public class DataHolder {
     private static final DataHolder DH = new DataHolder();
 
     private User user;
-    private Context context;
-    private List<Event> events;
-    private boolean eventResponse;
 
     private DataHolder() {
-        events = new Vector<>();
-        eventResponse = false;
     }
 
     public static DataHolder getInstance() {
@@ -34,7 +29,7 @@ public class DataHolder {
     }
 
     /**
-     * Self
+     * User
      */
     public User getUser() {
         return this.user;
@@ -42,16 +37,5 @@ public class DataHolder {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    /**
-     * base context
-     */
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 }
