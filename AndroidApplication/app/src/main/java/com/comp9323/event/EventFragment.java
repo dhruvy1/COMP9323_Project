@@ -42,7 +42,7 @@ public class EventFragment extends Fragment {
 
         adapter = new EventRvAdapter();
 
-        RecyclerView recyclerView = (RecyclerView) view;
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.event_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
