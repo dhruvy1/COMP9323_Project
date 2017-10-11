@@ -8,12 +8,23 @@
     android:orientation="vertical"
     tools:context="com.comp9323.main.MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" >
+    </android.support.v7.widget.Toolbar>
+
     <FrameLayout
         android:id="@+id/main_placeholder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/main_bottom_navigation"

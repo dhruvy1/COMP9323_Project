@@ -24,13 +24,13 @@ public interface FoodDealApi {
     Call<FoodDeal> getFoodDeal(@Path("id") int id);
 
     @GET("/api/food_deals/all/")
-    Observable<List<FoodDeal>> getFoodDeals();
+    Call<List<FoodDeal>> getFoodDeals();
 
     @POST("/api/food_deals/")
     Call<FoodDeal> postFoodDeal(@Body FoodDeal foodDeal);
 
     @DELETE("/api/food_deals/{id}/")
-    Call<Response<Void>> deleteFoodDeal(@Path("id") int id);
+    Call<Void> deleteFoodDeal(@Path("id") int id);
 
     @PUT("/api/food_deals/{id}")
     Call<FoodDeal> putFoodDeal(@Path("id") int id, @Body FoodDeal foodDeal);
