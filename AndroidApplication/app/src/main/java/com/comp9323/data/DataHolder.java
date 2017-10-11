@@ -54,39 +54,4 @@ public class DataHolder {
     public void setContext(Context context) {
         this.context = context;
     }
-
-    /**
-     * Event functions
-     */
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public Event getEvent(int position) {
-        return events.get(position);
-    }
-
-    public void addEvent(Event event) {
-        events.add(event);
-    }
-
-    public void addEvents(List<Event> events) {
-        events.addAll(events);
-    }
-
-    public void removeEvent(int position) {
-        events.remove(position);
-    }
-
-    public void clearEvents() {
-        events.clear();
-    }
-
-    public void saveEventResponse(boolean success) {
-        eventResponse = success;
-    }
-
-    public boolean checkEventResponse(boolean success) {
-        return eventResponse = success;
-    }
 }

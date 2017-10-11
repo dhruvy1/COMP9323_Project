@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.main.R;
 import com.comp9323.restclient.RestClient;
 import com.comp9323.restclient.api.FoodPlaceApi;
-import com.comp9323.restclient.api.FoodPlaceApiImpl;
+import com.comp9323.restclient.api.FoodPlaceService;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -26,24 +27,21 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Listener {
     private static final String TAG = "FoodPlaceFragment";
-
-    private static final int MILLISECONDS_TO_POLL_SERVER = 15000;
 
     private FoodPlaceRvAdapter adapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    private CompositeDisposable compositeDisposable;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_place_rv, container, false);
-
-        compositeDisposable = new CompositeDisposable();
 
         initRvAdapter(savedInstanceState);
         initRecyclerView(view);
@@ -52,12 +50,6 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
         getFoodPlaces();
 
         return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        compositeDisposable.clear();
     }
 
     private void initRvAdapter(Bundle savedInstance) {
@@ -85,26 +77,23 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
     }
 
     private void getFoodPlaces() {
-        FoodPlaceApi api = RestClient.getClient().create(FoodPlaceApi.class);
-        compositeDisposable.add(api.getFoodPlaces()
-                .repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
-                    @Override
-                    public ObservableSource<?> apply(@NonNull Observable<Object> objectObservable) throws Exception {
-                        // polls server every # seconds
-                        return objectObservable.delay(MILLISECONDS_TO_POLL_SERVER, TimeUnit.MILLISECONDS);
+        FoodPlaceService.getFoodPlaces(new Callback<List<FoodPlace>>() {
+            @Override
+            public void onResponse(Call<List<FoodPlace>> call, Response<List<FoodPlace>> response) {
+                if (response.isSuccessful()) {
+                    updateAdapter(response.body()); // update adapter
+                    if (swipeRefreshLayout.isRefreshing()) {
+                        // turn off refresh animation on swipe ups, if its on
+                        swipeRefreshLayout.setRefreshing(false);
                     }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<FoodPlace>>() {
-                    @Override
-                    public void accept(List<FoodPlace> foodPlaces) throws Exception {
-                        updateAdapter(foodPlaces);
-                        if (swipeRefreshLayout.isRefreshing()) {
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
-                    }
-                }));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FoodPlace>> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     private void updateAdapter(List<FoodPlace> foodPlaces) {
@@ -113,16 +102,46 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
     }
 
     @Override
-    public void onFoodPlaceLikeBtnClicked(Integer id, String rating) {
+    public void onFoodPlaceLikeBtnClicked(final Integer id, String rating) {
         FoodPlace foodPlace = new FoodPlace();
-        foodPlace.setRating(rating);
-        FoodPlaceApiImpl.patchFoodPlace(id, foodPlace);
+        foodPlace.setRating(Integer.toString(Integer.parseInt(rating) + 1));
+        FoodPlaceService.patchFoodPlace(id, foodPlace, new Callback<FoodPlace>() {
+            @Override
+            public void onResponse(Call<FoodPlace> call, Response<FoodPlace> response) {
+                if (response.isSuccessful()) {
+                    response.body().setId(id);
+                    int itemPos = id - 1;
+                    adapter.updateFoodPlace(itemPos, response.body());
+                    adapter.notifyItemChanged(itemPos);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FoodPlace> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     @Override
-    public void onFoodPlaceDislikeBtnClicked(Integer id, String rating) {
+    public void onFoodPlaceDislikeBtnClicked(final Integer id, String rating) {
         FoodPlace foodPlace = new FoodPlace();
-        foodPlace.setRating(rating);
-        FoodPlaceApiImpl.patchFoodPlace(id, foodPlace);
+        foodPlace.setRating(Integer.toString(Integer.parseInt(rating) - 1));
+        FoodPlaceService.patchFoodPlace(id, foodPlace, new Callback<FoodPlace>() {
+            @Override
+            public void onResponse(Call<FoodPlace> call, Response<FoodPlace> response) {
+                if (response.isSuccessful()) {
+                    response.body().setId(id);
+                    int itemPos = id - 1;
+                    adapter.updateFoodPlace(itemPos, response.body());
+                    adapter.notifyItemChanged(itemPos);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FoodPlace> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 }

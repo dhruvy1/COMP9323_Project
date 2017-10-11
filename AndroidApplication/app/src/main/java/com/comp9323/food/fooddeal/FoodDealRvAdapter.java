@@ -34,6 +34,10 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
         this.foodDeals = foodDeals;
     }
 
+    public void updateFoodDeal(int itemPos, FoodDeal foodDeal) {
+        foodDeals.set(itemPos, foodDeal);
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_food_deal_rv_item, parent, false);

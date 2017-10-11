@@ -24,13 +24,13 @@ public interface FoodPlaceApi {
     Call<FoodPlace> getFoodPlace(@Path("id") int id);
 
     @GET("/api/food_places/all/")
-    Observable<List<FoodPlace>> getFoodPlaces();
+    Call<List<FoodPlace>> getFoodPlaces();
 
     @POST("/api/food_places/")
     Call<FoodPlace> postFoodPlace(@Body FoodPlace foodPlace);
 
     @DELETE("/api/food_places/{id}/")
-    Call<Response<Void>> deleteFoodPlace(@Path("id") int id);
+    Call<Void> deleteFoodPlace(@Path("id") int id);
 
     @PATCH("/api/food_places/{id}")
     Call<FoodPlace> patchFoodPlace(@Path("id") int id, @Body FoodPlace foodPlace);

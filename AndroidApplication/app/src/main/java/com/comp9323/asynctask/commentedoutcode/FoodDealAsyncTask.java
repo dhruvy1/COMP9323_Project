@@ -6,7 +6,7 @@
 //
 //import com.comp9323.food.fooddeal.FoodDealFragment;
 //import com.comp9323.food.fooddeal.FoodDealRvAdapter;
-//import com.comp9323.restclient.api.FoodDealApiImpl;
+//import com.comp9323.restclient.api.FoodDealService;
 //import com.comp9323.data.beans.FoodDeal;
 //import com.comp9323.data.DataHolder;
 //
@@ -30,7 +30,7 @@
 //        String method = strings[0];
 //        if (method.equals(GET_LIST)) {
 //            int pageNumber = Integer.parseInt(strings[1]);
-//            boolean ifSuccess = FoodDealApiImpl.getFoodDeals(pageNumber);
+//            boolean ifSuccess = FoodDealService.getFoodDeals(pageNumber);
 //            //TODO Template need to change, that decrease the page number when call is failed
 //            if (!ifSuccess)
 //                FoodDealFragment.page--;
@@ -41,14 +41,14 @@
 //            int counter = 0;
 //            //****This may casing error if Internet Error or Concurrency problem
 //            //get newest version from database
-//            FoodDealApiImpl.getFoodDeal(id);
+//            FoodDealService.getFoodDeal(id);
 //            //update local item
 //            FoodDeal fd = DataHolder.getInstance().getFoodDealwithID(id);
 //            fd.setRating("" + (Integer.parseInt(fd.getRating()) + rating));
 //            DataHolder.getInstance().updateFoodDealRating(fd);
 //            //update server
 //            try {
-//                return FoodDealApiImpl.patchFoodDeal(id, null, null, null, null, null, null,fd.getRating(), null);
+//                return FoodDealService.patchFoodDeal(id, null, null, null, null, null, null,fd.getRating(), null);
 //            } catch (Exception e) {
 //                Toast.makeText(DataHolder.getInstance().getContext(), "Date or Time format not match", Toast.LENGTH_SHORT).show();
 //                return false;
