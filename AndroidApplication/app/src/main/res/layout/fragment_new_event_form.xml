@@ -71,8 +71,7 @@
             android:layout_below="@+id/new_event_location"
             android:padding="@dimen/text_margin"
             android:textColor="@color/colorCharcoal"
-            android:ems="30"
-            android:backgroundTint="@color/textUnderlineColor" />
+            android:ems="30" />
 
         <TextView
             android:id="@+id/new_event_enddate"
@@ -83,8 +82,29 @@
             android:layout_below="@+id/new_event_startdate"
             android:padding="@dimen/text_margin"
             android:textColor="@color/colorCharcoal"
-            android:ems="30"
-            android:backgroundTint="@color/textUnderlineColor" />
+            android:ems="30" />
+
+        <TextView
+            android:id="@+id/new_event_starttime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_below="@+id/new_event_enddate"
+            android:padding="@dimen/text_margin"
+            android:textColor="@color/colorCharcoal"
+            android:ems="30" />
+
+        <TextView
+            android:id="@+id/new_event_endtime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_below="@+id/new_event_starttime"
+            android:padding="@dimen/text_margin"
+            android:textColor="@color/colorCharcoal"
+            android:ems="30" />
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

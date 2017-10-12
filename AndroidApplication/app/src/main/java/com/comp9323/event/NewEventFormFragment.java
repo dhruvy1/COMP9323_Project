@@ -2,6 +2,7 @@ package com.comp9323.event;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -18,29 +19,35 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.comp9323.main.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class NewEventFormFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class NewEventFormFragment extends DialogFragment {
 
     private static final String TAG = "NewEventFormFragment";
-    private final int EVENT_STARTDATE = 0;
-    private final int EVENT_ENDDATE = 1;
-    private TextView startDate, endDate;
+    private TextView startDate, endDate, startTime, endTime;
     private Calendar mDate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
-    private int year, month, day;
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma");
+    private int year, month, day, hour, minute;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_new_event_form, container, false);
 
+        startDate = rootView.findViewById(R.id.new_event_startdate);
+        endDate = rootView.findViewById(R.id.new_event_enddate);
+        startTime = rootView.findViewById(R.id.new_event_starttime);
+        endTime = rootView.findViewById(R.id.new_event_endtime);
+
         setToolbar(rootView);
-        initDates(rootView);
+        initDates();
         setDateListeners();
+        setTimeListeners();
 
         return rootView;
     }
@@ -104,15 +111,18 @@ public class NewEventFormFragment extends DialogFragment implements DatePickerDi
         setHasOptionsMenu(true);
     }
 
-    private void initDates(View v) {
+    private void initDates() {
         mDate = Calendar.getInstance();
         year = mDate.get(Calendar.YEAR);
         month = mDate.get(Calendar.MONTH);
         day = mDate.get(Calendar.DAY_OF_MONTH);
-        startDate = v.findViewById(R.id.new_event_startdate);
-        endDate = v.findViewById(R.id.new_event_enddate);
+        hour = mDate.get(Calendar.HOUR_OF_DAY);
+        minute = mDate.get(Calendar.MINUTE);
+
         startDate.setText(dateFormat.format(mDate.getTime()));
         endDate.setText(dateFormat.format(mDate.getTime()));
+        startTime.setText(timeFormat.format(mDate.getTime()));
+        endTime.setText(timeFormat.format(mDate.getTime()));
     }
 
     private void setDateListeners() {
@@ -132,6 +142,23 @@ public class NewEventFormFragment extends DialogFragment implements DatePickerDi
         });
     }
 
+    private void setTimeListeners() {
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog newTimePicker = new TimePickerDialog(getActivity(), getOnTimeSetListener(startTime), hour, minute, false);
+                newTimePicker.show();
+            }
+        });
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog newTimePicker = new TimePickerDialog(getActivity(), getOnTimeSetListener(endTime), hour, minute, false);
+                newTimePicker.show();
+            }
+        });
+    }
+
     private DatePickerDialog.OnDateSetListener getOnDateSetListener(final TextView dateText) {
         return (new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -142,10 +169,14 @@ public class NewEventFormFragment extends DialogFragment implements DatePickerDi
         });
     }
 
-    @Override
-    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        Calendar c = Calendar.getInstance();
-        c.set(year, month, day);
-        dateFormat.format(c.getTime());
+    private TimePickerDialog.OnTimeSetListener getOnTimeSetListener(final TextView dateText) {
+        return (new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                mDate.set(Calendar.HOUR_OF_DAY, hour);
+                mDate.set(Calendar.MINUTE, minute);
+                dateText.setText(timeFormat.format(mDate.getTime()));
+            }
+        });
     }
 }
