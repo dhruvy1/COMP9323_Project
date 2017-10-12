@@ -34,7 +34,7 @@ import io.reactivex.schedulers.Schedulers;
 public class EventFragment extends Fragment {
     private static final String TAG = "EventFragment";
 
-    private static final int MILLISECONDS_TO_POLL_SERVER = 15000;
+    private static final int MILLISECONDS_TO_POLL_SERVER = 60000;
 
     private EventRvAdapter adapter;
     private CompositeDisposable compositeDisposable;

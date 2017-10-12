@@ -20,24 +20,71 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
+        android:background="@color/colorWhite"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
+        android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/new_event_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your content here"/>
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:padding="@dimen/text_margin"
+            android:textColor="@color/colorCharcoal"
+            android:ems="40"
+            android:inputType="textPersonName"
+            android:hint="@string/event_name_hint"
+            android:textColorHint="@color/hintColor"
+            android:backgroundTint="@color/textUnderlineColor" />
 
-    </LinearLayout>
+        <EditText
+            android:id="@+id/new_event_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_below="@+id/new_event_name"
+            android:padding="@dimen/text_margin"
+            android:textColor="@color/colorCharcoal"
+            android:ems="30"
+            android:inputType="textPersonName"
+            android:hint="@string/event_location_hint"
+            android:textColorHint="@color/hintColor"
+            android:backgroundTint="@color/textUnderlineColor" />
+
+        <TextView
+            android:id="@+id/new_event_startdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_below="@+id/new_event_location"
+            android:padding="@dimen/text_margin"
+            android:textColor="@color/colorCharcoal"
+            android:ems="30"
+            android:backgroundTint="@color/textUnderlineColor" />
+
+        <TextView
+            android:id="@+id/new_event_enddate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_below="@+id/new_event_startdate"
+            android:padding="@dimen/text_margin"
+            android:textColor="@color/colorCharcoal"
+            android:ems="30"
+            android:backgroundTint="@color/textUnderlineColor" />
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
