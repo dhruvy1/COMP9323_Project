@@ -9,13 +9,10 @@
     <!-- Events -->
     <string name="event_name_hint">Event Name</string>
     <string name="event_location_hint">Location</string>
-    <string name="event_start_date">Event Start Date:</string>
-    <string name="event_end_date">Event End:</string>
-    <string name="event_start_time">Event Start Time:</string>
-    <string name="event_end_time">Event End Time:</string>
     <string name="event_src_url">Event Source URL:</string>
     <string name="event_cover_id">Image URL:</string>
     <string name="event_desc_label">About the event:</string>
+    <string name="event_desc_hint">What is your event about? (Optional)</string>
     <!-- Food -->
     <string name="food_place_navigation">Food Place</string>
     <string name="food_deal_navigation">Food Deals</string>
