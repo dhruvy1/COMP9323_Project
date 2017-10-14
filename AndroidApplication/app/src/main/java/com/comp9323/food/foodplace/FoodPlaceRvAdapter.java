@@ -43,10 +43,6 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         expandedList = new ArrayList<>();
     }
 
-    public void setFoodPlaces(List<FoodPlace> foodPlaces) {
-        this.foodPlaces = foodPlaces;
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -87,9 +83,7 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.foodPlace.setRating(Integer.toString(Integer.parseInt(holder.foodPlace.getRating()) + 1));
                 listener.onFoodPlaceLikeBtnClicked(holder.foodPlace.getId(), holder.foodPlace.getRating());
-                notifyItemChanged(position);
             }
         });
 
@@ -97,9 +91,7 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.foodPlace.setRating(Integer.toString(Integer.parseInt(holder.foodPlace.getRating()) - 1));
                 listener.onFoodPlaceDislikeBtnClicked(holder.foodPlace.getId(), holder.foodPlace.getRating());
-                notifyItemChanged(position);
             }
         });
 
@@ -160,6 +152,14 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
 
     public void setBundle(Bundle savedInstance) {
         this.savedInstance = savedInstance;
+    }
+
+    public void setFoodPlaces(List<FoodPlace> foodPlaces) {
+        this.foodPlaces = foodPlaces;
+    }
+
+    public void updateFoodPlace(int itemPos, FoodPlace foodPlace) {
+        foodPlaces.set(itemPos, foodPlace);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

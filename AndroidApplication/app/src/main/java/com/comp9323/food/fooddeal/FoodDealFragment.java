@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,37 +18,25 @@ import com.comp9323.data.beans.FoodDeal;
 import com.comp9323.main.R;
 import com.comp9323.restclient.RestClient;
 import com.comp9323.restclient.api.FoodDealApi;
-import com.comp9323.restclient.api.FoodDealApiImpl;
+import com.comp9323.restclient.api.FoodDealService;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.Listener {
     private static final String TAG = "FoodDealFragment";
-
-    private static final int MILLISECONDS_TO_POLL_SERVER = 15000;
 
     private FoodDealRvAdapter adapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    private CompositeDisposable compositeDisposable;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_deal_rv, container, false);
-
-        compositeDisposable = new CompositeDisposable();
 
         initRvAdapter();
         initRecyclerView(view);
@@ -56,12 +45,6 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
         getFoodDeals();
 
         return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        compositeDisposable.clear();
     }
 
     private void initRvAdapter() {
@@ -89,47 +72,69 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     }
 
     private void getFoodDeals() {
-        FoodDealApi api = RestClient.getClient().create(FoodDealApi.class);
-        compositeDisposable.clear(); // clear previous async tasks
-        compositeDisposable.add(api.getFoodDeals()
-                .repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
-                    @Override
-                    public ObservableSource<?> apply(@NonNull Observable<Object> objectObservable) throws Exception {
-                        // polls server every # seconds
-                        return objectObservable.delay(MILLISECONDS_TO_POLL_SERVER, TimeUnit.MILLISECONDS);
+        FoodDealService.getFoodDeals(new Callback<List<FoodDeal>>() {
+            @Override
+            public void onResponse(Call<List<FoodDeal>> call, Response<List<FoodDeal>> response) {
+                if (response.isSuccessful()) {
+                    // update adapter
+                    adapter.setFoodDeals(response.body());
+                    adapter.notifyDataSetChanged();
+                    // turn off refresh animation on swipe ups, if its on
+                    if (swipeRefreshLayout.isRefreshing()) {
+                        swipeRefreshLayout.setRefreshing(false);
                     }
-                })
-                .observeOn(AndroidSchedulers.mainThread()) // indicate the subscribe will be on the main thread
-                .subscribeOn(Schedulers.io()) // do async in the io thread
-                .subscribe(new Consumer<List<FoodDeal>>() { // add a listener to the observable
-                    @Override
-                    public void accept(List<FoodDeal> foodDeals) throws Exception {
-                        updateAdapter(foodDeals); // update adapter
-                        if (swipeRefreshLayout.isRefreshing()) {
-                            // turn off refresh animation on swipe ups, if its on
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
-                    }
-                }));
-    }
+                }
+            }
 
-    private void updateAdapter(List<FoodDeal> foodDeals) {
-        adapter.setFoodDeals(foodDeals);
-        adapter.notifyDataSetChanged();
+            @Override
+            public void onFailure(Call<List<FoodDeal>> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     @Override
-    public void onFoodDealLikeBtnClicked(Integer id, String rating) {
+    public void onFoodDealLikeBtnClicked(final Integer id, String rating) {
         FoodDeal foodDeal = new FoodDeal();
         foodDeal.setRating(Integer.toString(Integer.parseInt(rating) + 1));
-        FoodDealApiImpl.patchFoodDeal(id, foodDeal);
+        FoodDealService.patchFoodDeal(id, foodDeal, new Callback<FoodDeal>() {
+            @Override
+            public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
+                if (response.isSuccessful()) {
+                    response.body().setId(id);
+                    int itemPos = id - 1;
+                    adapter.updateFoodDeal(itemPos, response.body());
+                    adapter.notifyItemChanged(itemPos);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FoodDeal> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     @Override
-    public void onFoodDealDislikeBtnClicked(Integer id, String rating) {
+    public void onFoodDealDislikeBtnClicked(final Integer id, String rating) {
         FoodDeal foodDeal = new FoodDeal();
         foodDeal.setRating(Integer.toString(Integer.parseInt(rating) - 1));
-        FoodDealApiImpl.patchFoodDeal(id, foodDeal);
+        FoodDealService.patchFoodDeal(id, foodDeal, new Callback<FoodDeal>() {
+            @Override
+            public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
+                if (response.isSuccessful()) {
+                    response.body().setId(id);
+                    int itemPos = id - 1;
+                    adapter.updateFoodDeal(itemPos, response.body());
+                    adapter.notifyItemChanged(itemPos);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FoodDeal> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     @Override

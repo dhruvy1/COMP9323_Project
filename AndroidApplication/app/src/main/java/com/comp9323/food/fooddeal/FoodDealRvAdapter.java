@@ -1,5 +1,6 @@
 package com.comp9323.food.fooddeal;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -32,6 +33,10 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
 
     public void setFoodDeals(List<FoodDeal> foodDeals) {
         this.foodDeals = foodDeals;
+    }
+
+    public void updateFoodDeal(int itemPos, FoodDeal foodDeal) {
+        foodDeals.set(itemPos, foodDeal);
     }
 
     @Override
@@ -102,20 +107,22 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
         if (holder.foodDeal.getCreatedBy().compareTo(FoodDeal.FACEBOOK) == 0) {
             // event link to Facebook
             if (holder.foodDeal.getEventLink().length() > 0) {
-                holder.foodDealMessage.setText(addIconAtBeginning(holder.foodDealMessage.getText(), R.drawable.hyper_link));
+                holder.foodDealMessage.setText(addIconAtBeginning(holder.foodDealMessage.getText(),
+                        R.drawable.hyper_link, holder.foodDealView.getContext()));
             }
         } else {
             // event link not to Facebook
-            holder.foodDealMessage.setText(addIconAtBeginning(holder.foodDealMessage.getText(), R.drawable.internal_link));
+            holder.foodDealMessage.setText(addIconAtBeginning(holder.foodDealMessage.getText(),
+                    R.drawable.internal_link, holder.foodDealView.getContext()));
         }
     }
 
-    private SpannableStringBuilder addIconAtBeginning(CharSequence s, int resId) {
+    private SpannableStringBuilder addIconAtBeginning(CharSequence s, int resId, Context context) {
         Drawable icon;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            icon = DataHolder.getInstance().getContext().getDrawable(resId);
+            icon = context.getDrawable(resId);
         } else {
-            icon = DataHolder.getInstance().getContext().getResources().getDrawable(resId);
+            icon = context.getResources().getDrawable(resId);
         }
         icon.setBounds(0, 0, 75, 75);
         SpannableStringBuilder sb = new SpannableStringBuilder().append("  ").append(s);

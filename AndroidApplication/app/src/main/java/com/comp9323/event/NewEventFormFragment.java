@@ -23,12 +23,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.comp9323.data.DataHolder;
+import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
-import com.comp9323.restclient.api.EventApi;
-import com.comp9323.restclient.api.EventApiImpl;
+import com.comp9323.restclient.api.EventService;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NewEventFormFragment extends DialogFragment {
 
@@ -137,14 +141,16 @@ public class NewEventFormFragment extends DialogFragment {
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog newDatePicker = new DatePickerDialog(getActivity(), getOnDateSetListener(startDate), year, month, day);
+                DatePickerDialog newDatePicker = new DatePickerDialog(getActivity(),
+                        getOnDateSetListener(startDate), year, month, day);
                 newDatePicker.show();
             }
         });
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog newDatePicker = new DatePickerDialog(getActivity(), getOnDateSetListener(endDate), year, month, day);
+                DatePickerDialog newDatePicker = new DatePickerDialog(getActivity(),
+                        getOnDateSetListener(endDate), year, month, day);
                 newDatePicker.show();
             }
         });
@@ -154,14 +160,16 @@ public class NewEventFormFragment extends DialogFragment {
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimePickerDialog newTimePicker = new TimePickerDialog(getActivity(), getOnTimeSetListener(startTime), hour, minute, false);
+                TimePickerDialog newTimePicker = new TimePickerDialog(getActivity(),
+                        getOnTimeSetListener(startTime), hour, minute, false);
                 newTimePicker.show();
             }
         });
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimePickerDialog newTimePicker = new TimePickerDialog(getActivity(), getOnTimeSetListener(endTime), hour, minute, false);
+                TimePickerDialog newTimePicker = new TimePickerDialog(getActivity(),
+                        getOnTimeSetListener(endTime), hour, minute, false);
                 newTimePicker.show();
             }
         });
@@ -189,6 +197,21 @@ public class NewEventFormFragment extends DialogFragment {
     }
 
     private boolean callPostEvent() {
+        EventService.postEvent(createEventBean(), new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> call, Response<Event> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                call.cancel();
+            }
+        });
+        return true;
+    }
+
+    private Event createEventBean() {
         String eventName = name.getText().toString();
         String eventLoc = loc.getText().toString();
         String eventDesc = desc.getText().toString();
@@ -198,8 +221,9 @@ public class NewEventFormFragment extends DialogFragment {
         String eventEndT = endTime.getText().toString();
         String eventUser = DataHolder.getInstance().getUser().getUsername();
 
-        EventApiImpl.postEvent(eventName, eventLoc, eventStartD, eventEndD, eventStartT, eventEndT,
-                eventDesc, eventUser);
-        return true;
+        Event newEvent = new Event(eventName, eventLoc, eventStartD, eventEndD, eventStartT,
+                eventEndT, eventDesc, eventUser);
+
+        return newEvent;
     }
 }

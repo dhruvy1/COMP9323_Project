@@ -9,7 +9,7 @@ class MobileUser(models.Model):
 
 class Event(models.Model):
     # data
-    facebook_id = models.CharField(max_length=50)
+    facebook_id = models.CharField(max_length=50, blank=True)
     name = models.CharField(max_length=500)
     description = models.TextField(blank=True, default='')
     # date time
@@ -34,10 +34,10 @@ class Event(models.Model):
 
 
 class FoodDeal(models.Model):
-    post_id = models.CharField(max_length=100)
+    post_id = models.CharField(max_length=100, blank=True)
     message = models.TextField()
-    updated_date = models.DateField()
-    updated_time = models.TimeField()
+    updated_date = models.DateField(blank=True)
+    updated_time = models.TimeField(blank=True)
     photo_link = models.CharField(max_length=400, blank=True, default='')
     event_link = models.CharField(max_length=400, blank=True, default='')
     rating = models.CharField(max_length=100, default='0')
@@ -49,8 +49,8 @@ class FoodPlace(models.Model):
     location = models.CharField(max_length=200)
     price_level = models.CharField(max_length=2, blank=True, default='')
     google_rating = models.CharField(max_length=3, blank=True, default='')
-    latitude = models.CharField(max_length=100)
-    longitude = models.CharField(max_length=100)
+    latitude = models.CharField(max_length=100, blank=True)
+    longitude = models.CharField(max_length=100, blank=True)
     photo_link = models.CharField(max_length=500, blank=True, default='')
     rating = models.CharField(max_length=100, default='0')
     created_by = models.CharField(max_length=100)

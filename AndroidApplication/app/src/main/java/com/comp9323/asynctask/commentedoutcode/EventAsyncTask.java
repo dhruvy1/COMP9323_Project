@@ -5,7 +5,6 @@
 //
 //import com.comp9323.data.DataHolder;
 //import com.comp9323.event.EventRvAdapter;
-//import com.comp9323.restclient.api.EventApiImpl;
 //
 ///**
 // * Created by timta on 28/09/2017.
@@ -24,7 +23,6 @@
 //    @Override
 //    protected Boolean doInBackground(Integer... integers) {
 //        Log.d(TAG, "Getting event data from server....");
-//        EventApiImpl.getEvents();
 //        while (DataHolder.getInstance().getEvents().isEmpty()) {
 //            try {
 //                Thread.sleep(1000);

@@ -30,7 +30,7 @@ public interface UserApi {
     Call<User> postUser(@Body User user);
 
     @DELETE("/api/mobile_users/{id}/")
-    Call<Response<Void>> deleteUser(@Path("id") int id);
+    Call<Void> deleteUser(@Path("id") int id);
 
     @PUT("/api/mobile_users/{id}/")
     Call<User> putUser(@Path("id") int id, @Body User user);
