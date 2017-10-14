@@ -18,10 +18,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.comp9323.data.DataHolder;
 import com.comp9323.main.R;
+import com.comp9323.restclient.api.EventApi;
+import com.comp9323.restclient.api.EventApiImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,6 +33,7 @@ import java.util.Calendar;
 public class NewEventFormFragment extends DialogFragment {
 
     private static final String TAG = "NewEventFormFragment";
+    private EditText name, loc, desc;
     private TextView startDate, endDate, startTime, endTime;
     private Calendar mDate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
@@ -39,6 +44,9 @@ public class NewEventFormFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_new_event_form, container, false);
 
+        name = rootView.findViewById(R.id.new_event_name);
+        loc = rootView.findViewById(R.id.new_event_location);
+        desc = rootView.findViewById(R.id.new_event_desc);
         startDate = rootView.findViewById(R.id.new_event_startdate);
         endDate = rootView.findViewById(R.id.new_event_enddate);
         startTime = rootView.findViewById(R.id.new_event_starttime);
@@ -84,7 +92,7 @@ public class NewEventFormFragment extends DialogFragment {
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            // handle confirmation button click here
+            callPostEvent();
             return true;
         } else if (id == android.R.id.home) {
             // handle close button click here
@@ -178,5 +186,20 @@ public class NewEventFormFragment extends DialogFragment {
                 dateText.setText(timeFormat.format(mDate.getTime()));
             }
         });
+    }
+
+    private boolean callPostEvent() {
+        String eventName = name.getText().toString();
+        String eventLoc = loc.getText().toString();
+        String eventDesc = desc.getText().toString();
+        String eventStartD = startDate.getText().toString();
+        String eventEndD = endDate.getText().toString();
+        String eventStartT = startTime.getText().toString();
+        String eventEndT = endTime.getText().toString();
+        String eventUser = DataHolder.getInstance().getUser().getUsername();
+
+        EventApiImpl.postEvent(eventName, eventLoc, eventStartD, eventEndD, eventStartT, eventEndT,
+                eventDesc, eventUser);
+        return true;
     }
 }
