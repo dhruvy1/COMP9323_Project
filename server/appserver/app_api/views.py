@@ -111,7 +111,7 @@ class FoodDealCreateAPIView(CreateAPIView):
 
         for fd in food_deals:
             # If post_id in the request already exists in the DB
-            if 'facebook_id' in request.data and request.data['post_id'] == fd.post_id:
+            if 'post_id' in request.data and request.data['post_id'] == fd.post_id:
 
                 # Return appropriate HTTP response
                 print(fd.post_id + ' Already exists')
