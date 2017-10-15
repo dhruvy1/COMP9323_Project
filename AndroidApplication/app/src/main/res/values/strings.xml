@@ -7,8 +7,8 @@
     <string name="add">Add</string>
     <string name="search">Search</string>
     <!-- Events -->
-    <string name="event_name_hint">Event Name</string>
-    <string name="event_location_hint">Location</string>
+    <string name="hint_event_name">Event Name</string>
+    <string name="hint_event_location">Location</string>
     <string name="event_src_url">Event Source URL:</string>
     <string name="event_cover_id">Image URL:</string>
     <string name="event_desc_label">About the event:</string>

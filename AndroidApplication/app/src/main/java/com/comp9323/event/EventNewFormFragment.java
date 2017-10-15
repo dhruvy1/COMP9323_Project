@@ -37,12 +37,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewEventFormFragment extends DialogFragment {
+public class EventNewFormFragment extends DialogFragment {
 
-    private static final String TAG = "NewEventFormFragment";
+    private static final String TAG = "EventNewFormFragment";
     private View rootView;
-    private EditText name, loc, desc;
-    private TextView startDate, endDate, startTime, endTime;
+    private EditText name, loc, desc, startDate, endDate, startTime, endTime;
     private Toolbar toolbar;
     private Calendar mDate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
@@ -51,7 +50,7 @@ public class NewEventFormFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_new_event_form, container, false);
+        rootView = inflater.inflate(R.layout.fragment_event_new_form, container, false);
 
         name = rootView.findViewById(R.id.new_event_name);
         loc = rootView.findViewById(R.id.new_event_location);
@@ -153,7 +152,7 @@ public class NewEventFormFragment extends DialogFragment {
         });
     }
 
-    private DatePickerDialog.OnDateSetListener getOnDateSetListener(final TextView dateText) {
+    private DatePickerDialog.OnDateSetListener getOnDateSetListener(final EditText dateText) {
         return (new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -163,7 +162,7 @@ public class NewEventFormFragment extends DialogFragment {
         });
     }
 
-    private TimePickerDialog.OnTimeSetListener getOnTimeSetListener(final TextView dateText) {
+    private TimePickerDialog.OnTimeSetListener getOnTimeSetListener(final EditText dateText) {
         return (new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
@@ -203,6 +202,22 @@ public class NewEventFormFragment extends DialogFragment {
         endTime.setText(timeFormat.format(mDate.getTime()));
     }
 
+    private boolean validateFields() {
+        return false;
+    }
+
+    private boolean validateName() {
+        return false;
+    }
+
+    private boolean validateLocation() {
+        return false;
+    }
+
+    private boolean validateDateRange() {
+        return false;
+    }
+    
     private boolean callPostEvent() {
         final boolean[] success = {false};
         EventService.postEvent(createEventBean(), new Callback<Event>() {
@@ -214,7 +229,7 @@ public class NewEventFormFragment extends DialogFragment {
                     successMessage.show();
                     success[0] = true;
                 } else {
-                    Snackbar failMessage = Snackbar.make(rootView, "Create event failed.",
+                    Snackbar failMessage = Snackbar.make(rootView, "Could not create event.",
                             Snackbar.LENGTH_SHORT);
                     failMessage.show();
                 }

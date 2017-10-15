@@ -53,7 +53,7 @@ public class DateTimeConverter {
      * @param serverDate
      * @return
      */
-    public static String convertS2ADate(String serverDate) {
+    public String convertS2ADate(String serverDate) {
         try {
             Date convertedToDate = serverDateFormat.parse(serverDate);
             String convertedToString = appDateFormat.format(convertedToDate);
@@ -69,7 +69,7 @@ public class DateTimeConverter {
      * @param serverTime
      * @return
      */
-    public static String convertS2ATime(String serverTime) {
+    public String convertS2ATime(String serverTime) {
         try {
             Date convertedToDate = serverTimeFormat.parse(serverTime);
             String convertedToString = appTimeFormat.format(convertedToDate);

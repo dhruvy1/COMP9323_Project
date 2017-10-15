@@ -63,7 +63,7 @@ public class EventFragment extends Fragment {
                 return true;
             case R.id.add_event:
                 // Do stuff for adding events
-                NewEventFormFragment eventFormFragment = new NewEventFormFragment();
+                EventNewFormFragment eventFormFragment = new EventNewFormFragment();
                 eventFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
                 eventFormFragment.show(getFragmentManager(), "Event Dialog Fragment");
                 return true;

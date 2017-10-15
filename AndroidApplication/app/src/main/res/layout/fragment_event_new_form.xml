@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/hintColor">
+
+            <EditText
+                android:id="@+id/new_event_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/text_margin"
+                android:textColor="@color/colorCharcoal"
+                android:inputType="textPersonName"
+                android:hint="@string/hint_event_name"
+                android:backgroundTint="@color/textUnderlineColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/hintColor">
+
+            <EditText
+                android:id="@+id/new_event_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:padding="@dimen/text_margin"
+                android:textColor="@color/colorCharcoal"
+                android:inputType="textPersonName"
+                android:hint="@string/hint_event_location"
+                android:backgroundTint="@color/textUnderlineColor" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
+            android:paddingHorizontal="@dimen/text_margin"
+            android:text="From"
+            android:textColor="@color/colorCharcoal" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin">
+
+            <ImageView
+                android:id="@+id/new_date_icon_from"
+                android:layout_width="@dimen/icon_dimen"
+                android:layout_height="@dimen/icon_dimen"
+                android:paddingBottom="@dimen/icon_below_padding"
+                android:paddingHorizontal="@dimen/icon_signifier_width"
+                android:paddingTop="@dimen/icon_signifier_padding"
+                android:src="@mipmap/ic_date" />
+
+            <EditText
+                android:id="@+id/new_event_startdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:layout_toRightOf="@+id/new_date_icon_from"
+                android:paddingVertical="@dimen/text_vertical_padding"
+                android:drawableRight="@drawable/mini_dropdown"
+                android:drawablePadding="@dimen/icon_signifier_padding"
+                android:focusable="false"
+                android:textColor="@color/colorCharcoal" />
+
+            <EditText
+                android:id="@+id/new_event_starttime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:layout_toRightOf="@+id/new_event_startdate"
+                android:paddingVertical="@dimen/text_vertical_padding"
+                android:drawableRight="@drawable/mini_dropdown"
+                android:drawablePadding="@dimen/icon_signifier_padding"
+                android:focusable="false"
+                android:textColor="@color/colorCharcoal" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
+            android:paddingHorizontal="@dimen/text_margin"
+            android:text="To"
+            android:textColor="@color/colorCharcoal" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin" >
+
+            <ImageView
+                android:id="@+id/new_date_icon_to"
+                android:layout_width="@dimen/icon_dimen"
+                android:layout_height="@dimen/icon_dimen"
+                android:paddingBottom="@dimen/icon_below_padding"
+                android:paddingHorizontal="@dimen/icon_signifier_width"
+                android:paddingTop="@dimen/icon_signifier_padding"
+                android:src="@mipmap/ic_date" />
+
+            <EditText
+                android:id="@+id/new_event_enddate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:layout_toRightOf="@+id/new_date_icon_to"
+                android:paddingVertical="@dimen/text_vertical_padding"
+                android:drawableRight="@drawable/mini_dropdown"
+                android:drawablePadding="@dimen/icon_signifier_padding"
+                android:focusable="false"
+                android:textColor="@color/colorCharcoal" />
+
+            <EditText
+                android:id="@+id/new_event_endtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:layout_toRightOf="@+id/new_event_enddate"
+                android:paddingVertical="@dimen/text_vertical_padding"
+                android:drawableRight="@drawable/mini_dropdown"
+                android:drawablePadding="@dimen/icon_signifier_padding"
+                android:focusable="false"
+                android:textColor="@color/colorCharcoal" />
+        </RelativeLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/new_event_enddate"
+            android:background="@drawable/border_style"
+            android:textColorHint="@color/hintColor" >
+            <EditText
+                android:id="@+id/new_event_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:hint="@string/event_desc_hint"
+                android:inputType="textMultiLine"
+                android:gravity="top|left"
+                android:lines="6"
+                android:textColor="@color/colorCharcoal"
+                android:scrollbars="vertical"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
