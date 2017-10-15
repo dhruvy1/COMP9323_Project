@@ -10,10 +10,10 @@ import java.util.Date;
 
 public class DateTimeConverter {
 
-    private SimpleDateFormat appDateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
-    private SimpleDateFormat appTimeFormat = new SimpleDateFormat("hh:mma");
-    private SimpleDateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private SimpleDateFormat serverTimeFormat = new SimpleDateFormat("HH:mm:ss");
+    private static SimpleDateFormat appDateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
+    private static SimpleDateFormat appTimeFormat = new SimpleDateFormat("hh:mma");
+    private static SimpleDateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat serverTimeFormat = new SimpleDateFormat("HH:mm:ss");
 
     /**
      * Converts date from the app to the date in the server
@@ -21,7 +21,7 @@ public class DateTimeConverter {
      * @param appDate
      * @return
      */
-    public String convertA2SDate(String appDate) {
+    public static String convertA2SDate(String appDate) {
         try {
             Date convertedToDate = appDateFormat.parse(appDate);
             String convertedToString = serverDateFormat.format(convertedToDate);
@@ -37,7 +37,7 @@ public class DateTimeConverter {
      * @param appTime
      * @return
      */
-    public String convertA2STime(String appTime) {
+    public static String convertA2STime(String appTime) {
         try {
             Date convertedToDate = appTimeFormat.parse(appTime);
             String convertedToString = serverTimeFormat.format(convertedToDate);
@@ -53,7 +53,7 @@ public class DateTimeConverter {
      * @param serverDate
      * @return
      */
-    public String convertS2ADate(String serverDate) {
+    public static String convertS2ADate(String serverDate) {
         try {
             Date convertedToDate = serverDateFormat.parse(serverDate);
             String convertedToString = appDateFormat.format(convertedToDate);
@@ -69,7 +69,7 @@ public class DateTimeConverter {
      * @param serverTime
      * @return
      */
-    public String convertS2ATime(String serverTime) {
+    public static String convertS2ATime(String serverTime) {
         try {
             Date convertedToDate = serverTimeFormat.parse(serverTime);
             String convertedToString = appTimeFormat.format(convertedToDate);

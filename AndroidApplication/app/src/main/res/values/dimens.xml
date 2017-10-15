@@ -4,4 +4,22 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="text_vertical_padding">8dp</dimen>
+    <dimen name="top_label_padding">16dp</dimen>
+    <dimen name="icon_signifier_width">24dp</dimen>
+    <dimen name="icon_signifier_padding">16dp</dimen>
+    <dimen name="input_icon">24dp</dimen>
+    <dimen name="icon_below_padding">8dp</dimen>
+    <dimen name="card_actions_padding">8dp</dimen>
+    <dimen name="card_primary_title_top_padding">24dp</dimen>
+    <dimen name="card_primary_title_bottom_padding">16dp</dimen>
+    <dimen name="card_primary_title_textsize">14sp</dimen>
+    <dimen name="card_horizontal_padding">16dp</dimen>
+    <dimen name="card_vertical_padding">16dp</dimen>
+    <dimen name="card_supporting_textsize">14sp</dimen>
+    <dimen name="card_bottom_padding">24dp</dimen>
+    <dimen name="card_edge_margin">8dp</dimen>
+    <dimen name="card_spacing">8dp</dimen>
+    <dimen name="card_resting_elevation">2dp</dimen>
+    <dimen name="card_hover_elevation">8dp</dimen>
 </resources>

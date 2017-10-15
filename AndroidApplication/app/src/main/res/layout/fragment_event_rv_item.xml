@@ -35,7 +35,7 @@
                     android:layout_margin="12dp"
                     android:layout_below="@+id/event_photo"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/card_primary_title_textsize"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -55,7 +55,7 @@
                     android:layout_margin="5dp"
                     android:layout_toRightOf="@+id/event_location_pin"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/card_supporting_textsize" />
 
                 <ImageView
                     android:id="@+id/calendar_icon"

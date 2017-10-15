@@ -5,10 +5,12 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.comp9323.data.DataHolder;
+import com.comp9323.data.DateTimeConverter;
 import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
 import com.comp9323.restclient.api.EventService;
@@ -37,8 +40,10 @@ import retrofit2.Response;
 public class NewEventFormFragment extends DialogFragment {
 
     private static final String TAG = "NewEventFormFragment";
+    private View rootView;
     private EditText name, loc, desc;
     private TextView startDate, endDate, startTime, endTime;
+    private Toolbar toolbar;
     private Calendar mDate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma");
@@ -46,7 +51,7 @@ public class NewEventFormFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_new_event_form, container, false);
+        rootView = inflater.inflate(R.layout.fragment_new_event_form, container, false);
 
         name = rootView.findViewById(R.id.new_event_name);
         loc = rootView.findViewById(R.id.new_event_location);
@@ -55,8 +60,9 @@ public class NewEventFormFragment extends DialogFragment {
         endDate = rootView.findViewById(R.id.new_event_enddate);
         startTime = rootView.findViewById(R.id.new_event_starttime);
         endTime = rootView.findViewById(R.id.new_event_endtime);
+        toolbar = rootView.findViewById(R.id.toolbar);
 
-        setToolbar(rootView);
+        setToolbar();
         initDates();
         setDateListeners();
         setTimeListeners();
@@ -96,7 +102,9 @@ public class NewEventFormFragment extends DialogFragment {
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            callPostEvent();
+            if (callPostEvent()) {
+                dismiss();
+            }
             return true;
         } else if (id == android.R.id.home) {
             // handle close button click here
@@ -105,36 +113,6 @@ public class NewEventFormFragment extends DialogFragment {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setToolbar(View rootView) {
-        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
-        toolbar.setTitle("New Event");
-
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
-        }
-        setHasOptionsMenu(true);
-    }
-
-    private void initDates() {
-        mDate = Calendar.getInstance();
-        year = mDate.get(Calendar.YEAR);
-        month = mDate.get(Calendar.MONTH);
-        day = mDate.get(Calendar.DAY_OF_MONTH);
-        hour = mDate.get(Calendar.HOUR_OF_DAY);
-        minute = mDate.get(Calendar.MINUTE);
-
-        startDate.setText(dateFormat.format(mDate.getTime()));
-        endDate.setText(dateFormat.format(mDate.getTime()));
-        startTime.setText(timeFormat.format(mDate.getTime()));
-        endTime.setText(timeFormat.format(mDate.getTime()));
     }
 
     private void setDateListeners() {
@@ -196,19 +174,58 @@ public class NewEventFormFragment extends DialogFragment {
         });
     }
 
+    private void setToolbar() {
+        toolbar.setTitle("New Event");
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
+        }
+        setHasOptionsMenu(true);
+    }
+
+    private void initDates() {
+        mDate = Calendar.getInstance();
+        year = mDate.get(Calendar.YEAR);
+        month = mDate.get(Calendar.MONTH);
+        day = mDate.get(Calendar.DAY_OF_MONTH);
+        hour = mDate.get(Calendar.HOUR_OF_DAY);
+        minute = mDate.get(Calendar.MINUTE);
+
+        startDate.setText(dateFormat.format(mDate.getTime()));
+        endDate.setText(dateFormat.format(mDate.getTime()));
+        startTime.setText(timeFormat.format(mDate.getTime()));
+        endTime.setText(timeFormat.format(mDate.getTime()));
+    }
+
     private boolean callPostEvent() {
+        final boolean[] success = {false};
         EventService.postEvent(createEventBean(), new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
-
+                if (response.isSuccessful()) {
+                    Snackbar successMessage = Snackbar.make(rootView, "Event created.",
+                            Snackbar.LENGTH_SHORT);
+                    successMessage.show();
+                    success[0] = true;
+                } else {
+                    Snackbar failMessage = Snackbar.make(rootView, "Create event failed.",
+                            Snackbar.LENGTH_SHORT);
+                    failMessage.show();
+                }
             }
 
             @Override
             public void onFailure(Call<Event> call, Throwable t) {
-                call.cancel();
+                Log.e(TAG, t.getMessage());
             }
         });
-        return true;
+        return success[0];
     }
 
     private Event createEventBean() {
@@ -220,6 +237,11 @@ public class NewEventFormFragment extends DialogFragment {
         String eventStartT = startTime.getText().toString();
         String eventEndT = endTime.getText().toString();
         String eventUser = DataHolder.getInstance().getUser().getUsername();
+
+        eventStartD = DateTimeConverter.convertA2SDate(eventStartD);
+        eventEndD = DateTimeConverter.convertA2SDate(eventEndD);
+        eventStartT = DateTimeConverter.convertA2STime(eventStartT);
+        eventEndT = DateTimeConverter.convertA2STime(eventEndT);
 
         Event newEvent = new Event(eventName, eventLoc, eventStartD, eventEndD, eventStartT,
                 eventEndT, eventDesc, eventUser);
