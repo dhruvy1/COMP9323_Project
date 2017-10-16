@@ -67,7 +67,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_arrow_downward_black_24dp" />
+                app:srcCompat="@drawable/ic_thumb_down_black_24dp" />
 
 
             <ImageButton
@@ -75,7 +75,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_arrow_upward_black_24dp" />
+                app:srcCompat="@drawable/ic_thumb_up_black_24dp" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

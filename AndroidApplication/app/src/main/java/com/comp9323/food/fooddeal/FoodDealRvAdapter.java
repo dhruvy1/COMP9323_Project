@@ -80,8 +80,8 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
             @Override
             public void onClick(View view) {
                 listener.onFoodDealLikeBtnClicked(holder.foodDeal.getId(), holder.foodDeal.getRating());
-                holder.foodDealLikeBtn.setImageResource(R.drawable.ic_arrow_upward_blue_24dp);
-                holder.foodDealDislikeBtn.setImageResource(R.drawable.ic_arrow_downward_black_24dp);
+                holder.foodDealLikeBtn.setImageResource(R.drawable.ic_thumb_up_blue_24dp);
+                holder.foodDealDislikeBtn.setImageResource(R.drawable.ic_thumb_down_black_24dp);
             }
         });
     }
@@ -91,8 +91,8 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
             @Override
             public void onClick(View view) {
                 listener.onFoodDealDislikeBtnClicked(holder.foodDeal.getId(), holder.foodDeal.getRating());
-                holder.foodDealLikeBtn.setImageResource(R.drawable.ic_arrow_upward_black_24dp);
-                holder.foodDealDislikeBtn.setImageResource(R.drawable.ic_arrow_downward_blue_24dp);
+                holder.foodDealLikeBtn.setImageResource(R.drawable.ic_thumb_up_black_24dp);
+                holder.foodDealDislikeBtn.setImageResource(R.drawable.ic_thumb_down_blue_24dp);
             }
         });
     }
