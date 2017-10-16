@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 
 class MobileUser(models.Model):
     username = models.CharField(max_length=200)
@@ -36,17 +36,18 @@ class Event(models.Model):
 class FoodDeal(models.Model):
     post_id = models.CharField(max_length=100, blank=True)
     message = models.TextField()
-    updated_date = models.DateField(blank=True)
-    updated_time = models.TimeField(blank=True)
+    updated_date = models.DateField(blank=True, null=True)
+    updated_time = models.TimeField(blank=True, null=True)
     photo_link = models.CharField(max_length=400, blank=True, default='')
     event_link = models.CharField(max_length=400, blank=True, default='')
     rating = models.CharField(max_length=100, default='0')
     title = models.CharField(max_length=100, blank=True)
-    start_date = models.DateField(blank=True, default='')
-    end_date = models.DateField(blank=True, default='')
-    start_time = models.TimeField(blank=True, default='')
-    end_time = models.TimeField(blank=True, default='')
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
     created_by = models.CharField(max_length=100)
+    location = models.CharField(max_length=200, blank=True, default='')
 
 
 class FoodPlace(models.Model):
