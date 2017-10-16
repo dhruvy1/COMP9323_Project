@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -41,10 +42,13 @@ import retrofit2.Response;
 public class EventNewFormFragment extends DialogFragment {
 
     private static final String TAG = "EventNewFormFragment";
+    private final String DAY_START= "00:00AM";
+    private final String DAY_END = "11:59PM";
     private View rootView;
     private TextInputEditText name, loc, desc, startDate, endDate, startTime, endTime;
     private TextInputLayout nameLayout, locLayout, startDateLayout, startTimeLayout,
             endDateLayout, endTimeLayout;
+    private CheckBox dateCheckbox;
     private Toolbar toolbar;
     private Calendar mDate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
@@ -60,6 +64,7 @@ public class EventNewFormFragment extends DialogFragment {
         loc = rootView.findViewById(R.id.new_event_location);
         locLayout = rootView.findViewById(R.id.new_event_location_layout);
         desc = rootView.findViewById(R.id.new_event_desc);
+        dateCheckbox = rootView.findViewById(R.id.checkBox);
         startDate = rootView.findViewById(R.id.new_event_startdate);
         startDateLayout = rootView.findViewById(R.id.new_event_startdate_layout);
         endDate = rootView.findViewById(R.id.new_event_enddate);
@@ -74,6 +79,7 @@ public class EventNewFormFragment extends DialogFragment {
         initDates();
         setDateListeners();
         setTimeListeners();
+        setCheckboxClickListener();
 
         return rootView;
     }
@@ -214,7 +220,7 @@ public class EventNewFormFragment extends DialogFragment {
     }
 
     private boolean validateFields() {
-        return (validateName() && validateLocation() && validateDateRange());
+        return (validateName() && validateDateRange());
     }
 
     private boolean validateName() {
@@ -229,6 +235,39 @@ public class EventNewFormFragment extends DialogFragment {
         return true;
     }
 
+    /**
+     * Adds a Listener which checks if the user has selected "all-day" event and will disable
+     * date/time selecting functionality until unselected. Will also modify endDate to be the same
+     * day as startDate and set start and end times to be start and end of the day
+     */
+    private void setCheckboxClickListener() {
+        dateCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dateCheckbox.isChecked()) {
+                    startDate.setEnabled(false);
+                    startTime.setEnabled(false);
+                    endDate.setEnabled(false);
+                    endTime.setEnabled(false);
+
+                    // set fields on the screen to reflect all-day selection
+                    endDate.setText(startDate.getText().toString());
+                    startTime.setText(DAY_START);
+                    endTime.setText(DAY_END);
+                } else {
+                    startDate.setEnabled(true);
+                    startTime.setEnabled(true);
+                    endDate.setEnabled(true);
+                    endTime.setEnabled(true);
+                }
+            }
+        });
+    }
+
+    /**
+     * Checks if the user has input a location, if not, the user will be notified with error text
+     * @return
+     */
     private boolean validateLocation() {
         if (loc.getText().toString().trim().isEmpty()) {
             locLayout.setError(getString(R.string.err_msg_location));
