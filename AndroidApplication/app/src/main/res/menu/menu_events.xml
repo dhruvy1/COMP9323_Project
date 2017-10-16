@@ -5,13 +5,12 @@
     <item
         android:id="@+id/search_events"
         android:icon="@mipmap/ic_search"
-        app:showAsAction="always"
-        android:title="@string/search" />
+        android:title="@string/search"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/add_event"
         android:icon="@mipmap/ic_add"
-        app:showAsAction="always"
-        android:title="@string/add" />
-
+        android:title="@string/add"
+        app:showAsAction="always" />
 </menu>

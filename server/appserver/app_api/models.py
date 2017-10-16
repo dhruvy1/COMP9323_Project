@@ -41,6 +41,11 @@ class FoodDeal(models.Model):
     photo_link = models.CharField(max_length=400, blank=True, default='')
     event_link = models.CharField(max_length=400, blank=True, default='')
     rating = models.CharField(max_length=100, default='0')
+    title = models.CharField(max_length=100, blank=True)
+    start_date = models.DateField(blank=True, default='')
+    end_date = models.DateField(blank=True, default='')
+    start_time = models.TimeField(blank=True, default='')
+    end_time = models.TimeField(blank=True, default='')
     created_by = models.CharField(max_length=100)
 
 
