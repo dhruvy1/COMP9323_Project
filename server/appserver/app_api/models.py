@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 
 class MobileUser(models.Model):
     username = models.CharField(max_length=200)
@@ -36,7 +36,7 @@ class Event(models.Model):
 class FoodDeal(models.Model):
     post_id = models.CharField(max_length=100, blank=True)
     message = models.TextField()
-    updated_date = models.DateField(blank=True)
+    updated_date = models.DateField(blank=True, null=True)
     updated_time = models.TimeField(blank=True)
     photo_link = models.CharField(max_length=400, blank=True, default='')
     event_link = models.CharField(max_length=400, blank=True, default='')
