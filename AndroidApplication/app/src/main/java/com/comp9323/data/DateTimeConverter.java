@@ -1,5 +1,7 @@
 package com.comp9323.data;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,10 +12,12 @@ import java.util.Date;
 
 public class DateTimeConverter {
 
+    private final String TAG = "DateTimeConverter";
     private static SimpleDateFormat appDateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
     private static SimpleDateFormat appTimeFormat = new SimpleDateFormat("hh:mma");
     private static SimpleDateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat serverTimeFormat = new SimpleDateFormat("HH:mm:ss");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy hh:mma");
 
     /**
      * Converts date from the app to the date in the server
@@ -27,8 +31,9 @@ public class DateTimeConverter {
             String convertedToString = serverDateFormat.format(convertedToDate);
             return convertedToString;
         } catch (ParseException e) {
-            return "";
+            Log.d("TAG", e.getMessage());
         }
+        return "";
     }
 
     /**
@@ -43,8 +48,9 @@ public class DateTimeConverter {
             String convertedToString = serverTimeFormat.format(convertedToDate);
             return convertedToString;
         } catch (ParseException e) {
-            return "";
+            Log.d("TAG", e.getMessage());
         }
+        return "";
     }
 
     /**
@@ -53,14 +59,15 @@ public class DateTimeConverter {
      * @param serverDate
      * @return
      */
-    public String convertS2ADate(String serverDate) {
+    public static String convertS2ADate(String serverDate) {
         try {
             Date convertedToDate = serverDateFormat.parse(serverDate);
             String convertedToString = appDateFormat.format(convertedToDate);
             return convertedToString;
         } catch (ParseException e) {
-            return "";
+            Log.d("TAG", e.getMessage());
         }
+        return "";
     }
 
     /**
@@ -69,13 +76,34 @@ public class DateTimeConverter {
      * @param serverTime
      * @return
      */
-    public String convertS2ATime(String serverTime) {
+    public static String convertS2ATime(String serverTime) {
         try {
             Date convertedToDate = serverTimeFormat.parse(serverTime);
             String convertedToString = appTimeFormat.format(convertedToDate);
             return convertedToString;
         } catch (ParseException e) {
-            return "";
+            Log.d("TAG", e.getMessage());
         }
+        return "";
+    }
+
+    /**
+     * Compares two dates and returns true if eventStart is before eventDate
+     * e.g. eventStart = Wed, Oct 21 2017 02:30PM; eventEnd = Tue, 20 2017 02:40PM; returns false
+     * @param eventStart
+     * @param eventEnd
+     * @return
+     */
+    public static boolean checkDateBefore(String eventStart, String eventEnd) {
+        try {
+            Date startDate = dateFormat.parse(eventStart);
+            Date endDate = dateFormat.parse(eventEnd);
+
+            if (startDate.before(endDate)) return true;
+
+        } catch (ParseException e) {
+            Log.d("TAG", e.getMessage());
+        }
+        return false;
     }
 }

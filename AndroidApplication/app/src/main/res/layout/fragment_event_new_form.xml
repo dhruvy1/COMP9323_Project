@@ -27,15 +27,16 @@
         android:padding="@dimen/activity_horizontal_margin">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/new_event_name_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/hintColor">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/new_event_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
                 android:padding="@dimen/text_margin"
@@ -46,15 +47,16 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/new_event_location_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/hintColor">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/new_event_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/text_margin"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                 android:padding="@dimen/text_margin"
                 android:textColor="@color/colorCharcoal"
                 android:inputType="textPersonName"
@@ -75,46 +77,58 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin">
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
 
             <ImageView
                 android:id="@+id/new_date_icon_from"
                 android:layout_width="@dimen/icon_dimen"
                 android:layout_height="@dimen/icon_dimen"
-                android:paddingBottom="@dimen/icon_below_padding"
-                android:paddingHorizontal="@dimen/icon_signifier_width"
-                android:paddingTop="@dimen/icon_signifier_padding"
+                android:layout_marginBottom="@dimen/icon_below_padding"
+                android:layout_marginRight="@dimen/icon_signifier_padding"
+                android:layout_marginTop="@dimen/icon_signifier_padding"
                 android:src="@mipmap/ic_date" />
 
-            <EditText
-                android:id="@+id/new_event_startdate"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/new_event_startdate_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/text_margin"
-                android:layout_toRightOf="@+id/new_date_icon_from"
-                android:paddingVertical="@dimen/text_vertical_padding"
-                android:drawableRight="@drawable/mini_dropdown"
-                android:drawablePadding="@dimen/icon_signifier_padding"
-                android:focusable="false"
-                android:textColor="@color/colorCharcoal" />
+                android:layout_toEndOf="@+id/new_date_icon_from">
 
-            <EditText
-                android:id="@+id/new_event_starttime"
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/new_event_startdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_vertical_padding"
+                    android:drawableEnd="@drawable/mini_dropdown"
+                    android:drawablePadding="@dimen/icon_below_padding"
+                    android:focusable="false"
+                    android:textColor="@color/colorCharcoal"
+                    android:backgroundTint="@color/textUnderlineColor" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/new_event_starttime_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/text_margin"
-                android:layout_toRightOf="@+id/new_event_startdate"
-                android:paddingVertical="@dimen/text_vertical_padding"
-                android:drawableRight="@drawable/mini_dropdown"
-                android:drawablePadding="@dimen/icon_signifier_padding"
-                android:focusable="false"
-                android:textColor="@color/colorCharcoal" />
+                android:layout_toEndOf="@+id/new_event_startdate_layout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/new_event_starttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_vertical_padding"
+                    android:drawableEnd="@drawable/mini_dropdown"
+                    android:drawablePadding="@dimen/icon_signifier_padding"
+                    android:focusable="false"
+                    android:textColor="@color/colorCharcoal"
+                    android:backgroundTint="@color/textUnderlineColor" />
+            </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/text_margin"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/text_margin"
             android:paddingHorizontal="@dimen/text_margin"
             android:text="To"
@@ -123,56 +137,81 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin" >
+            android:layout_margin="@dimen/activity_horizontal_margin" >
 
             <ImageView
                 android:id="@+id/new_date_icon_to"
                 android:layout_width="@dimen/icon_dimen"
                 android:layout_height="@dimen/icon_dimen"
-                android:paddingBottom="@dimen/icon_below_padding"
-                android:paddingHorizontal="@dimen/icon_signifier_width"
-                android:paddingTop="@dimen/icon_signifier_padding"
+                android:layout_marginBottom="@dimen/icon_below_padding"
+                android:layout_marginRight="@dimen/icon_signifier_padding"
+                android:layout_marginTop="@dimen/icon_signifier_padding"
                 android:src="@mipmap/ic_date" />
 
-            <EditText
-                android:id="@+id/new_event_enddate"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/new_event_enddate_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/text_margin"
-                android:layout_toRightOf="@+id/new_date_icon_to"
-                android:paddingVertical="@dimen/text_vertical_padding"
-                android:drawableRight="@drawable/mini_dropdown"
-                android:drawablePadding="@dimen/icon_signifier_padding"
-                android:focusable="false"
-                android:textColor="@color/colorCharcoal" />
+                android:layout_toEndOf="@+id/new_date_icon_to">
 
-            <EditText
-                android:id="@+id/new_event_endtime"
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/new_event_enddate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_vertical_padding"
+                    android:drawableEnd="@drawable/mini_dropdown"
+                    android:drawablePadding="@dimen/icon_below_padding"
+                    android:focusable="false"
+                    android:textColor="@color/colorCharcoal"
+                    android:backgroundTint="@color/textUnderlineColor" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/new_event_endtime_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/text_margin"
-                android:layout_toRightOf="@+id/new_event_enddate"
-                android:paddingVertical="@dimen/text_vertical_padding"
-                android:drawableRight="@drawable/mini_dropdown"
-                android:drawablePadding="@dimen/icon_signifier_padding"
-                android:focusable="false"
-                android:textColor="@color/colorCharcoal" />
+                android:layout_toEndOf="@+id/new_event_enddate_layout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/new_event_endtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/text_vertical_padding"
+                    android:drawableEnd="@drawable/mini_dropdown"
+                    android:drawablePadding="@dimen/icon_signifier_padding"
+                    android:focusable="false"
+                    android:textColor="@color/colorCharcoal"
+                    android:backgroundTint="@color/textUnderlineColor" />
+            </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
+
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="48dp"
+            android:paddingVertical="@dimen/text_vertical_padding"
+            android:text="All-day"
+            android:textColor="@color/colorCharcoal"
+            android:textSize="@dimen/text_size"
+            android:buttonTint="@color/borderColor"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/new_event_enddate"
             android:background="@drawable/border_style"
-            android:textColorHint="@color/hintColor" >
-            <EditText
+            android:textColorHint="@color/hintColor">
+
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/new_event_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/text_margin"
                 android:hint="@string/event_desc_hint"
                 android:inputType="textMultiLine"
-                android:gravity="top|left"
+                android:gravity="top|start"
                 android:lines="6"
                 android:textColor="@color/colorCharcoal"
                 android:scrollbars="vertical"/>

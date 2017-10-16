@@ -6,6 +6,7 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorCharcoal">#333333</color>
     <item name="hintColor" type="color">#919191</item>
+    <item name="borderColor" type="color">#44aa92</item>
     <item name="textUnderlineColor" type="color">#bcdad7</item>
 
     <integer-array name="colors">

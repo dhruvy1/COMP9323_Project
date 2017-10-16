@@ -6,6 +6,8 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +23,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.comp9323.data.DataHolder;
@@ -41,7 +42,9 @@ public class EventNewFormFragment extends DialogFragment {
 
     private static final String TAG = "EventNewFormFragment";
     private View rootView;
-    private EditText name, loc, desc, startDate, endDate, startTime, endTime;
+    private TextInputEditText name, loc, desc, startDate, endDate, startTime, endTime;
+    private TextInputLayout nameLayout, locLayout, startDateLayout, startTimeLayout,
+            endDateLayout, endTimeLayout;
     private Toolbar toolbar;
     private Calendar mDate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
@@ -53,12 +56,18 @@ public class EventNewFormFragment extends DialogFragment {
         rootView = inflater.inflate(R.layout.fragment_event_new_form, container, false);
 
         name = rootView.findViewById(R.id.new_event_name);
+        nameLayout = rootView.findViewById(R.id.new_event_name_layout);
         loc = rootView.findViewById(R.id.new_event_location);
+        locLayout = rootView.findViewById(R.id.new_event_location_layout);
         desc = rootView.findViewById(R.id.new_event_desc);
         startDate = rootView.findViewById(R.id.new_event_startdate);
+        startDateLayout = rootView.findViewById(R.id.new_event_startdate_layout);
         endDate = rootView.findViewById(R.id.new_event_enddate);
+        endDateLayout = rootView.findViewById(R.id.new_event_enddate_layout);
         startTime = rootView.findViewById(R.id.new_event_starttime);
+        startTimeLayout = rootView.findViewById(R.id.new_event_starttime_layout);
         endTime = rootView.findViewById(R.id.new_event_endtime);
+        endTimeLayout = rootView.findViewById(R.id.new_event_endtime_layout);
         toolbar = rootView.findViewById(R.id.toolbar);
 
         setToolbar();
@@ -101,6 +110,8 @@ public class EventNewFormFragment extends DialogFragment {
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
+            // TODO: ADD Snack to this
+            validateFields();
             if (callPostEvent()) {
                 dismiss();
             }
@@ -152,7 +163,7 @@ public class EventNewFormFragment extends DialogFragment {
         });
     }
 
-    private DatePickerDialog.OnDateSetListener getOnDateSetListener(final EditText dateText) {
+    private DatePickerDialog.OnDateSetListener getOnDateSetListener(final TextInputEditText dateText) {
         return (new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -162,7 +173,7 @@ public class EventNewFormFragment extends DialogFragment {
         });
     }
 
-    private TimePickerDialog.OnTimeSetListener getOnTimeSetListener(final EditText dateText) {
+    private TimePickerDialog.OnTimeSetListener getOnTimeSetListener(final TextInputEditText dateText) {
         return (new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
@@ -203,21 +214,58 @@ public class EventNewFormFragment extends DialogFragment {
     }
 
     private boolean validateFields() {
-        return false;
+        return (validateName() && validateLocation() && validateDateRange());
     }
 
     private boolean validateName() {
-        return false;
+        if (name.getText().toString().trim().isEmpty()) {
+            nameLayout.setError(getString(R.string.err_msg_name));
+            requestFocus(name);
+            return false;
+        } else {
+            nameLayout.setErrorEnabled(false);
+        }
+
+        return true;
     }
 
     private boolean validateLocation() {
-        return false;
+        if (loc.getText().toString().trim().isEmpty()) {
+            locLayout.setError(getString(R.string.err_msg_location));
+            requestFocus(loc);
+            return false;
+        } else {
+            locLayout.setErrorEnabled(false);
+        }
+
+        return true;
     }
 
     private boolean validateDateRange() {
+        String eventStart = startDate.getText().toString() + " " + startTime.getText().toString();
+        String eventEnd = endDate.getText().toString() + " " + endTime.getText().toString();
+        if (DateTimeConverter.checkDateBefore(eventStart, eventEnd)) {
+            return true;
+        } else {
+            startDateLayout.setError(getString(R.string.err_msg_date));
+            requestFocus(startDate);
+            startTimeLayout.setError(" ");
+            requestFocus(startTime);
+            endDateLayout.setError(getString(R.string.err_msg_date));
+            requestFocus(endDate);
+            endTimeLayout.setError(" ");
+            requestFocus(endTime);
+        }
+
         return false;
     }
-    
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
     private boolean callPostEvent() {
         final boolean[] success = {false};
         EventService.postEvent(createEventBean(), new Callback<Event>() {
