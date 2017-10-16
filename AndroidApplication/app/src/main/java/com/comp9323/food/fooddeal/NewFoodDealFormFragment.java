@@ -21,6 +21,9 @@ import com.comp9323.main.R;
 public class NewFoodDealFormFragment extends DialogFragment {
 
     private Listener listener;
+    private EditText titleEt;
+    private EditText locationEt;
+    private EditText messageEt;
 
     @Nullable
     @Override
@@ -42,6 +45,10 @@ public class NewFoodDealFormFragment extends DialogFragment {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         }
+
+        titleEt = view.findViewById(R.id.new_food_deal_title_et);
+        locationEt = view.findViewById(R.id.new_food_deal_location_et);
+        messageEt = view.findViewById(R.id.new_food_deal_message_et);
 
         return view;
     }
@@ -65,9 +72,10 @@ public class NewFoodDealFormFragment extends DialogFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                EditText et = getView().findViewById(R.id.new_food_deal_et);
-                String message = et.getText().toString();
-                listener.onSaveClicked(message);
+                String title = titleEt.getText().toString();
+                String location = locationEt.getText().toString();
+                String message = messageEt.getText().toString();
+                listener.onSaveClicked(title, location, message);
                 dismiss();
                 return true;
             case android.R.id.home:
@@ -83,6 +91,6 @@ public class NewFoodDealFormFragment extends DialogFragment {
     }
 
     public interface Listener {
-        void onSaveClicked(String message);
+        void onSaveClicked(String title, String location, String message);
     }
 }

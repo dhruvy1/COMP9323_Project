@@ -148,12 +148,17 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
                             }
                         } else {
                             // non-facebook
-//                            Calendar calendar = Calendar.getInstance();
 //                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-//                            Date endDateTime = dateFormat.parse(foodDeal.getEndDate() + " " + foodDeal.getEndTime());
-//
-//                            if (currentDate.compareTo(endDateTime) >= 0) {
-//                                foodDeals.add(foodDeal);
+//                            Date endDateTime = null;
+//                            try {
+//                                if (foodDeal.getEndDate() != null && foodDeal.getEndTime() != null) {
+//                                    endDateTime = dateFormat.parse(foodDeal.getEndDate() + " " + foodDeal.getEndTime());
+//                                    if (currentDate.compareTo(endDateTime) >= 0) {
+                                        foodDeals.add(foodDeal);
+//                                    }
+//                                }
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
 //                            }
                         }
                     }
@@ -241,12 +246,14 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     }
 
     @Override
-    public void onSaveClicked(String message) {
+    public void onSaveClicked(String title, String location, String message) {
         FoodDeal newFoodDeal = new FoodDeal();
+//        Date date = new Date();
+//        newFoodDeal.setUpdatedDate(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date));
+//        newFoodDeal.setUpdatedTime(new SimpleDateFormat("HH:mm:ss", Locale.US).format(date));
+        newFoodDeal.setTitle(title);
+        newFoodDeal.setLocation(location);
         newFoodDeal.setMessage(message);
-        Date date = new Date();
-        newFoodDeal.setUpdatedDate(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date));
-        newFoodDeal.setUpdatedTime(new SimpleDateFormat("HH:mm:ss", Locale.US).format(date));
         newFoodDeal.setCreatedBy(DataHolder.getInstance().getUser().getUsername());
 
         FoodDealService.postFoodDeal(newFoodDeal, new Callback<FoodDeal>() {
