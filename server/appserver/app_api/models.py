@@ -47,7 +47,7 @@ class FoodDeal(models.Model):
     start_time = models.TimeField(blank=True, null=True)
     end_time = models.TimeField(blank=True, null=True)
     created_by = models.CharField(max_length=100)
-    location = models.CharField(max_length=200)
+    location = models.CharField(max_length=200, blank=True, default='')
 
 
 class FoodPlace(models.Model):
