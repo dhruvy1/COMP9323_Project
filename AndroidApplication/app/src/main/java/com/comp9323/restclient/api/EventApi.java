@@ -25,13 +25,13 @@ public interface EventApi {
     Call<Event> getEvent(@Path("id") int eventId);
 
     @GET("events/all/")
-    Observable<List<Event>> getEvents();
+    Call<List<Event>> getEvents();
 
-    @POST("events")
+    @POST("events/")
     Call<Event> postEvent(@Body Event event);
 
     @DELETE("events/{id}")
-    Call<Event> deleteEvent(@Path("id") int eventId);
+    Call<Void> deleteEvent(@Path("id") int eventId);
 
     @PUT("events/{id}")
     Call<Event> putEvent(@Path("id") int eventId, @Body Event event);

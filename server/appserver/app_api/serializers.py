@@ -36,6 +36,7 @@ class FoodDealSerializer(serializers.ModelSerializer):
         fields = ['id', 'post_id', 'message', 'updated_time', 'photo_link', 'event_link', 'updated_date', 'rating', 'title', 'start_date', 'end_date', 'start_time', 'end_time', 'created_by', 'location']
 
 
+
 class FoodDealCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodDeal

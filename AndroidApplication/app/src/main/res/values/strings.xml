@@ -1,15 +1,28 @@
 <resources>
     <string name="app_name">Campus Mate</string>
     <string name="title_activity_main">Campus Mate</string>
-    <string name="title_event">Event</string>
+    <string name="title_event">Events</string>
     <string name="title_food">Food</string>
     <string name="title_qna">Q&amp;A</string>
+    <string name="add">Add</string>
+    <string name="search">Search</string>
+    <!-- Events -->
+    <string name="hint_event_name">Event Name*</string>
+    <string name="hint_event_location">Location</string>
+    <string name="event_src_url">Event Source URL:</string>
+    <string name="event_cover_id">Image URL:</string>
+    <string name="event_desc_label">About the event:</string>
+    <string name="event_desc_hint">What is your event about?</string>
+    <string name="err_msg_name">Enter a name for your event</string>
+    <string name="err_msg_location">Enter a location for your event</string>
+    <string name="err_msg_date">Start must be before end</string>
+    <!-- Food -->
     <string name="food_place_navigation">Food Place</string>
     <string name="food_deal_navigation">Food Deals</string>
-    <string name="hello_blank_fragment">Hello Event</string>
     <string name="food_place_address">Address:</string>
     <string name="inapp_rating">In-app Rating:</string>
     <string name="title_activity_maps">Map</string>
     <string name="user_pref">APP_USR_INFO</string>
+
 </resources>
 
