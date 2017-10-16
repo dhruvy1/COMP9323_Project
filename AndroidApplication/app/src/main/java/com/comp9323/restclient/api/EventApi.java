@@ -27,7 +27,7 @@ public interface EventApi {
     @GET("events/all/")
     Call<List<Event>> getEvents();
 
-    @POST("events")
+    @POST("events/")
     Call<Event> postEvent(@Body Event event);
 
     @DELETE("events/{id}")
