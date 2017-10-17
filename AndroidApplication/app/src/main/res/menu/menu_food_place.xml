@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/sort_food_place"
+        android:icon="@mipmap/ic_search"
+        android:title="@string/search"
+        app:showAsAction="always" >
+        <menu>
+            <item
+                android:id="@+id/food_place_sort_rating"
+                android:title="Rating" />
+            <item
+                android:id="@+id/food_place_sort_name"
+                android:title="Name" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/add_food_place"
+        android:icon="@mipmap/ic_add"
+        android:title="@string/add"
+        app:showAsAction="always" />
+</menu>

@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,10 +26,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.ViewHolder> {
     private static final String TAG = "FoodPlaceRvAdapter";
+    private static final int SORT_NULL = 0;
+    public static final int SORT_BY_NANE = 1;
+    public static final int SORT_BY_RATING = 2;
+    public static final int ASCENDING = 0;
+    public static final int DESCENDING = 1;
 
     private Context context;
     private Listener listener;
@@ -36,6 +45,7 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
 
     private List<FoodPlace> foodPlaces;
     private List<Integer> expandedList;
+    private int[] sorting;
 
     public FoodPlaceRvAdapter(Context context) {
         this.context = context;
@@ -47,6 +57,9 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_food_place_rv_item, parent, false);
+        sorting = new int[2];
+        sorting[0] = SORT_NULL;
+        sorting[1] = ASCENDING;
         return new ViewHolder(view);
     }
 
@@ -203,4 +216,54 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     public void setListener(Listener listener) {
         this.listener = listener;
     }
+
+    public void sort(int Type){
+        expandedList.clear();
+        switch(Type){
+            case SORT_BY_NANE:
+                if (sorting[1] == ASCENDING){
+                    //if ascending change to descending
+                    sorting[1] = DESCENDING;
+                    Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                        @Override
+                        public int compare(FoodPlace t1, FoodPlace t2) {
+                            return t1.getName().compareToIgnoreCase(t2.getName());
+                        }
+                    });
+                }else{
+                    sorting[1] = ASCENDING;
+                    Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                        @Override
+                        public int compare(FoodPlace t1, FoodPlace t2) {
+                            return t2.getName().compareToIgnoreCase(t1.getName());
+                        }
+                    });
+                }
+                break;
+            case SORT_BY_RATING:
+                if (sorting[1] == ASCENDING) {
+                    //if ascending change to descending
+                sorting[1] = DESCENDING;
+                    Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                        @Override
+                        public int compare(FoodPlace t1, FoodPlace t2) {
+                            return t1.getName().compareToIgnoreCase(t2.getName());
+                        }
+                    });
+                } else {
+                    sorting[1] =ASCENDING;
+                    Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                        @Override
+                        public int compare(FoodPlace t1, FoodPlace t2) {
+                            return t2.getName().compareToIgnoreCase(t1.getName());
+                        }
+                    });
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public int[] getSortingStatus(){return sorting;}
 }
