@@ -40,7 +40,28 @@ INSTALLED_APPS = (
     'app_api',
     'rest_framework',
     'rest_framework_swagger',
+    'qa',
+    'taggit',
+    'hitcount',
+    'django_markdown',
 )
+
+QA_SETTINGS = {
+    'qa_messages': True,
+    'qa_description_optional': False,
+    'reputation': {
+        'CREATE_QUESTION': 0,
+        'CREATE_ANSWER': 0,
+        'CREATE_ANSWER_COMMENT': 0,
+        'CREATE_QUESTION_COMMENT': 0,
+        'ACCEPT_ANSWER': 0,
+        'UPVOTE_QUESTION': 0,
+        'UPVOTE_ANSWER': 0,
+        'DOWNVOTE_QUESTION': 0,
+        'DOWNVOTE_ANSWER': 0,
+    }
+}
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
