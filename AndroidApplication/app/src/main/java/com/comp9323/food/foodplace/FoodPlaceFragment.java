@@ -1,12 +1,16 @@
 package com.comp9323.food.foodplace;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -43,6 +47,8 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_place_rv, container, false);
 
+        setHasOptionsMenu(true);
+
         initRvAdapter(savedInstanceState);
         initRecyclerView(view);
         initSwipeRefreshLayout(view, savedInstanceState);
@@ -50,6 +56,35 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
         getFoodPlaces();
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_food_place, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()) {
+            case R.id.add_food_place:
+                NewFoodPlaceFormFragment foodDealFormFragment = new NewFoodPlaceFormFragment();
+                foodDealFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
+                foodDealFormFragment.show(getFragmentManager(), "Food Place Dialog Fragment");
+                return true;
+            case R.id.food_place_sort_rating:
+                adapter.sort(FoodPlaceRvAdapter.SORT_BY_RATING);
+                adapter.notifyDataSetChanged();
+                changeIcon(item);
+                return true;
+            case R.id.food_place_sort_name:
+                adapter.sort(FoodPlaceRvAdapter.SORT_BY_NANE);
+                adapter.notifyDataSetChanged();
+                //item.setIcon()
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void initRvAdapter(Bundle savedInstance) {
@@ -143,5 +178,30 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
                 Log.e(TAG, t.getMessage());
             }
         });
+    }
+
+    public void changeIcon(MenuItem item){
+        int[] status = adapter.getSortingStatus();
+        switch(item.getItemId()){
+            case R.id.food_place_sort_name:
+                if (status[1] == FoodPlaceRvAdapter.ASCENDING){
+                    //TODO set descending image
+                    //item.setIcon();
+                }else{
+                    //TODO set descending image
+                    //item.setIcon();
+                }
+                break;
+            case R.id.food_place_sort_rating:
+                if (status[1] == FoodPlaceRvAdapter.ASCENDING){
+                    //TODO set descending image
+                    //item.setIcon();
+                }else{
+                    //TODO set descending image
+                    //item.setIcon();
+                }
+                break;
+        }
+        adapter.notifyDataSetChanged();
     }
 }
