@@ -13,13 +13,21 @@ import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHolder> {
     private static final String TAG = "EventRvAdapter";
+    private static final int SORT_NULL = 0;
+    public static final int SORT_BY_NANE = 1;
+    public static final int SORT_BY_RATING = 2;
+    public static final int ASCENDING = 0;
+    public static final int DESCENDING = 1;
 
     private List<Event> events;
     private List<Integer> expandedList;
+    private int[] sorting;
 
     public EventRvAdapter() {
         events = new ArrayList<>();
@@ -33,6 +41,9 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_event_rv_item, parent, false);
+        sorting = new int[2];
+        sorting[0] = SORT_NULL;
+        sorting[1] = ASCENDING;
         return new ViewHolder(view);
     }
 
@@ -101,4 +112,54 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
             mEventDetailsContainer = view.findViewById(R.id.event_details_container);
         }
     }
+
+    public void sort(int Type){
+        expandedList.clear();
+        switch(Type){
+            case SORT_BY_NANE:
+                if (sorting[1] == ASCENDING){
+                    //if ascending change to descending
+                    sorting[1] = DESCENDING;
+                    Collections.sort(events, new Comparator<Event>() {
+                        @Override
+                        public int compare(Event t1, Event t2) {
+                            return t1.getName().compareToIgnoreCase(t2.getName());
+                        }
+                    });
+                }else{
+                    sorting[1] = ASCENDING;
+                    Collections.sort(events, new Comparator<Event>() {
+                        @Override
+                        public int compare(Event t1, Event t2) {
+                            return t2.getName().compareToIgnoreCase(t1.getName());
+                        }
+                    });
+                }
+                break;
+            case SORT_BY_RATING:
+                if (sorting[1] == ASCENDING) {
+                    //if ascending change to descending
+                    sorting[1] = DESCENDING;
+                    Collections.sort(events, new Comparator<Event>() {
+                        @Override
+                        public int compare(Event t1, Event t2) {
+                            return t1.getName().compareToIgnoreCase(t2.getName());
+                        }
+                    });
+                } else {
+                    sorting[1] =ASCENDING;
+                    Collections.sort(events, new Comparator<Event>() {
+                        @Override
+                        public int compare(Event t1, Event t2) {
+                            return t2.getName().compareToIgnoreCase(t1.getName());
+                        }
+                    });
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public int[] getSortingStatus(){return sorting;}
 }

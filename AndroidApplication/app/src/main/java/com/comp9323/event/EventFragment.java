@@ -61,6 +61,16 @@ public class EventFragment extends Fragment {
             case R.id.search_events:
 
                 return true;
+            case R.id.food_place_sort_rating:
+                adapter.sort(EventRvAdapter.SORT_BY_RATING);
+                adapter.notifyDataSetChanged();
+                changeIcon(item);
+                return true;
+            case R.id.food_place_sort_name:
+                adapter.sort(EventRvAdapter.SORT_BY_NANE);
+                adapter.notifyDataSetChanged();
+                //item.setIcon()
+                return true;
             case R.id.add_event:
                 // Do stuff for adding events
                 EventNewFormFragment eventFormFragment = new EventNewFormFragment();
@@ -91,6 +101,31 @@ public class EventFragment extends Fragment {
 
     private void updateAdapter(List<Event> events) {
         adapter.setEvents(events);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void changeIcon(MenuItem item){
+        int[] status = adapter.getSortingStatus();
+        switch(item.getItemId()){
+            case R.id.food_place_sort_name:
+                if (status[1] == EventRvAdapter.ASCENDING){
+                    //TODO set descending image
+                    //item.setIcon();
+                }else{
+                    //TODO set descending image
+                    //item.setIcon();
+                }
+                break;
+            case R.id.food_place_sort_rating:
+                if (status[1] == EventRvAdapter.ASCENDING){
+                    //TODO set descending image
+                    //item.setIcon();
+                }else{
+                    //TODO set descending image
+                    //item.setIcon();
+                }
+                break;
+        }
         adapter.notifyDataSetChanged();
     }
 }

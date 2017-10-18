@@ -6,7 +6,16 @@
         android:id="@+id/search_events"
         android:icon="@mipmap/ic_search"
         app:showAsAction="always"
-        android:title="@string/search" />
+        android:title="@string/search">
+        <menu>
+            <item
+                android:id="@+id/food_place_sort_rating"
+                android:title="Rating" />
+            <item
+                android:id="@+id/food_place_sort_name"
+                android:title="Name" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/add_event"
