@@ -3,7 +3,8 @@ from .models import *
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'device_id', 'karma_points')
+    list_display_links = ('id','username')
+    list_display = ('id','username', 'device_id', 'karma_points')
 admin.site.register(User, UserAdmin)
 
 

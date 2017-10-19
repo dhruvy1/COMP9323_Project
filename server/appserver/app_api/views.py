@@ -13,6 +13,12 @@ def index(request):
 
 
 @permission_classes((AllowAny,))
+class UserAPIView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserCreateSerializer
+
+
+@permission_classes((AllowAny,))
 class MobileUserAPIView(ListAPIView):
     queryset = MobileUser.objects.all()
     serializer_class = MobileUserCreateSerializer

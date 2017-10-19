@@ -10,6 +10,8 @@ urlpatterns = [
     url(r'^$', index, name='index'),
     # mobile_user list URL
     url(r'mobile_users/all/$', MobileUserAPIView.as_view(), name='list'),
+    # User urls
+    url(r'users/$', UserAPIView.as_view(), name='create'),
     # mobile_user_detail URLs
     url(r'mobile_users/$', MobileUserCreateAPIView.as_view(), name='create'),
     url(r'mobile_users/(?P<pk>[0-9]+)/$', MobileUserDetailAPIView.as_view(), name='detail'),

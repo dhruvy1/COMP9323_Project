@@ -9,9 +9,28 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'username', 'password',
+            'username', 'password', 'karma_points', 'device_id'
         ]
-        
+
+    def create(self, validated_data):
+        print(validated_data)
+        username = validated_data['username']
+        # email = validated_data['email']
+        # password = validated_data['password']
+        karma_points = validated_data['karma_points']
+        device_id = validated_data['device_id']
+        user_obj = User(
+            username = username,
+            email = 'testing@google.com',
+            karma_points = karma_points,
+            device_id = device_id,
+            is_staff = True
+        )
+        def_pwd = 'admin'
+        user_obj.set_password(def_pwd)
+        user_obj.save()
+        return validated_data
+
 
 class MobileUserCreateSerializer(serializers.ModelSerializer):
     class Meta:
