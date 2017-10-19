@@ -1,47 +1,10 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.contrib.auth.models import BaseUserManager
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-import datetime
-from django.utils import timezone
 
-# class UserManager(BaseUserManager):
-#     def create_user(self, email, password, **kwargs):
-#         user = self.model(
-#             # lower-cases the host name of the email address
-#             # (everything right of the @) to avoid case clashes
-#             is_active=True,
-#             **kwargs
-#         )
-#         user.set_password(password)
-#         user.save(using=self._db)
-#         return user
-#
-#     def create_superuser(self, email, password, **kwargs):
-#         user = self.model(
-#             is_staff=True,
-#             is_superuser=True,
-#             is_active=True,
-#             **kwargs
-#         )
-#         user.set_password(password)
-#         user.save(using=self._db)
-#         return user
-#
-#
-# class User(AbstractBaseUser, PermissionsMixin):
-#
-#     is_active = models.BooleanField(default=True)
-#     is_staff = models.BooleanField(default=False)
-#     name = models.CharField(max_length=250, blank=True, null=True)
-#     date_joined = models.DateTimeField(default=timezone.now)
-#
-#     def get_proper_name(self):
-#         return self.first_name
-#
-#     def __unicode__(self):
-#         return self.email
-#
-#     objects = UserManager()
+
+class User(AbstractUser):
+    device_id = models.CharField(max_length=200, default='0', blank=True)
+    karma_points = models.CharField(max_length=100, default='0', blank=True)
 
 
 class MobileUser(models.Model):
