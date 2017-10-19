@@ -92,6 +92,8 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'app_api.User'
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
