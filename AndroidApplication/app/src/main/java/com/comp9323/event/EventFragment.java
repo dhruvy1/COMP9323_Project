@@ -14,6 +14,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
@@ -54,6 +57,8 @@ public class EventFragment extends Fragment {
         menu.clear();
         inflater.inflate(R.menu.menu_events, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        Spinner spinner = (Spinner) menu.findItem(R.id.event_spinner).getActionView();
+        initSpinner(spinner);
     }
 
     @Override
@@ -61,6 +66,12 @@ public class EventFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.search_events:
 
+                return true;
+            case R.id.event_spinner:
+                // TODO: REMOVE SEARCH FROM APPBAR
+
+//                adapter.sort(EventRvAdapter.SORT_BY_RATING);
+//                adapter.notifyDataSetChanged();
                 return true;
             case R.id.add_event:
                 // Do stuff for adding events
@@ -94,4 +105,24 @@ public class EventFragment extends Fragment {
         adapter.setEvents(events);
         adapter.notifyDataSetChanged();
     }
+
+    private void initSpinner(Spinner spinner) {
+        final ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
+                this.getContext(), R.array.sort_array, R.layout.spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                adapter.sortEvents(pos);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
 }
