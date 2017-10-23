@@ -3,20 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/sort_food_place"
-        android:icon="@mipmap/ic_search"
-        android:title="@string/search"
-        app:showAsAction="always" >
-        <menu>
-            <item
-                android:id="@+id/food_place_sort_rating"
-                android:title="Rating" />
-            <item
-                android:id="@+id/food_place_sort_name"
-                android:title="Name" />
-        </menu>
-    </item>
-
+        android:id="@+id/food_place_sort_spinner"
+        android:title="@string/event_sort_prompt"
+        app:actionViewClass="android.widget.Spinner"
+        android:background="#DDDDDD"
+        app:showAsAction="always" />
     <item
         android:id="@+id/add_food_place"
         android:icon="@mipmap/ic_add"

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,9 +58,6 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_food_place_rv_item, parent, false);
-        sorting = new int[2];
-        sorting[0] = SORT_NULL;
-        sorting[1] = ASCENDING;
         return new ViewHolder(view);
     }
 
@@ -96,7 +94,7 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onFoodPlaceLikeBtnClicked(holder.foodPlace.getId(), holder.foodPlace.getRating());
+                listener.onFoodPlaceLikeBtnClicked(holder, position);
             }
         });
 
@@ -104,7 +102,7 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onFoodPlaceDislikeBtnClicked(holder.foodPlace.getId(), holder.foodPlace.getRating());
+                listener.onFoodPlaceDislikeBtnClicked(holder, position);
             }
         });
 
@@ -158,8 +156,10 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     }
 
     private void setGoogleRatingBar(ViewHolder holder) {
-        if (holder.foodPlace.getGoogleRating().length() > 0) {
+        if (! holder.foodPlace.getGoogleRating().isEmpty()) {
             holder.ratingView.setRating(Float.parseFloat(holder.foodPlace.getGoogleRating()));
+        }else{
+            holder.ratingView.setRating(0);
         }
     }
 
@@ -173,6 +173,11 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
 
     public void updateFoodPlace(int itemPos, FoodPlace foodPlace) {
         foodPlaces.set(itemPos, foodPlace);
+    }
+
+    public void updateLikeDraw(FoodPlaceRvAdapter.ViewHolder holder, String rating) {
+        holder.appRatingView.setText(rating);
+        holder.appRatingView.invalidate();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -208,9 +213,9 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     }
 
     public interface Listener {
-        void onFoodPlaceLikeBtnClicked(Integer id, String rating);
+        void onFoodPlaceLikeBtnClicked(ViewHolder holder,  int position);
 
-        void onFoodPlaceDislikeBtnClicked(Integer id, String rating);
+        void onFoodPlaceDislikeBtnClicked(ViewHolder holder, int position );
     }
 
     public void setListener(Listener listener) {
@@ -220,50 +225,44 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     public void sort(int Type){
         expandedList.clear();
         switch(Type){
-            case SORT_BY_NANE:
-                if (sorting[1] == ASCENDING){
-                    //if ascending change to descending
-                    sorting[1] = DESCENDING;
-                    Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
-                        @Override
-                        public int compare(FoodPlace t1, FoodPlace t2) {
-                            return t1.getName().compareToIgnoreCase(t2.getName());
-                        }
-                    });
-                }else{
-                    sorting[1] = ASCENDING;
-                    Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
-                        @Override
-                        public int compare(FoodPlace t1, FoodPlace t2) {
-                            return t2.getName().compareToIgnoreCase(t1.getName());
-                        }
-                    });
-                }
+            case 0:
+                Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                    @Override
+                    public int compare(FoodPlace t1, FoodPlace t2) {
+                        return t1.getName().compareToIgnoreCase(t2.getName());
+                    }
+                });
                 break;
-            case SORT_BY_RATING:
-                if (sorting[1] == ASCENDING) {
-                    //if ascending change to descending
-                sorting[1] = DESCENDING;
-                    Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
-                        @Override
-                        public int compare(FoodPlace t1, FoodPlace t2) {
-                            return t1.getName().compareToIgnoreCase(t2.getName());
-                        }
-                    });
-                } else {
-                    sorting[1] =ASCENDING;
-                    Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
-                        @Override
-                        public int compare(FoodPlace t1, FoodPlace t2) {
-                            return t2.getName().compareToIgnoreCase(t1.getName());
-                        }
-                    });
-                }
+            case 1:
+                Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                    @Override
+                    public int compare(FoodPlace t1, FoodPlace t2) {
+                        return t2.getName().compareToIgnoreCase(t1.getName());
+                    }
+                });
+                break;
+            case 2:
+                Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                    @Override
+                    public int compare(FoodPlace t1, FoodPlace t2) {
+                        float t1Rating = t1.getGoogleRating().isEmpty()? 0:Float.parseFloat(t1.getGoogleRating());
+                        float t2Rating = t2.getGoogleRating().isEmpty()? 0:Float.parseFloat(t2.getGoogleRating());
+                        return t1Rating > t2Rating? -1:1;
+                    }
+                });
+                break;
+            case 3:
+                Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                    @Override
+                    public int compare(FoodPlace t1, FoodPlace t2) {
+                        float t1Rating = t1.getGoogleRating().isEmpty() ? 0:Float.parseFloat(t1.getGoogleRating());
+                        float t2Rating = t2.getGoogleRating().isEmpty() ? 0:Float.parseFloat(t2.getGoogleRating());
+                        return t1Rating > t2Rating? 1:-1;
+                    }
+                });
                 break;
             default:
                 break;
         }
     }
-
-    public int[] getSortingStatus(){return sorting;}
 }
