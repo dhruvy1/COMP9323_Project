@@ -3,6 +3,7 @@ package com.comp9323.food.foodplace;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.main.R;
@@ -62,6 +65,13 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_food_place, menu);
+        MenuItem item = menu.findItem(R.id.food_place_sort_spinner);
+        Spinner s = (Spinner) item.getActionView().findViewById(R.id.food_place_sort_spinner);
+        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.food_place_spinner_list_item_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
     @Override
