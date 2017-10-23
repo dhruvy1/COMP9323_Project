@@ -7,9 +7,9 @@
         <item>Tears of Steel</item>
     </string-array>
     <string-array name="food_place_spinner_list_item_array">
-        <item>Sort by name (Descending)</item>
-        <item>Sort by name (Ascending)</item>
-        <item>Sort by rating (Descending)</item>
-        <item>Sort by rating (Ascending)</item>
+        <item>sort: name DSC</item>
+        <item>sort: name ASC</item>
+        <item>sort: rating DSC</item>
+        <item>sort: rating ASC</item>
     </string-array>
 </resources>

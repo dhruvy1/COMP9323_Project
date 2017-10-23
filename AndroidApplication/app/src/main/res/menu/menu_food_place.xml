@@ -6,7 +6,7 @@
         android:id="@+id/food_place_sort_spinner"
         android:title="@string/event_sort_prompt"
         app:actionViewClass="android.widget.Spinner"
-        android:background="#DDDDDDD"
+        android:background="#DDDDDD"
         app:showAsAction="always" />
     <item
         android:id="@+id/add_food_place"
