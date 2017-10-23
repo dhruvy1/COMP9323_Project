@@ -57,10 +57,12 @@ public class UserService {
 //                templateUser.setUsername(value);
 //            } else if (item.equals("deviceid")) {
 //                templateUser.setDeviceId(value);
+//            } else if (item.equals("karmaPoint")){
+//                templateUser.setKarmarPoint(item);
 //            }
 //        }
 //
-//        return patchUser(Id, templateUser);
+//        return patchUser(Id, templateUser, callback);
 //    }
 
     public static void getUser(int id, Callback<User> callback) {
@@ -73,6 +75,7 @@ public class UserService {
 
     public static void postUser(User user, Callback<User> callback) {
         user.setDeviceId(createUUID());
+        user.setKarmarPoint("0");
         api.postUser(user).enqueue(callback);
     }
 

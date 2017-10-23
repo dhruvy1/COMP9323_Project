@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Button button = findViewById(R.id.login_sign_up_btn);
         button.setOnClickListener(this);
 
-//        deleteSharedPreferences(); // DEBUG USE
+        //deleteSharedPreferences(); // DEBUG USE
 
         if (isFirstLogin()) {
             // first login
@@ -40,8 +40,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // user already exists, load the user
             SharedPreferences sp = getSharedPreferences(getString(R.string.user_pref), Context.MODE_PRIVATE);
             User user = new User(sp.getInt("id", -1), sp.getString("username", null), sp.getString("uuid", null));
-
-            loginUser(user);
+            setKarmaPoint(user);
+            //loginUser(user);
         }
     }
 
@@ -77,6 +77,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void setKarmaPoint(User user){
+        UserService.getUser(user.getId(), new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful())
+                    loginUser(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG ,t.getMessage());
+            }
+        });
     }
 
     @Override

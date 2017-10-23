@@ -2,15 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <item
+        android:id="@+id/karma_point"
+        android:actionLayout="@layout/menu_karma_point_view"
+        android:title="karma point"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/add_food_place"
+        android:icon="@mipmap/ic_add"
+        android:title="@string/add"
+        app:showAsAction="collapseActionView" />
     <item
         android:id="@+id/food_place_sort_spinner"
         android:title="@string/event_sort_prompt"
         app:actionViewClass="android.widget.Spinner"
         android:background="#DDDDDD"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/add_food_place"
-        android:icon="@mipmap/ic_add"
-        android:title="@string/add"
-        app:showAsAction="always" />
+        app:showAsAction="collapseActionView" />
+
 </menu>
