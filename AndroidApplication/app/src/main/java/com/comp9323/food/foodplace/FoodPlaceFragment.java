@@ -18,7 +18,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
+import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.main.R;
 import com.comp9323.restclient.RestClient;
@@ -69,6 +71,10 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
         MenuItem item = menu.findItem(R.id.food_place_sort_spinner);
         //Spinner s = (Spinner) item.getActionView().findViewById(R.id.food_place_sort_spinner);
         Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+
+        View t = menu.findItem(R.id.karma_point).setActionView(R.layout.menu_karma_point_view).getActionView();
+        TextView textView = t.findViewById(R.id.karma_point_view);
+        textView.setText(DataHolder.getInstance().getUser().getKarmarPoint());
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.food_place_spinner_list_item_array, android.R.layout.simple_spinner_item);
