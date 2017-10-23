@@ -116,10 +116,8 @@ public class EventNewFormFragment extends DialogFragment {
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            // TODO: ADD Snack to this
-            validateFields();
-            if (callPostEvent()) {
-                dismiss();
+            if (validateFields()) {
+                if (callPostEvent()) dismiss();
             }
             return true;
         } else if (id == android.R.id.home) {
@@ -284,6 +282,10 @@ public class EventNewFormFragment extends DialogFragment {
         String eventStart = startDate.getText().toString() + " " + startTime.getText().toString();
         String eventEnd = endDate.getText().toString() + " " + endTime.getText().toString();
         if (DateTimeConverter.checkDateBefore(eventStart, eventEnd)) {
+            startDateLayout.setErrorEnabled(false);
+            startTimeLayout.setErrorEnabled(false);
+            endDateLayout.setErrorEnabled(false);
+            endTimeLayout.setErrorEnabled(false);
             return true;
         } else {
             startDateLayout.setError(getString(R.string.err_msg_date));
@@ -311,10 +313,10 @@ public class EventNewFormFragment extends DialogFragment {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
                 if (response.isSuccessful()) {
-                    Snackbar successMessage = Snackbar.make(rootView, "Event created.",
+                    Snackbar successMessage = Snackbar.make(getView(), "Event created.",
                             Snackbar.LENGTH_SHORT);
                     successMessage.show();
-                    success[0] = true;
+                    dismiss();
                 } else {
                     Snackbar failMessage = Snackbar.make(rootView, "Could not create event.",
                             Snackbar.LENGTH_SHORT);
