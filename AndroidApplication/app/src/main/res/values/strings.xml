@@ -16,6 +16,16 @@
     <string name="err_msg_name">Enter a name for your event</string>
     <string name="err_msg_location">Enter a location for your event</string>
     <string name="err_msg_date">Start must be before end</string>
+    <string name="event_sort_prompt">Choose to sort by</string>
+
+    <string-array name="sort_array">
+        <item>Sort by name (Descending)</item>
+        <item>Sort by name (Ascending)</item>
+        <item>Sort by date (Descending)</item>
+        <item>Sort by date (Ascending)</item>
+        <item>Sort by rating (Descending)</item>
+        <item>Sort by rating (Ascending)</item>
+    </string-array>
     <!-- Food -->
     <string name="food_place_navigation">Food Place</string>
     <string name="food_deal_navigation">Food Deals</string>

@@ -4,9 +4,6 @@ import com.comp9323.data.beans.Event;
 
 import java.util.List;
 
-import java.util.List;
-
-import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
