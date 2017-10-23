@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Adapted from https://www.androidhive.info/2015/09/android-material-design-floating-labels-for-edittext/ -->
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -185,7 +186,6 @@
             </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
 
-
         <CheckBox
             android:id="@+id/checkBox"
             android:layout_width="match_parent"
@@ -208,7 +208,7 @@
                 android:id="@+id/new_event_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/text_margin"
+                android:padding="@dimen/text_vertical_padding"
                 android:hint="@string/event_desc_hint"
                 android:inputType="textMultiLine"
                 android:gravity="top|start"

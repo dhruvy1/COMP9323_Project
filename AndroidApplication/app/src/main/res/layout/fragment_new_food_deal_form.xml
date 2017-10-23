@@ -61,11 +61,56 @@
             android:text="From"
             android:textColor="#000" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/new_date_icon_from"
+                android:layout_width="@dimen/icon_dimen"
+                android:layout_height="@dimen/icon_dimen"
+                android:layout_marginBottom="@dimen/icon_below_padding"
+                android:layout_marginRight="@dimen/icon_signifier_padding"
+                android:layout_marginTop="@dimen/icon_signifier_padding"
+                android:src="@mipmap/ic_date" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/new_event_startdate_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/new_date_icon_from">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/new_event_startdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/textUnderlineColor"
+                    android:drawableEnd="@drawable/mini_dropdown"
+                    android:drawablePadding="@dimen/icon_below_padding"
+                    android:focusable="false"
+                    android:padding="@dimen/text_vertical_padding"
+                    android:textColor="@color/colorCharcoal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/new_event_starttime_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/new_event_startdate_layout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/new_event_starttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/textUnderlineColor"
+                    android:drawableEnd="@drawable/mini_dropdown"
+                    android:drawablePadding="@dimen/icon_signifier_padding"
+                    android:focusable="false"
+                    android:padding="@dimen/text_vertical_padding"
+                    android:textColor="@color/colorCharcoal" />
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
