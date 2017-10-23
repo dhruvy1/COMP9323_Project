@@ -116,9 +116,7 @@ public class EventNewFormFragment extends DialogFragment {
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            if (validateFields()) {
-                if (callPostEvent()) dismiss();
-            }
+            if (validateFields()) callPostEvent();
             return true;
         } else if (id == android.R.id.home) {
             // handle close button click here
@@ -307,8 +305,7 @@ public class EventNewFormFragment extends DialogFragment {
         }
     }
 
-    private boolean callPostEvent() {
-        final boolean[] success = {false};
+    private void callPostEvent() {
         EventService.postEvent(createEventBean(), new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
@@ -329,7 +326,6 @@ public class EventNewFormFragment extends DialogFragment {
                 Log.e(TAG, t.getMessage());
             }
         });
-        return success[0];
     }
 
     private Event createEventBean() {
