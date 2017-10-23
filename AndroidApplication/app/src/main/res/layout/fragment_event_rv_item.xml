@@ -9,7 +9,7 @@
         android:id="@+id/event_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="15dp"
         cardview:cardElevation="5dp">
 
         <RelativeLayout

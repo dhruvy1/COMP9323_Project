@@ -1,11 +1,13 @@
 package com.comp9323.food.fooddeal;
 
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,25 +18,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodDeal;
 import com.comp9323.main.R;
 import com.comp9323.restclient.api.FoodDealService;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,25 +82,25 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_food_deal, menu);
-
-//        MenuItem item = menu.findItem(R.id.spinner);
-//        Spinner spinner = (Spinner) item.getActionView();
-//
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-//                R.array.food_deal_spinner_list_item_array, R.layout.food_deal_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//
-//        spinner.setAdapter(adapter);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_food_deal:
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
                 NewFoodDealFormFragment foodDealFormFragment = new NewFoodDealFormFragment();
-                foodDealFormFragment.setListener(this);
-                foodDealFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
-                foodDealFormFragment.show(getFragmentManager(), "Food Deal Dialog Fragment");
+//                foodDealFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
+//                foodDealFormFragment.show(getFragmentManager(), "FoodDealDialogFragment");
+//                transaction.show(foodDealFormFragment);
+
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.add(android.R.id.content, foodDealFormFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -122,46 +113,7 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
             public void onResponse(Call<List<FoodDeal>> call, Response<List<FoodDeal>> response) {
                 if (response.isSuccessful()) {
                     // update adapter
-                    List<FoodDeal> foodDeals = new ArrayList<>();
-                    for (FoodDeal foodDeal : response.body()) {
-
-                        Date currentDate = new Date();
-                        Calendar currentDateCalendar = Calendar.getInstance();
-                        currentDateCalendar.setTime(currentDate);
-
-                        if (foodDeal.getCreatedBy().equals("Facebook")) {
-                            Date updatedDate = new Date();
-
-                            Calendar updateDateCalendar = Calendar.getInstance();
-                            updateDateCalendar.setTime(updatedDate);
-                            updateDateCalendar.add(Calendar.DATE, 1);
-
-                            Date dayAfter = updateDateCalendar.getTime();
-//                            Calendar dayAfterCalender = Calendar.getInstance();
-//                            dayAfterCalender.setTime(dayAfter);
-
-                            if (currentDate.compareTo(dayAfter) >= 0) {
-//                            if (!(currentDateCalendar.get(Calendar.YEAR) >= dayAfterCalender.get(Calendar.YEAR) &&
-//                                    currentDateCalendar.get(Calendar.MONTH) >= dayAfterCalender.get(Calendar.MONTH) &&
-//                                    currentDateCalendar.get(Calendar.DAY_OF_MONTH) >= dayAfterCalender.get(Calendar.DAY_OF_MONTH))) {
-                                foodDeals.add(foodDeal);
-                            }
-                        } else {
-                            // non-facebook
-//                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-//                            Date endDateTime = null;
-//                            try {
-//                                if (foodDeal.getEndDate() != null && foodDeal.getEndTime() != null) {
-//                                    endDateTime = dateFormat.parse(foodDeal.getEndDate() + " " + foodDeal.getEndTime());
-//                                    if (currentDate.compareTo(endDateTime) >= 0) {
-                                        foodDeals.add(foodDeal);
-//                                    }
-//                                }
-//                            } catch (ParseException e) {
-//                                e.printStackTrace();
-//                            }
-                        }
-                    }
+                    List<FoodDeal> foodDeals = response.body();
                     Collections.reverse(foodDeals);
                     adapter.setFoodDeals(foodDeals);
                     adapter.notifyDataSetChanged();
@@ -186,12 +138,6 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
         FoodDealService.patchFoodDeal(id, foodDeal, new Callback<FoodDeal>() {
             @Override
             public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
-//                if (response.isSuccessful()) {
-//                    response.body().setId(id);
-//                    int itemPos = id - 1;
-//                    adapter.updateFoodDeal(itemPos, response.body());
-//                    adapter.notifyItemChanged(itemPos);
-//                }
             }
 
             @Override
@@ -208,12 +154,6 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
         FoodDealService.patchFoodDeal(id, foodDeal, new Callback<FoodDeal>() {
             @Override
             public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
-//                if (response.isSuccessful()) {
-//                    response.body().setId(id);
-//                    int itemPos = id - 1;
-//                    adapter.updateFoodDeal(itemPos, response.body());
-//                    adapter.notifyItemChanged(itemPos);
-//                }
             }
 
             @Override
@@ -240,8 +180,6 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
                 intent.setPackage(null);
                 getContext().startActivity(intent);
             }
-        } else {
-            Toast.makeText(getActivity().getApplicationContext(), "Food Deal does not have an attached link", Toast.LENGTH_LONG).show();
         }
     }
 

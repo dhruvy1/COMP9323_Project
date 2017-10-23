@@ -6,6 +6,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +22,18 @@ public class FoodContainer extends Fragment implements BottomNavigationView.OnNa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_container, container, false);
 
+        setHasOptionsMenu(true);
+
         BottomNavigationView navigation = view.findViewById(R.id.food_navigation);
         navigation.setOnNavigationItemSelectedListener(this);
         openFoodDealAtFirstPlace();
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
     }
 
     private void openFoodDealAtFirstPlace() {

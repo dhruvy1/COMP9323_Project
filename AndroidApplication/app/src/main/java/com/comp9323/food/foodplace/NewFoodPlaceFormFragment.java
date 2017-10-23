@@ -44,6 +44,7 @@ public class NewFoodPlaceFormFragment extends DialogFragment {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         }
+
         return view;
     }
 
