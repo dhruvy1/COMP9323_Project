@@ -7,16 +7,7 @@
         android:icon="@mipmap/ic_search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always"
-        android:title="@string/search">
-        <menu>
-            <item
-                android:id="@+id/food_place_sort_rating"
-                android:title="Rating" />
-            <item
-                android:id="@+id/food_place_sort_name"
-                android:title="Name" />
-        </menu>
-    </item>
+        android:title="@string/search" />
 
     <item
         android:id="@+id/add_event"
