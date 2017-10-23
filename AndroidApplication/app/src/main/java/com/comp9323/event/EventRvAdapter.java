@@ -83,28 +83,6 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         holder.mEventDescription.setText(holder.mItem.getDescription());
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mEventNameView;
-        public final TextView mEventLocationView;
-        public final TextView mEventTimeView;
-        public final TextView mEventDescription;
-        public final ImageView mEventImage;
-        public RelativeLayout mEventDetailsContainer;
-        public Event mItem;
-
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mEventNameView = view.findViewById(R.id.event_name);
-            mEventLocationView = view.findViewById(R.id.event_location);
-            mEventTimeView = view.findViewById(R.id.event_time_frame);
-            mEventDescription = view.findViewById(R.id.event_description);
-            mEventImage = view.findViewById(R.id.event_photo);
-            mEventDetailsContainer = view.findViewById(R.id.event_details_container);
-        }
-    }
-
     public void sortEvents(int pos) {
         expandedList.clear();
 
@@ -170,5 +148,28 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
                 });
                 break;
         }
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public final View mView;
+        public final TextView mEventNameView;
+        public final TextView mEventLocationView;
+        public final TextView mEventTimeView;
+        public final TextView mEventDescription;
+        public final ImageView mEventImage;
+        public RelativeLayout mEventDetailsContainer;
+
+        public Event mItem;
+        public ViewHolder(View view) {
+            super(view);
+            mView = view;
+            mEventNameView = view.findViewById(R.id.event_name);
+            mEventLocationView = view.findViewById(R.id.event_location);
+            mEventTimeView = view.findViewById(R.id.event_time_frame);
+            mEventDescription = view.findViewById(R.id.event_description);
+            mEventImage = view.findViewById(R.id.event_photo);
+            mEventDetailsContainer = view.findViewById(R.id.event_details_container);
+        }
+
     }
 }

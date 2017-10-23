@@ -68,7 +68,7 @@ public class EventFragment extends Fragment {
 
                 return true;
             case R.id.event_spinner:
-                // TODO: REMOVE NAME FROM APPBAR
+                // TODO: REMOVE SEARCH FROM APPBAR
 
 //                adapter.sort(EventRvAdapter.SORT_BY_RATING);
 //                adapter.notifyDataSetChanged();
