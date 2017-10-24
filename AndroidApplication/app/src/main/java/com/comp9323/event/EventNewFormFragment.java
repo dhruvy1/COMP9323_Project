@@ -268,11 +268,10 @@ public class EventNewFormFragment extends DialogFragment {
     private boolean validateDateRange() {
         String eventStart = startDate.getText().toString() + " " + startTime.getText().toString();
         String eventEnd = endDate.getText().toString() + " " + endTime.getText().toString();
-        Calendar cal = Calendar.getInstance();
-        Date checkStart = Calendar.getInstance().getTime();
-
+        Date today = DateTimeConverter.getToday();
+        Date starting = DateTimeConverter.getToday();
         try {
-            checkStart = dateFormat.parse(startDate.getText().toString());
+            starting = dateFormat.parse(startDate.getText().toString());
         } catch (ParseException e) {
             Log.d(TAG, e.getMessage());
         }
@@ -283,8 +282,9 @@ public class EventNewFormFragment extends DialogFragment {
             endDateLayout.setErrorEnabled(false);
             endTimeLayout.setErrorEnabled(false);
             return true;
-        } else if (!cal.before(checkStart)) {
+        } else if (!today.before(starting)) {
             startDateLayout.setError(getString(R.string.err_msg_start_date));
+            requestFocus(startDate);
         } else {
             startDateLayout.setError(getString(R.string.err_msg_date));
             requestFocus(startDate);

@@ -16,7 +16,7 @@
     <string name="err_msg_name">Enter a name for your event</string>
     <string name="err_msg_location">Enter a location for your event</string>
     <string name="err_msg_date">Start must be before end</string>
-    <string name="err_msg_start_date">Start cannot be in the past</string>
+    <string name="err_msg_start_date">Start day cannot be in the past</string>
     <string name="event_sort_prompt">Choose to sort by</string>
 
     <string-array name="sort_array">

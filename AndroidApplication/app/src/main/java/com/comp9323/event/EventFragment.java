@@ -19,12 +19,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.comp9323.data.DateTimeConverter;
 import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
 import com.comp9323.restclient.service.EventService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,6 +38,7 @@ import retrofit2.Response;
 public class EventFragment extends Fragment implements EventRvAdapter.Listener {
     private static final String TAG = "EventFragment";
     private EventRvAdapter adapter;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,14 +105,19 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 if (response.isSuccessful()) {
                     List<Event> events = new ArrayList<>();
-                    Calendar cal = Calendar.getInstance();
-                    for (Event e : response.body()) {
-                        if (cal.before(e.getStartDate())) {
-                            events.add(e);
-                        }
+                    Date today = DateTimeConverter.getToday();
+
+                    for (Event ev : response.body()) {
+                        try {
+                            Date start = dateFormat.parse(ev.getStartDate().toString());
+                            Log.d(TAG, start.toString());
+                            Log.d(TAG, today.toString());
+                            if (!today.after(start)) {
+                                events.add(ev);
+                            }
+                        } catch (ParseException ex) { Log.d(TAG, ex.getMessage()); }
                     }
                     updateAdapter(events);
-                    updateAdapter(response.body());
                 }
             }
 
