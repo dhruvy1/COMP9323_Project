@@ -36,6 +36,13 @@
     <string name="fd_desc_hint">What is your food deal about?</string>
     <string name="fd_title">Title</string>
     <string name="fd_location">Location</string>
+    <string name="food_place_suggestion">
+        We suggested that posting your location on Google Map rather than in this service.
+        For How to add new Location into Google Map,Please read Google Official Instruction,
+        which you can find via\n
+        https://support.google.com/maps/answer/6320846?co=GENIE.Platform%3DAndroid&amp;hl=en&amp;oco=1 \n
+        .But if you truly want to do so,feel free to contact administrator through admin@admin.com
+    </string>
 
 </resources>
 

@@ -3,6 +3,7 @@ package com.comp9323.food.foodplace;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 
+import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.main.R;
 import com.comp9323.restclient.RestClient;
@@ -54,7 +61,6 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
         initSwipeRefreshLayout(view, savedInstanceState);
 
         getFoodPlaces();
-
         return view;
     }
 
@@ -62,6 +68,20 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_food_place, menu);
+        MenuItem item = menu.findItem(R.id.food_place_sort_spinner);
+        //Spinner s = (Spinner) item.getActionView().findViewById(R.id.food_place_sort_spinner);
+        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+
+        View t = menu.findItem(R.id.karma_point).setActionView(R.layout.menu_karma_point_view).getActionView();
+        TextView textView = t.findViewById(R.id.karma_point_view);
+        textView.setText(DataHolder.getInstance().getUser().getKarmarPoint());
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.food_place_spinner_list_item_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        setOnSpinnerSelectListener(spinner);
+
     }
 
     @Override
@@ -71,16 +91,6 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
                 NewFoodPlaceFormFragment foodDealFormFragment = new NewFoodPlaceFormFragment();
                 foodDealFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
                 foodDealFormFragment.show(getFragmentManager(), "Food Place Dialog Fragment");
-                return true;
-            case R.id.food_place_sort_rating:
-                adapter.sort(FoodPlaceRvAdapter.SORT_BY_RATING);
-                adapter.notifyDataSetChanged();
-                changeIcon(item);
-                return true;
-            case R.id.food_place_sort_name:
-                adapter.sort(FoodPlaceRvAdapter.SORT_BY_NANE);
-                adapter.notifyDataSetChanged();
-                //item.setIcon()
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -133,21 +143,24 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
 
     private void updateAdapter(List<FoodPlace> foodPlaces) {
         adapter.setFoodPlaces(foodPlaces);
+        adapter.sort(0);
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onFoodPlaceLikeBtnClicked(final Integer id, String rating) {
+    public void onFoodPlaceLikeBtnClicked(final FoodPlaceRvAdapter.ViewHolder holder, final int position) {
         FoodPlace foodPlace = new FoodPlace();
-        foodPlace.setRating(Integer.toString(Integer.parseInt(rating) + 1));
-        FoodPlaceService.patchFoodPlace(id, foodPlace, new Callback<FoodPlace>() {
+        foodPlace.setRating(Integer.toString(Integer.parseInt(holder.foodPlace.getRating()) + 1));
+
+        FoodPlaceService.patchFoodPlace(holder.foodPlace.getId(), foodPlace, new Callback<FoodPlace>() {
             @Override
             public void onResponse(Call<FoodPlace> call, Response<FoodPlace> response) {
                 if (response.isSuccessful()) {
-                    response.body().setId(id);
-                    int itemPos = id - 1;
-                    adapter.updateFoodPlace(itemPos, response.body());
-                    adapter.notifyItemChanged(itemPos);
+                    FoodPlace newInstance = response.body();
+                    newInstance.setId(holder.foodPlace.getId());
+                    holder.foodPlace = newInstance;
+                    adapter.updateLikeDraw(holder, newInstance.getRating());
+                    adapter.updateFoodPlace(position, newInstance);
                 }
             }
 
@@ -159,17 +172,18 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
     }
 
     @Override
-    public void onFoodPlaceDislikeBtnClicked(final Integer id, String rating) {
+    public void onFoodPlaceDislikeBtnClicked(final FoodPlaceRvAdapter.ViewHolder holder, final int position) {
         FoodPlace foodPlace = new FoodPlace();
-        foodPlace.setRating(Integer.toString(Integer.parseInt(rating) - 1));
-        FoodPlaceService.patchFoodPlace(id, foodPlace, new Callback<FoodPlace>() {
+        foodPlace.setRating(Integer.toString(Integer.parseInt(holder.foodPlace.getRating()) - 1));
+        FoodPlaceService.patchFoodPlace(holder.foodPlace.getId(), foodPlace, new Callback<FoodPlace>() {
             @Override
             public void onResponse(Call<FoodPlace> call, Response<FoodPlace> response) {
                 if (response.isSuccessful()) {
-                    response.body().setId(id);
-                    int itemPos = id - 1;
-                    adapter.updateFoodPlace(itemPos, response.body());
-                    adapter.notifyItemChanged(itemPos);
+                    FoodPlace newInstance = response.body();
+                    newInstance.setId(holder.foodPlace.getId());
+                    holder.foodPlace = newInstance;
+                    adapter.updateLikeDraw(holder, newInstance.getRating());
+                    adapter.updateFoodPlace(position, newInstance);
                 }
             }
 
@@ -179,29 +193,17 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
             }
         });
     }
+    public void setOnSpinnerSelectListener(Spinner spinner){
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                adapter.sort(pos);
+                adapter.notifyDataSetChanged();
+            }
 
-    public void changeIcon(MenuItem item){
-        int[] status = adapter.getSortingStatus();
-        switch(item.getItemId()){
-            case R.id.food_place_sort_name:
-                if (status[1] == FoodPlaceRvAdapter.ASCENDING){
-                    //TODO set descending image
-                    //item.setIcon();
-                }else{
-                    //TODO set descending image
-                    //item.setIcon();
-                }
-                break;
-            case R.id.food_place_sort_rating:
-                if (status[1] == FoodPlaceRvAdapter.ASCENDING){
-                    //TODO set descending image
-                    //item.setIcon();
-                }else{
-                    //TODO set descending image
-                    //item.setIcon();
-                }
-                break;
-        }
-        adapter.notifyDataSetChanged();
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 }
