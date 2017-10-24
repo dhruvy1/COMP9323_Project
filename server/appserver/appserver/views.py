@@ -22,5 +22,5 @@ class index(View):
 
         # Login
         login(request, user)
-        return redirect('http://127.0.0.1:8000/qa/')
-        # return HttpResponse("Hello, world.")
+        # return redirect('http://127.0.0.1:8000/qa/')
+        return redirect('http://52.65.129.3:8000/qa/')
