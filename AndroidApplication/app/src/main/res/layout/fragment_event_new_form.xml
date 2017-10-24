@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!-- Adapted from https://www.androidhive.info/2015/09/android-material-design-floating-labels-for-edittext/ -->
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -36,14 +36,14 @@
                 android:id="@+id/new_event_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:padding="@dimen/text_margin"
-                android:textColor="@color/colorCharcoal"
-                android:inputType="textPersonName"
+                android:layout_alignParentTop="true"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:backgroundTint="@color/textUnderlineColor"
                 android:hint="@string/hint_event_name"
-                android:backgroundTint="@color/textUnderlineColor" />
+                android:inputType="textPersonName"
+                android:padding="@dimen/text_margin"
+                android:textColor="@color/colorCharcoal" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -57,11 +57,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-                android:padding="@dimen/text_margin"
-                android:textColor="@color/colorCharcoal"
-                android:inputType="textPersonName"
+                android:backgroundTint="@color/textUnderlineColor"
                 android:hint="@string/hint_event_location"
-                android:backgroundTint="@color/textUnderlineColor" />
+                android:inputType="textPersonName"
+                android:padding="@dimen/text_margin"
+                android:textColor="@color/colorCharcoal" />
         </android.support.design.widget.TextInputLayout>
 
         <TextView
@@ -98,12 +98,12 @@
                     android:id="@+id/new_event_startdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/text_vertical_padding"
+                    android:backgroundTint="@color/textUnderlineColor"
                     android:drawableEnd="@drawable/mini_dropdown"
                     android:drawablePadding="@dimen/icon_below_padding"
                     android:focusable="false"
-                    android:textColor="@color/colorCharcoal"
-                    android:backgroundTint="@color/textUnderlineColor" />
+                    android:padding="@dimen/text_vertical_padding"
+                    android:textColor="@color/colorCharcoal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -116,12 +116,12 @@
                     android:id="@+id/new_event_starttime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/text_vertical_padding"
+                    android:backgroundTint="@color/textUnderlineColor"
                     android:drawableEnd="@drawable/mini_dropdown"
                     android:drawablePadding="@dimen/icon_signifier_padding"
                     android:focusable="false"
-                    android:textColor="@color/colorCharcoal"
-                    android:backgroundTint="@color/textUnderlineColor" />
+                    android:padding="@dimen/text_vertical_padding"
+                    android:textColor="@color/colorCharcoal" />
             </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
 
@@ -137,7 +137,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin" >
+            android:layout_margin="@dimen/activity_horizontal_margin">
 
             <ImageView
                 android:id="@+id/new_date_icon_to"
@@ -158,12 +158,12 @@
                     android:id="@+id/new_event_enddate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/text_vertical_padding"
+                    android:backgroundTint="@color/textUnderlineColor"
                     android:drawableEnd="@drawable/mini_dropdown"
                     android:drawablePadding="@dimen/icon_below_padding"
                     android:focusable="false"
-                    android:textColor="@color/colorCharcoal"
-                    android:backgroundTint="@color/textUnderlineColor" />
+                    android:padding="@dimen/text_vertical_padding"
+                    android:textColor="@color/colorCharcoal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -176,27 +176,26 @@
                     android:id="@+id/new_event_endtime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/text_vertical_padding"
+                    android:backgroundTint="@color/textUnderlineColor"
                     android:drawableEnd="@drawable/mini_dropdown"
                     android:drawablePadding="@dimen/icon_signifier_padding"
                     android:focusable="false"
-                    android:textColor="@color/colorCharcoal"
-                    android:backgroundTint="@color/textUnderlineColor" />
+                    android:padding="@dimen/text_vertical_padding"
+                    android:textColor="@color/colorCharcoal" />
             </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
-
 
         <CheckBox
             android:id="@+id/checkBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="48dp"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:buttonTint="@color/borderColor"
             android:paddingVertical="@dimen/text_vertical_padding"
             android:text="All-day"
             android:textColor="@color/colorCharcoal"
-            android:textSize="@dimen/text_size"
-            android:buttonTint="@color/borderColor"/>
+            android:textSize="@dimen/text_size" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -208,13 +207,13 @@
                 android:id="@+id/new_event_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/text_margin"
+                android:gravity="top|start"
                 android:hint="@string/event_desc_hint"
                 android:inputType="textMultiLine"
-                android:gravity="top|start"
                 android:lines="6"
-                android:textColor="@color/colorCharcoal"
-                android:scrollbars="vertical"/>
+                android:padding="@dimen/text_vertical_padding"
+                android:scrollbars="vertical"
+                android:textColor="@color/colorCharcoal" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 

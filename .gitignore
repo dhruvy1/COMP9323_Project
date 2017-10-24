@@ -180,3 +180,4 @@ server/appserver/app_api/migrations/__init__.py
 server/appserver/app_api/migrations/0001_initial.py
 
 .vscode
+AndroidApplication/app/src/main/java/com/comp9323/event/NewEventFormFragment.java

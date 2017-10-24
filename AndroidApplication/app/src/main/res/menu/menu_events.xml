@@ -3,14 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/search_events"
-        android:icon="@mipmap/ic_search"
-        android:title="@string/search"
-        app:showAsAction="always" />
+        android:id="@+id/karma_point"
+        android:actionLayout="@layout/menu_karma_point_view"
+        android:title="karma point"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/add_event"
         android:icon="@mipmap/ic_add"
         android:title="@string/add"
-        app:showAsAction="always" />
+        app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/event_spinner"
+        android:title="Sort"
+        app:actionViewClass="android.widget.Spinner"
+        app:showAsAction="collapseActionView" />
 </menu>

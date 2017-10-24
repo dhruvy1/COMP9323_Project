@@ -21,18 +21,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.DateTimeConverter;
 import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
-import com.comp9323.restclient.api.EventService;
+import com.comp9323.restclient.service.EventService;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,10 +43,13 @@ import retrofit2.Response;
 public class EventNewFormFragment extends DialogFragment {
 
     private static final String TAG = "EventNewFormFragment";
+    private final String DAY_START = "00:00AM";
+    private final String DAY_END = "11:59PM";
     private View rootView;
     private TextInputEditText name, loc, desc, startDate, endDate, startTime, endTime;
     private TextInputLayout nameLayout, locLayout, startDateLayout, startTimeLayout,
             endDateLayout, endTimeLayout;
+    private CheckBox dateCheckbox;
     private Toolbar toolbar;
     private Calendar mDate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
@@ -60,6 +65,7 @@ public class EventNewFormFragment extends DialogFragment {
         loc = rootView.findViewById(R.id.new_event_location);
         locLayout = rootView.findViewById(R.id.new_event_location_layout);
         desc = rootView.findViewById(R.id.new_event_desc);
+        dateCheckbox = rootView.findViewById(R.id.checkBox);
         startDate = rootView.findViewById(R.id.new_event_startdate);
         startDateLayout = rootView.findViewById(R.id.new_event_startdate_layout);
         endDate = rootView.findViewById(R.id.new_event_enddate);
@@ -74,6 +80,7 @@ public class EventNewFormFragment extends DialogFragment {
         initDates();
         setDateListeners();
         setTimeListeners();
+        setCheckboxClickListener();
 
         return rootView;
     }
@@ -84,18 +91,6 @@ public class EventNewFormFragment extends DialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return dialog;
-    }
-
-    @Override
-    public void onResume() {
-        // Get existing layout params for the window
-        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
-        // Assign window properties to fill the parent
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
-        // Call super onResume after sizing
-        super.onResume();
     }
 
     @Override
@@ -110,11 +105,7 @@ public class EventNewFormFragment extends DialogFragment {
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            // TODO: ADD Snack to this
-            validateFields();
-            if (callPostEvent()) {
-                dismiss();
-            }
+            if (validateFields()) callPostEvent();
             return true;
         } else if (id == android.R.id.home) {
             // handle close button click here
@@ -214,7 +205,7 @@ public class EventNewFormFragment extends DialogFragment {
     }
 
     private boolean validateFields() {
-        return (validateName() && validateLocation() && validateDateRange());
+        return (validateName() && validateDateRange());
     }
 
     private boolean validateName() {
@@ -229,6 +220,39 @@ public class EventNewFormFragment extends DialogFragment {
         return true;
     }
 
+    /**
+     * Adds a Listener which checks if the user has selected "all-day" event and will disable
+     * date/time selecting functionality until unselected. Will also modify endDate to be the same
+     * day as startDate and set start and end times to be start and end of the day
+     */
+    private void setCheckboxClickListener() {
+        dateCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dateCheckbox.isChecked()) {
+                    startDate.setEnabled(false);
+                    startTime.setEnabled(false);
+                    endDate.setEnabled(false);
+                    endTime.setEnabled(false);
+
+                    // set fields on the screen to reflect all-day selection
+                    endDate.setText(startDate.getText().toString());
+                    startTime.setText(DAY_START);
+                    endTime.setText(DAY_END);
+                } else {
+                    startDate.setEnabled(true);
+                    startTime.setEnabled(true);
+                    endDate.setEnabled(true);
+                    endTime.setEnabled(true);
+                }
+            }
+        });
+    }
+
+    /**
+     * Checks if the user has input a location, if not, the user will be notified with error text
+     * @return
+     */
     private boolean validateLocation() {
         if (loc.getText().toString().trim().isEmpty()) {
             locLayout.setError(getString(R.string.err_msg_location));
@@ -244,7 +268,25 @@ public class EventNewFormFragment extends DialogFragment {
     private boolean validateDateRange() {
         String eventStart = startDate.getText().toString() + " " + startTime.getText().toString();
         String eventEnd = endDate.getText().toString() + " " + endTime.getText().toString();
-        if (DateTimeConverter.checkDateBefore(eventStart, eventEnd)) {
+        Date today = DateTimeConverter.getToday();
+        Date starting = DateTimeConverter.getToday();
+
+        startDateLayout.setErrorEnabled(false);
+        startTimeLayout.setErrorEnabled(false);
+        endDateLayout.setErrorEnabled(false);
+        endTimeLayout.setErrorEnabled(false);
+
+        try {
+            starting = dateFormat.parse(startDate.getText().toString());
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+        if (starting.before(today)) {
+            startDateLayout.setError(getString(R.string.err_msg_start_date));
+            requestFocus(startDate);
+            return false;
+        } else if (DateTimeConverter.checkDateBefore(eventStart, eventEnd) || eventStart.equals(eventEnd)) {
             return true;
         } else {
             startDateLayout.setError(getString(R.string.err_msg_date));
@@ -255,9 +297,8 @@ public class EventNewFormFragment extends DialogFragment {
             requestFocus(endDate);
             endTimeLayout.setError(" ");
             requestFocus(endTime);
+            return false;
         }
-
-        return false;
     }
 
     private void requestFocus(View view) {
@@ -266,16 +307,15 @@ public class EventNewFormFragment extends DialogFragment {
         }
     }
 
-    private boolean callPostEvent() {
-        final boolean[] success = {false};
+    private void callPostEvent() {
         EventService.postEvent(createEventBean(), new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
                 if (response.isSuccessful()) {
-                    Snackbar successMessage = Snackbar.make(rootView, "Event created.",
+                    Snackbar successMessage = Snackbar.make(getView(), "Event created.",
                             Snackbar.LENGTH_SHORT);
                     successMessage.show();
-                    success[0] = true;
+                    dismiss();
                 } else {
                     Snackbar failMessage = Snackbar.make(rootView, "Could not create event.",
                             Snackbar.LENGTH_SHORT);
@@ -288,7 +328,6 @@ public class EventNewFormFragment extends DialogFragment {
                 Log.e(TAG, t.getMessage());
             }
         });
-        return success[0];
     }
 
     private Event createEventBean() {
@@ -299,7 +338,7 @@ public class EventNewFormFragment extends DialogFragment {
         String eventEndD = endDate.getText().toString();
         String eventStartT = startTime.getText().toString();
         String eventEndT = endTime.getText().toString();
-        String eventUser = DataHolder.getInstance().getUser().getUsername();
+        String eventUser = DataHolder.getInstance().getUser().getDeviceId();
 
         eventStartD = DateTimeConverter.convertA2SDate(eventStartD);
         eventEndD = DateTimeConverter.convertA2SDate(eventEndD);

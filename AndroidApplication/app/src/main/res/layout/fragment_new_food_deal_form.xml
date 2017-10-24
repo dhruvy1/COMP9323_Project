@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -26,72 +27,223 @@
         android:layout_margin="15dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title"
-            android:textColor="#000" />
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Title"-->
+        <!--android:textColor="#000" />-->
 
-        <EditText
-            android:id="@+id/new_food_deal_title_et"
+        <!--<EditText-->
+        <!--android:id="@+id/new_food_deal_title_et"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:hint="Title"-->
+        <!--android:textColor="#000"-->
+        <!--android:textColorHint="#d3d3d3" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Location"-->
+        <!--android:textColor="#000" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/new_food_deal_location_et"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:hint="Location"-->
+        <!--android:textColor="#000"-->
+        <!--android:textColorHint="#d3d3d3" />-->
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/new_fd_title_layout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:hint="Title"
-            android:textColor="#000"
-            android:textColorHint="#d3d3d3" />
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location"
-            android:textColor="#000" />
+            android:textColorHint="@color/hintColor">
 
-        <EditText
-            android:id="@+id/new_food_deal_location_et"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/new_food_deal_title_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:backgroundTint="@color/textUnderlineColor"
+                android:hint="@string/fd_title"
+                android:inputType="textPersonName"
+                android:padding="@dimen/text_margin"
+                android:textColor="@color/colorCharcoal" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/new_fd_location_layout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:hint="Location"
-            android:textColor="#000"
-            android:textColorHint="#d3d3d3" />
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/hintColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/new_food_deal_location_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:backgroundTint="@color/textUnderlineColor"
+                android:hint="@string/fd_location"
+                android:inputType="textPersonName"
+                android:padding="@dimen/text_margin"
+                android:textColor="@color/colorCharcoal" />
+        </android.support.design.widget.TextInputLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
             android:text="From"
-            android:textColor="#000" />
+            android:textColor="@color/colorCharcoal" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/new_date_icon_from"
+                android:layout_width="@dimen/icon_dimen"
+                android:layout_height="@dimen/icon_dimen"
+                android:layout_marginBottom="@dimen/icon_below_padding"
+                android:layout_marginRight="@dimen/icon_signifier_padding"
+                android:layout_marginTop="@dimen/icon_signifier_padding"
+                android:src="@mipmap/ic_date" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/new_fd_startdate_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/new_date_icon_from">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/new_fd_startdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/textUnderlineColor"
+                    android:drawableEnd="@drawable/mini_dropdown"
+                    android:drawablePadding="@dimen/icon_below_padding"
+                    android:focusable="false"
+                    android:padding="@dimen/text_vertical_padding"
+                    android:textColor="@color/colorCharcoal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/new_fd_starttime_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/new_fd_startdate_layout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/new_fd_starttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/textUnderlineColor"
+                    android:drawableEnd="@drawable/mini_dropdown"
+                    android:drawablePadding="@dimen/icon_signifier_padding"
+                    android:focusable="false"
+                    android:padding="@dimen/text_vertical_padding"
+                    android:textColor="@color/colorCharcoal" />
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/text_margin"
             android:text="To"
-            android:textColor="#000" />
+            android:textColor="@color/colorCharcoal" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/new_food_deal_message_et"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="top|left"
-            android:hint="What is your food deal about?"
-            android:inputType="textMultiLine"
-            android:lines="10"
-            android:maxLines="10"
-            android:minLines="10"
-            android:scrollbars="vertical"
-            android:textColor="#000000"
-            android:textColorHint="#d3d3d3" />
+            android:layout_margin="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/new_date_icon_to"
+                android:layout_width="@dimen/icon_dimen"
+                android:layout_height="@dimen/icon_dimen"
+                android:layout_marginBottom="@dimen/icon_below_padding"
+                android:layout_marginRight="@dimen/icon_signifier_padding"
+                android:layout_marginTop="@dimen/icon_signifier_padding"
+                android:src="@mipmap/ic_date" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/new_fd_enddate_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/new_date_icon_to">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/new_fd_enddate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/textUnderlineColor"
+                    android:drawableEnd="@drawable/mini_dropdown"
+                    android:drawablePadding="@dimen/icon_below_padding"
+                    android:focusable="false"
+                    android:padding="@dimen/text_vertical_padding"
+                    android:textColor="@color/colorCharcoal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/new_fd_endtime_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/new_fd_enddate_layout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/new_fd_endtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/textUnderlineColor"
+                    android:drawableEnd="@drawable/mini_dropdown"
+                    android:drawablePadding="@dimen/icon_signifier_padding"
+                    android:focusable="false"
+                    android:padding="@dimen/text_vertical_padding"
+                    android:textColor="@color/colorCharcoal" />
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_style"
+            android:textColorHint="@color/hintColor">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/new_food_deal_message_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:hint="@string/fd_desc_hint"
+                android:inputType="textMultiLine"
+                android:lines="6"
+                android:padding="@dimen/text_vertical_padding"
+                android:scrollbars="vertical"
+                android:textColor="@color/colorCharcoal" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!--<EditText-->
+        <!--android:id="@+id/new_food_deal_message_et"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:gravity="top|left"-->
+        <!--android:hint="What is your food deal about?"-->
+        <!--android:inputType="textMultiLine"-->
+        <!--android:lines="10"-->
+        <!--android:maxLines="10"-->
+        <!--android:minLines="10"-->
+        <!--android:scrollbars="vertical"-->
+        <!--android:textColor="#000000"-->
+        <!--android:textColorHint="#d3d3d3" />-->
     </LinearLayout>
 
 </LinearLayout>

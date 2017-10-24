@@ -16,6 +16,17 @@
     <string name="err_msg_name">Enter a name for your event</string>
     <string name="err_msg_location">Enter a location for your event</string>
     <string name="err_msg_date">Start must be before end</string>
+    <string name="err_msg_start_date">Start day cannot be in the past</string>
+    <string name="event_sort_prompt">Choose to sort by</string>
+
+    <string-array name="sort_array">
+        <item>Sort by name (Descending)</item>
+        <item>Sort by name (Ascending)</item>
+        <item>Sort by date (Descending)</item>
+        <item>Sort by date (Ascending)</item>
+        <item>Sort by rating (Descending)</item>
+        <item>Sort by rating (Ascending)</item>
+    </string-array>
     <!-- Food -->
     <string name="food_place_navigation">Food Place</string>
     <string name="food_deal_navigation">Food Deals</string>
@@ -23,6 +34,14 @@
     <string name="inapp_rating">In-app Rating:</string>
     <string name="title_activity_maps">Map</string>
     <string name="user_pref">APP_USR_INFO</string>
+    <string name="fd_desc_hint">What is your food deal about?</string>
+    <string name="fd_title">Title</string>
+    <string name="fd_location">Location</string>
+    <string name="food_place_suggestion">
+        We suggest you post your location on Google Maps, this service will automatically add your new location once its added.\n
+        For instructions to add your location into Google Maps, go to
+        https://support.google.com/maps/answer/6320846?co=GENIE.Platform%3DAndroid&amp;hl=en&amp;oco=1.
+    </string>
 
 </resources>
 

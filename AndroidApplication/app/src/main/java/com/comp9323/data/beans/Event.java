@@ -82,6 +82,8 @@ public class Event {
     @Expose
     private String createdBy;
 
+    public Event() {}
+
     public Event(String name, String location, String startDate, String endDate, String startTime,
                  String endTime, String description, String createdBy) {
         this.name = name;

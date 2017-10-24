@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -18,6 +19,7 @@ public class DateTimeConverter {
     private static SimpleDateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat serverTimeFormat = new SimpleDateFormat("HH:mm:ss");
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy hh:mma");
+    private static SimpleDateFormat dateFormatServer = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * Converts date from the app to the date in the server
@@ -89,7 +91,8 @@ public class DateTimeConverter {
 
     /**
      * Compares two dates and returns true if eventStart is before eventDate
-     * e.g. eventStart = Wed, Oct 21 2017 02:30PM; eventEnd = Tue, 20 2017 02:40PM; returns false
+     * e.g. eventStart = "Wed, Oct 21 2017 02:30PM"; eventEnd = "Tue, 20 2017 02:40PM";
+     * returns false
      * @param eventStart
      * @param eventEnd
      * @return
@@ -105,5 +108,40 @@ public class DateTimeConverter {
             Log.d("TAG", e.getMessage());
         }
         return false;
+    }
+
+    /**
+     * Comparator function for two dates in server time format
+     * returns -1,0,1 if start is before end, is equal to, or end before start
+     * e.g. eventStart = eventEnd = "2017-10-07 19:00:00"; returns 0
+     * @param eventStart
+     * @param eventEnd
+     * @return
+     */
+    public static int checkDateBeforeServer(String eventStart, String eventEnd) {
+        try {
+            Date startDate = dateFormatServer.parse(eventStart);
+            Date endDate = dateFormatServer.parse(eventEnd);
+
+            if (startDate.before(endDate)) return -1;
+            else if (startDate.after(endDate)) return 1;
+
+        } catch (ParseException e) {
+            Log.d("TAG", e.getMessage());
+        }
+        return 0;
+    }
+
+    /**
+     * Returns the start of the current day as a date
+     * @return
+     */
+    public static Date getToday() {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
     }
 }
