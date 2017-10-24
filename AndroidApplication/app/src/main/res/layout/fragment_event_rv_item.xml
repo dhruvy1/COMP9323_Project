@@ -73,6 +73,26 @@
                     android:layout_below="@+id/event_location"
                     android:layout_margin="5dp"
                     android:layout_toRightOf="@+id/calendar_icon" />
+
+                <ImageButton
+                    android:id="@+id/ev_like_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/ev_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageButton
+                    android:id="@+id/ev_dislike_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/ev_created_by"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </RelativeLayout>
 
             <RelativeLayout

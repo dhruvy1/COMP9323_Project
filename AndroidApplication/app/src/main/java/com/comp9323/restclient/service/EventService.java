@@ -16,15 +16,6 @@ public class EventService {
 
     private static final EventApi api = RestClient.getClient().create(EventApi.class);
 
-    // TODO: filter lists by category
-//    public static void filterEvents(String filter) {
-//        List<Event> events = DataHolder.getInstance().getEvents();
-//        List<Event> filteredEvents = new ArrayList<>();
-//        for (Event e : events) {
-//            if (true) ;
-//        }
-//    }
-
     public void getEvent(int id, Callback<Event> callback) {
         api.getEvent(id).enqueue(callback);
     }

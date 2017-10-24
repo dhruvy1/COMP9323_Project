@@ -31,8 +31,10 @@ import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
 import com.comp9323.restclient.service.EventService;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,9 +105,7 @@ public class EventNewFormFragment extends DialogFragment {
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            if (validateFields()) {
-                if (callPostEvent()) dismiss();
-            }
+            if (validateFields()) callPostEvent();
             return true;
         } else if (id == android.R.id.home) {
             // handle close button click here
@@ -251,7 +251,6 @@ public class EventNewFormFragment extends DialogFragment {
 
     /**
      * Checks if the user has input a location, if not, the user will be notified with error text
-     *
      * @return
      */
     private boolean validateLocation() {
@@ -269,11 +268,25 @@ public class EventNewFormFragment extends DialogFragment {
     private boolean validateDateRange() {
         String eventStart = startDate.getText().toString() + " " + startTime.getText().toString();
         String eventEnd = endDate.getText().toString() + " " + endTime.getText().toString();
-        if (DateTimeConverter.checkDateBefore(eventStart, eventEnd)) {
-            startDateLayout.setErrorEnabled(false);
-            startTimeLayout.setErrorEnabled(false);
-            endDateLayout.setErrorEnabled(false);
-            endTimeLayout.setErrorEnabled(false);
+        Date today = DateTimeConverter.getToday();
+        Date starting = DateTimeConverter.getToday();
+
+        startDateLayout.setErrorEnabled(false);
+        startTimeLayout.setErrorEnabled(false);
+        endDateLayout.setErrorEnabled(false);
+        endTimeLayout.setErrorEnabled(false);
+
+        try {
+            starting = dateFormat.parse(startDate.getText().toString());
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
+        if (starting.before(today)) {
+            startDateLayout.setError(getString(R.string.err_msg_start_date));
+            requestFocus(startDate);
+            return false;
+        } else if (DateTimeConverter.checkDateBefore(eventStart, eventEnd) || eventStart.equals(eventEnd)) {
             return true;
         } else {
             startDateLayout.setError(getString(R.string.err_msg_date));
@@ -284,9 +297,8 @@ public class EventNewFormFragment extends DialogFragment {
             requestFocus(endDate);
             endTimeLayout.setError(" ");
             requestFocus(endTime);
+            return false;
         }
-
-        return false;
     }
 
     private void requestFocus(View view) {
@@ -295,8 +307,7 @@ public class EventNewFormFragment extends DialogFragment {
         }
     }
 
-    private boolean callPostEvent() {
-        final boolean[] success = {false};
+    private void callPostEvent() {
         EventService.postEvent(createEventBean(), new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
@@ -317,7 +328,6 @@ public class EventNewFormFragment extends DialogFragment {
                 Log.e(TAG, t.getMessage());
             }
         });
-        return success[0];
     }
 
     private Event createEventBean() {
@@ -328,7 +338,7 @@ public class EventNewFormFragment extends DialogFragment {
         String eventEndD = endDate.getText().toString();
         String eventStartT = startTime.getText().toString();
         String eventEndT = endTime.getText().toString();
-        String eventUser = DataHolder.getInstance().getUser().getUsername();
+        String eventUser = DataHolder.getInstance().getUser().getDeviceId();
 
         eventStartD = DateTimeConverter.convertA2SDate(eventStartD);
         eventEndD = DateTimeConverter.convertA2SDate(eventEndD);
