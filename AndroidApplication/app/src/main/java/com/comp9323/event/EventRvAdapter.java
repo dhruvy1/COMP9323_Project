@@ -53,7 +53,6 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
             Glide.with(holder.evImage.getContext()).load(holder.event.getSourceUrl()).into(holder.evImage);
         }
 
-        // TODO expanded events are persisted when view holders are recycled!!!! wtf
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +65,7 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
             }
         });
 
+        showEventDetails(holder, position);
         initEventLikeBtn(holder);
         initEventDislikeBtn(holder);
     }

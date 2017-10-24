@@ -270,21 +270,24 @@ public class EventNewFormFragment extends DialogFragment {
         String eventEnd = endDate.getText().toString() + " " + endTime.getText().toString();
         Date today = DateTimeConverter.getToday();
         Date starting = DateTimeConverter.getToday();
+
+        startDateLayout.setErrorEnabled(false);
+        startTimeLayout.setErrorEnabled(false);
+        endDateLayout.setErrorEnabled(false);
+        endTimeLayout.setErrorEnabled(false);
+
         try {
             starting = dateFormat.parse(startDate.getText().toString());
         } catch (ParseException e) {
             Log.d(TAG, e.getMessage());
         }
 
-        if (DateTimeConverter.checkDateBefore(eventStart, eventEnd)) {
-            startDateLayout.setErrorEnabled(false);
-            startTimeLayout.setErrorEnabled(false);
-            endDateLayout.setErrorEnabled(false);
-            endTimeLayout.setErrorEnabled(false);
-            return true;
-        } else if (!today.before(starting)) {
+        if (starting.before(today)) {
             startDateLayout.setError(getString(R.string.err_msg_start_date));
             requestFocus(startDate);
+            return false;
+        } else if (DateTimeConverter.checkDateBefore(eventStart, eventEnd) || eventStart.equals(eventEnd)) {
+            return true;
         } else {
             startDateLayout.setError(getString(R.string.err_msg_date));
             requestFocus(startDate);
@@ -294,9 +297,8 @@ public class EventNewFormFragment extends DialogFragment {
             requestFocus(endDate);
             endTimeLayout.setError(" ");
             requestFocus(endTime);
+            return false;
         }
-
-        return false;
     }
 
     private void requestFocus(View view) {
