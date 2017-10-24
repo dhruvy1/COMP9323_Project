@@ -1,16 +1,12 @@
-package com.comp9323.restclient.api;
-
-import android.util.Log;
+package com.comp9323.restclient.service;
 
 import com.comp9323.data.beans.FoodDeal;
 import com.comp9323.restclient.RestClient;
+import com.comp9323.restclient.api.FoodDealApi;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
-import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 public class FoodDealService {
     private static final String TAG = "FoodDealService";

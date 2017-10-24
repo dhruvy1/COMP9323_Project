@@ -4,6 +4,7 @@
     android:id="@+id/food_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e0e0e0"
     android:orientation="vertical"
     tools:context="com.comp9323.food.FoodContainer">
 

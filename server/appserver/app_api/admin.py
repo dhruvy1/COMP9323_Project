@@ -13,7 +13,7 @@ admin.site.register(FoodPlace, FoodPlaceAdmin)
 
 
 class FoodDealAdmin(admin.ModelAdmin):
-    list_display = ('id', 'post_id', 'message', 'updated_time', 'photo_link', 'event_link', 'updated_date', 'rating', 'created_by')
+    list_display = ('id', 'post_id', 'message', 'updated_time', 'photo_link', 'event_link', 'updated_date', 'rating', 'created_by', 'location')
 admin.site.register(FoodDeal, FoodDealAdmin)
 
 

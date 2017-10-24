@@ -1,21 +1,13 @@
-package com.comp9323.restclient.api;
+package com.comp9323.restclient.service;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-
-import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.User;
-import com.comp9323.main.R;
 import com.comp9323.restclient.RestClient;
+import com.comp9323.restclient.api.UserApi;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class UserService {
@@ -57,10 +49,12 @@ public class UserService {
 //                templateUser.setUsername(value);
 //            } else if (item.equals("deviceid")) {
 //                templateUser.setDeviceId(value);
+//            } else if (item.equals("karmaPoint")){
+//                templateUser.setKarmarPoint(item);
 //            }
 //        }
 //
-//        return patchUser(Id, templateUser);
+//        return patchUser(Id, templateUser, callback);
 //    }
 
     public static void getUser(int id, Callback<User> callback) {
@@ -73,6 +67,7 @@ public class UserService {
 
     public static void postUser(User user, Callback<User> callback) {
         user.setDeviceId(createUUID());
+        user.setKarmarPoint("0");
         api.postUser(user).enqueue(callback);
     }
 

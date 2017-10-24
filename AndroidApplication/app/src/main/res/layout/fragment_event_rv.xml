@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent" >
+    android:background="#e0e0e0">
 
     <Spinner
         android:id="@+id/spinner"
@@ -16,7 +17,7 @@
         android:name="com.comp9323.Events.EventFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite"
+        app:layoutManager="LinearLayoutManager"
         tools:context="com.comp9323.event.EventFragment"
         tools:listitem="@layout/fragment_event_rv_item" />
 

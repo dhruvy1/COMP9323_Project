@@ -47,6 +47,30 @@ public class FoodDeal implements Serializable {
     @Expose
     private String createdBy;
 
+    @SerializedName("title")
+    @Expose
+    private String title;
+
+    @SerializedName("location")
+    @Expose
+    private String location;
+
+    @SerializedName("start_date")
+    @Expose
+    private String startDate;
+
+    @SerializedName("start_time")
+    @Expose
+    private String startTime;
+
+    @SerializedName("end_date")
+    @Expose
+    private String endDate;
+
+    @SerializedName("end_time")
+    @Expose
+    private String endTime;
+
     public FoodDeal() {
     }
 
@@ -190,7 +214,55 @@ public class FoodDeal implements Serializable {
         return this;
     }
 
-    public String toString(){
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String toString() {
         return new Gson().toJson(this);
     }
 

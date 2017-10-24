@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Adapted from https://www.androidhive.info/2015/09/android-material-design-floating-labels-for-edittext/ -->
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -17,48 +18,76 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
+
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Title"-->
+        <!--android:textColor="#000" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/new_food_deal_title_et"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:hint="Title"-->
+        <!--android:textColor="#000"-->
+        <!--android:textColorHint="#d3d3d3" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Location"-->
+        <!--android:textColor="#000" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/new_food_deal_location_et"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:hint="Location"-->
+        <!--android:textColor="#000"-->
+        <!--android:textColorHint="#d3d3d3" />-->
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/new_event_name_layout"
+            android:id="@+id/new_fd_title_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/hintColor">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/new_event_name"
+                android:id="@+id/new_food_deal_title_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                 android:backgroundTint="@color/textUnderlineColor"
-                android:hint="@string/hint_event_name"
+                android:hint="@string/fd_title"
                 android:inputType="textPersonName"
                 android:padding="@dimen/text_margin"
                 android:textColor="@color/colorCharcoal" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/new_event_location_layout"
+            android:id="@+id/new_fd_location_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/hintColor">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/new_event_location"
+                android:id="@+id/new_food_deal_location_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
                 android:backgroundTint="@color/textUnderlineColor"
-                android:hint="@string/hint_event_location"
+                android:hint="@string/fd_location"
                 android:inputType="textPersonName"
                 android:padding="@dimen/text_margin"
                 android:textColor="@color/colorCharcoal" />
@@ -69,10 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/text_margin"
             android:layout_marginTop="@dimen/text_margin"
-            android:paddingHorizontal="@dimen/text_margin"
             android:text="From"
             android:textColor="@color/colorCharcoal" />
-
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -89,13 +116,13 @@
                 android:src="@mipmap/ic_date" />
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/new_event_startdate_layout"
+                android:id="@+id/new_fd_startdate_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/new_date_icon_from">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/new_event_startdate"
+                    android:id="@+id/new_fd_startdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/textUnderlineColor"
@@ -107,13 +134,13 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/new_event_starttime_layout"
+                android:id="@+id/new_fd_starttime_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/new_event_startdate_layout">
+                android:layout_toEndOf="@+id/new_fd_startdate_layout">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/new_event_starttime"
+                    android:id="@+id/new_fd_starttime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/textUnderlineColor"
@@ -130,7 +157,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/text_margin"
-            android:paddingHorizontal="@dimen/text_margin"
             android:text="To"
             android:textColor="@color/colorCharcoal" />
 
@@ -149,13 +175,13 @@
                 android:src="@mipmap/ic_date" />
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/new_event_enddate_layout"
+                android:id="@+id/new_fd_enddate_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/new_date_icon_to">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/new_event_enddate"
+                    android:id="@+id/new_fd_enddate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/textUnderlineColor"
@@ -167,13 +193,13 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/new_event_endtime_layout"
+                android:id="@+id/new_fd_endtime_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/new_event_enddate_layout">
+                android:layout_toEndOf="@+id/new_fd_enddate_layout">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/new_event_endtime"
+                    android:id="@+id/new_fd_endtime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/textUnderlineColor"
@@ -185,18 +211,6 @@
             </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="48dp"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:buttonTint="@color/borderColor"
-            android:paddingVertical="@dimen/text_vertical_padding"
-            android:text="All-day"
-            android:textColor="@color/colorCharcoal"
-            android:textSize="@dimen/text_size" />
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -204,17 +218,32 @@
             android:textColorHint="@color/hintColor">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/new_event_desc"
+                android:id="@+id/new_food_deal_message_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top|start"
-                android:hint="@string/event_desc_hint"
+                android:hint="@string/fd_desc_hint"
                 android:inputType="textMultiLine"
                 android:lines="6"
                 android:padding="@dimen/text_vertical_padding"
                 android:scrollbars="vertical"
                 android:textColor="@color/colorCharcoal" />
         </android.support.design.widget.TextInputLayout>
+
+        <!--<EditText-->
+        <!--android:id="@+id/new_food_deal_message_et"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:gravity="top|left"-->
+        <!--android:hint="What is your food deal about?"-->
+        <!--android:inputType="textMultiLine"-->
+        <!--android:lines="10"-->
+        <!--android:maxLines="10"-->
+        <!--android:minLines="10"-->
+        <!--android:scrollbars="vertical"-->
+        <!--android:textColor="#000000"-->
+        <!--android:textColorHint="#d3d3d3" />-->
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

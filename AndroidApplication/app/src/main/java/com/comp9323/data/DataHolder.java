@@ -1,14 +1,6 @@
 package com.comp9323.data;
 
-import android.content.Context;
-
-import com.comp9323.data.beans.Event;
-import com.comp9323.data.beans.FoodDeal;
-import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.data.beans.User;
-
-import java.util.List;
-import java.util.Vector;
 
 /**
  * NOTE: Everything store in this class  WILL BE GONE when the application is kill

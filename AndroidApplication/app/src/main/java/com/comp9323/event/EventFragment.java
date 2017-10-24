@@ -1,8 +1,9 @@
 package com.comp9323.event;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,7 @@ import android.widget.Spinner;
 
 import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
-import com.comp9323.restclient.api.EventService;
+import com.comp9323.restclient.service.EventService;
 
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class EventFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.menu_events, menu);
         super.onCreateOptionsMenu(menu, inflater);
         Spinner spinner = (Spinner) menu.findItem(R.id.event_spinner).getActionView();
@@ -67,16 +69,22 @@ public class EventFragment extends Fragment {
 
                 return true;
             case R.id.event_spinner:
-                // TODO: REMOVE NAME FROM APPBAR
+                // TODO: REMOVE SEARCH FROM APPBAR
 
 //                adapter.sort(EventRvAdapter.SORT_BY_RATING);
 //                adapter.notifyDataSetChanged();
                 return true;
             case R.id.add_event:
-                // Do stuff for adding events
+                // Show add events view
                 EventNewFormFragment eventFormFragment = new EventNewFormFragment();
-                eventFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
-                eventFormFragment.show(getFragmentManager(), "Event Dialog Fragment");
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.add(android.R.id.content, eventFormFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 return true;
             default:
                 // Let the superclass handle it since the item is not recognised

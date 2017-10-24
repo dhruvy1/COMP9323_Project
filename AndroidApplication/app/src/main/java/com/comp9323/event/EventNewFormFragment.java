@@ -23,14 +23,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.DateTimeConverter;
 import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
-import com.comp9323.restclient.api.EventService;
+import com.comp9323.restclient.service.EventService;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,7 +41,7 @@ import retrofit2.Response;
 public class EventNewFormFragment extends DialogFragment {
 
     private static final String TAG = "EventNewFormFragment";
-    private final String DAY_START= "00:00AM";
+    private final String DAY_START = "00:00AM";
     private final String DAY_END = "11:59PM";
     private View rootView;
     private TextInputEditText name, loc, desc, startDate, endDate, startTime, endTime;
@@ -90,18 +89,6 @@ public class EventNewFormFragment extends DialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return dialog;
-    }
-
-    @Override
-    public void onResume() {
-        // Get existing layout params for the window
-        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
-        // Assign window properties to fill the parent
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
-        // Call super onResume after sizing
-        super.onResume();
     }
 
     @Override
@@ -262,6 +249,7 @@ public class EventNewFormFragment extends DialogFragment {
 
     /**
      * Checks if the user has input a location, if not, the user will be notified with error text
+     *
      * @return
      */
     private boolean validateLocation() {

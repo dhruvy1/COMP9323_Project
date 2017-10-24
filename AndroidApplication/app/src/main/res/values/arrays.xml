@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="food_deal_spinner_list_item_array">
+        <item>Big Buck Bunny</item>
+        <item>Elephants Dream</item>
+        <item>Sintel</item>
+        <item>Tears of Steel</item>
+    </string-array>
+    <string-array name="food_place_spinner_list_item_array">
+        <item>sort: name DSC</item>
+        <item>sort: name ASC</item>
+        <item>sort: rating DSC</item>
+        <item>sort: rating ASC</item>
+    </string-array>
+</resources>

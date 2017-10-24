@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,10 +27,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.ViewHolder> {
     private static final String TAG = "FoodPlaceRvAdapter";
+    private static final int SORT_NULL = 0;
+    public static final int SORT_BY_NANE = 1;
+    public static final int SORT_BY_RATING = 2;
+    public static final int ASCENDING = 0;
+    public static final int DESCENDING = 1;
 
     private Context context;
     private Listener listener;
@@ -36,6 +46,7 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
 
     private List<FoodPlace> foodPlaces;
     private List<Integer> expandedList;
+    private int[] sorting;
 
     public FoodPlaceRvAdapter(Context context) {
         this.context = context;
@@ -83,7 +94,7 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onFoodPlaceLikeBtnClicked(holder.foodPlace.getId(), holder.foodPlace.getRating());
+                listener.onFoodPlaceLikeBtnClicked(holder, position);
             }
         });
 
@@ -91,7 +102,7 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onFoodPlaceDislikeBtnClicked(holder.foodPlace.getId(), holder.foodPlace.getRating());
+                listener.onFoodPlaceDislikeBtnClicked(holder, position);
             }
         });
 
@@ -145,8 +156,10 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     }
 
     private void setGoogleRatingBar(ViewHolder holder) {
-        if (holder.foodPlace.getGoogleRating().length() > 0) {
+        if (!holder.foodPlace.getGoogleRating().isEmpty()) {
             holder.ratingView.setRating(Float.parseFloat(holder.foodPlace.getGoogleRating()));
+        } else {
+            holder.ratingView.setRating(0);
         }
     }
 
@@ -160,6 +173,11 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
 
     public void updateFoodPlace(int itemPos, FoodPlace foodPlace) {
         foodPlaces.set(itemPos, foodPlace);
+    }
+
+    public void updateLikeDraw(FoodPlaceRvAdapter.ViewHolder holder, String rating) {
+        holder.appRatingView.setText(rating);
+        holder.appRatingView.invalidate();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -195,12 +213,56 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     }
 
     public interface Listener {
-        void onFoodPlaceLikeBtnClicked(Integer id, String rating);
+        void onFoodPlaceLikeBtnClicked(ViewHolder holder, int position);
 
-        void onFoodPlaceDislikeBtnClicked(Integer id, String rating);
+        void onFoodPlaceDislikeBtnClicked(ViewHolder holder, int position);
     }
 
     public void setListener(Listener listener) {
         this.listener = listener;
+    }
+
+    public void sort(int Type) {
+        expandedList.clear();
+        switch (Type) {
+            case 0:
+                Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                    @Override
+                    public int compare(FoodPlace t1, FoodPlace t2) {
+                        return t1.getName().compareToIgnoreCase(t2.getName());
+                    }
+                });
+                break;
+            case 1:
+                Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                    @Override
+                    public int compare(FoodPlace t1, FoodPlace t2) {
+                        return t2.getName().compareToIgnoreCase(t1.getName());
+                    }
+                });
+                break;
+            case 2:
+                Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                    @Override
+                    public int compare(FoodPlace t1, FoodPlace t2) {
+                        float t1Rating = t1.getGoogleRating().isEmpty() ? 0 : Float.parseFloat(t1.getGoogleRating());
+                        float t2Rating = t2.getGoogleRating().isEmpty() ? 0 : Float.parseFloat(t2.getGoogleRating());
+                        return t1Rating > t2Rating ? -1 : 1;
+                    }
+                });
+                break;
+            case 3:
+                Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
+                    @Override
+                    public int compare(FoodPlace t1, FoodPlace t2) {
+                        float t1Rating = t1.getGoogleRating().isEmpty() ? 0 : Float.parseFloat(t1.getGoogleRating());
+                        float t2Rating = t2.getGoogleRating().isEmpty() ? 0 : Float.parseFloat(t2.getGoogleRating());
+                        return t1Rating > t2Rating ? 1 : -1;
+                    }
+                });
+                break;
+            default:
+                break;
+        }
     }
 }
