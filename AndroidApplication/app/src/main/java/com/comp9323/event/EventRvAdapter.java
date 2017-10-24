@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
 
     private List<Event> events;
     private List<Integer> expandedList;
+    private Listener listener;
 
     public EventRvAdapter() {
         events = new ArrayList<>();
@@ -41,14 +43,14 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mItem = events.get(position);
+        holder.event = events.get(position);
 
-        holder.mEventNameView.setText(holder.mItem.getName());
-        holder.mEventLocationView.setText(holder.mItem.getPlaceName() + ", " + holder.mItem.getStreet());
-        holder.mEventTimeView.setText(holder.mItem.getEventTime());
+        holder.evNameView.setText(holder.event.getName());
+        holder.evLocationView.setText(holder.event.getPlaceName() + ", " + holder.event.getStreet());
+        holder.evTimeView.setText(holder.event.getEventTime());
 
-        if (holder.mItem.getSourceUrl().length() > 0) {
-            Glide.with(holder.mEventImage.getContext()).load(holder.mItem.getSourceUrl()).into(holder.mEventImage);
+        if (holder.event.getSourceUrl().length() > 0) {
+            Glide.with(holder.evImage.getContext()).load(holder.event.getSourceUrl()).into(holder.evImage);
         }
 
         // TODO expanded events are persisted when view holders are recycled!!!! wtf
@@ -63,6 +65,9 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
                 showEventDetails(holder, position);
             }
         });
+
+        initEventLikeBtn(holder);
+        initEventDislikeBtn(holder);
     }
 
     @Override
@@ -72,15 +77,41 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
 
     private void showEventDetails(ViewHolder holder, int position) {
         if (expandedList.contains(position)) {
-            holder.mEventDetailsContainer.setVisibility(View.VISIBLE);
+            holder.evDetailsContainer.setVisibility(View.VISIBLE);
             initEventDetails(holder, position);
         } else {
-            holder.mEventDetailsContainer.setVisibility(View.GONE);
+            holder.evDetailsContainer.setVisibility(View.GONE);
         }
     }
 
     private void initEventDetails(final ViewHolder holder, final int position) {
-        holder.mEventDescription.setText(holder.mItem.getDescription());
+        holder.evDescription.setText(holder.event.getDescription());
+    }
+
+    private void initEventLikeBtn(final ViewHolder holder) {
+        holder.evLikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onEventLikeBtnClicked(holder.event.getId(), holder.event.getRating());
+                holder.evLikeBtn.setImageResource(R.drawable.ic_thumb_up_blue_24dp);
+                holder.evDislikeBtn.setImageResource(R.drawable.ic_thumb_down_black_24dp);
+                int rating = Integer.parseInt(holder.evRating.getText().toString());
+                holder.evRating.setText(String.valueOf(rating + 1));
+            }
+        });
+    }
+
+    private void initEventDislikeBtn(final ViewHolder holder) {
+        holder.evDislikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onEventDislikeBtnClicked(holder.event.getId(), holder.event.getRating());
+                holder.evLikeBtn.setImageResource(R.drawable.ic_thumb_up_black_24dp);
+                holder.evDislikeBtn.setImageResource(R.drawable.ic_thumb_down_blue_24dp);
+                int rating = Integer.parseInt(holder.evRating.getText().toString());
+                holder.evRating.setText(String.valueOf(rating - 1));
+            }
+        });
     }
 
     public void sortEvents(int pos) {
@@ -152,24 +183,44 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mEventNameView;
-        public final TextView mEventLocationView;
-        public final TextView mEventTimeView;
-        public final TextView mEventDescription;
-        public final ImageView mEventImage;
-        public RelativeLayout mEventDetailsContainer;
+        public final TextView evNameView;
+        public final TextView evLocationView;
+        public final TextView evTimeView;
+        public final TextView evDescription;
+        public final ImageView evImage;
+        public final ImageButton evLikeBtn;
+        public final ImageButton evDislikeBtn;
+        public final TextView evRating;
+        public final TextView evCreatedBy;
 
-        public Event mItem;
+        public RelativeLayout evDetailsContainer;
+        public Event event;
+
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mEventNameView = view.findViewById(R.id.event_name);
-            mEventLocationView = view.findViewById(R.id.event_location);
-            mEventTimeView = view.findViewById(R.id.event_time_frame);
-            mEventDescription = view.findViewById(R.id.event_description);
-            mEventImage = view.findViewById(R.id.event_photo);
-            mEventDetailsContainer = view.findViewById(R.id.event_details_container);
+            evNameView = view.findViewById(R.id.event_name);
+            evLocationView = view.findViewById(R.id.event_location);
+            evTimeView = view.findViewById(R.id.event_time_frame);
+            evDescription = view.findViewById(R.id.event_description);
+            evImage = view.findViewById(R.id.event_photo);
+            evDetailsContainer = view.findViewById(R.id.event_details_container);
+            evLikeBtn = view.findViewById(R.id.event_like_btn);
+            evDislikeBtn = view.findViewById(R.id.event_dislike_btn);
+            evRating = view.findViewById(R.id.event_rating);
+            evCreatedBy = view.findViewById(R.id.event_created_by);
         }
 
+    }
+
+    public interface Listener {
+        void onEventLikeBtnClicked(Integer id, String rating);
+
+        void onEventDislikeBtnClicked(Integer id, String rating);
+
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 }

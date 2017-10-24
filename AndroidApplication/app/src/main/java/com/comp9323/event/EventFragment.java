@@ -124,4 +124,36 @@ public class EventFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onEventLikeBtnClicked(final Integer id, String rating) {
+        Event event = new Event();
+        event.setRating(Integer.toString(Integer.parseInt(rating) + 1));
+        EventService.patchEvent(id, event, new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> call, Response<Event> response) {
+            }
+
+            @Override
+            public void onFailure(Call<Event> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onFoodDealDislikeBtnClicked(final Integer id, String rating) {
+        FoodDeal foodDeal = new FoodDeal();
+        foodDeal.setRating(Integer.toString(Integer.parseInt(rating) - 1));
+        FoodDealService.patchFoodDeal(id, foodDeal, new Callback<FoodDeal>() {
+            @Override
+            public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
+            }
+
+            @Override
+            public void onFailure(Call<FoodDeal> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
 }
