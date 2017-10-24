@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'qa',
     'taggit',
     'hitcount',
+    'crispy_forms',
     'django_markdown',
 )
 
@@ -97,9 +98,15 @@ AUTH_USER_MODEL = 'app_api.User'
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
+
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
         'rest_framework.permissions.DjangoModelPermissions',
-    ]
+    )
 }
 
 WSGI_APPLICATION = 'appserver.wsgi.application'
@@ -114,6 +121,11 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+SWAGGER_SETTINGS = {
+    "exclude_namespaces": ["internal_apis"],    #  List URL namespaces to ignore
+}
+
 
 
 # Internationalization
@@ -134,3 +146,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+
+# JWT_AUTH = {'JWT_AUTH_COOKIE': 'auth_token',}

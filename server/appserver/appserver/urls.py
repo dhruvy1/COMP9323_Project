@@ -16,9 +16,11 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.conf import settings
 from django.contrib import admin
+from .views import *
 
 urlpatterns = [
     url(r'^api/', include('app_api.urls', namespace='app_api')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^qa/', include('qa.urls')),
+    url(r'^qalogin/', index.as_view(), name='index'),
 ]
