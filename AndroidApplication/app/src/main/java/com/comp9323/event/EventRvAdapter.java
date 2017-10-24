@@ -205,10 +205,10 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
             evDescription = view.findViewById(R.id.event_description);
             evImage = view.findViewById(R.id.event_photo);
             evDetailsContainer = view.findViewById(R.id.event_details_container);
-            evLikeBtn = view.findViewById(R.id.event_like_btn);
-            evDislikeBtn = view.findViewById(R.id.event_dislike_btn);
-            evRating = view.findViewById(R.id.event_rating);
-            evCreatedBy = view.findViewById(R.id.event_created_by);
+            evLikeBtn = view.findViewById(R.id.ev_like_btn);
+            evDislikeBtn = view.findViewById(R.id.ev_dislike_btn);
+            evRating = view.findViewById(R.id.ev_rating);
+            evCreatedBy = view.findViewById(R.id.ev_created_by);
         }
 
     }
@@ -217,7 +217,6 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         void onEventLikeBtnClicked(Integer id, String rating);
 
         void onEventDislikeBtnClicked(Integer id, String rating);
-
     }
 
     public void setListener(Listener listener) {

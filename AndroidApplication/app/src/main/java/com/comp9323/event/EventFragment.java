@@ -107,6 +107,7 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
                         }
                     }
                     updateAdapter(events);
+                    updateAdapter(response.body());
                 }
             }
 
@@ -158,7 +159,7 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
     }
 
     @Override
-    public void onEventDislikeBtnClicked(final Integer id, String rating) {
+    public void onEventDislikeBtnClicked(Integer id, String rating) {
         Event event = new Event();
         event.setRating(Integer.toString(Integer.parseInt(rating) - 1));
         EventService.patchEvent(id, event, new Callback<Event>() {
@@ -172,5 +173,6 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
             }
         });
     }
+
 
 }
