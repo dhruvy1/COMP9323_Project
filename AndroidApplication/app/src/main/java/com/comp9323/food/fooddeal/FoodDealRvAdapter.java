@@ -50,10 +50,13 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
         holder.foodDeal = foodDeals.get(position);
 
         holder.foodDealMessage.setText(holder.foodDeal.getMessage());
-        holder.foodDealRating.setText((holder.foodDeal.getRating()));
+        holder.foodDealRating.setText(holder.foodDeal.getRating());
+        holder.fdCreatedBy.setText("Created by " + holder.foodDeal.getCreatedBy() + "");
 
         loadFoodDealImage(holder);
 
+        initTitle(holder);
+        initLocation(holder);
         initFoodDealLikeBtn(holder);
         initFoodDealDislikeBtn(holder);
         initFoodDealViewClick(holder);
@@ -75,6 +78,24 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
         }
     }
 
+    private void initTitle(ViewHolder holder) {
+        if (!holder.foodDeal.getTitle().isEmpty()) {
+            holder.fdTitle.setVisibility(View.VISIBLE);
+            holder.fdTitle.setText(holder.foodDeal.getTitle());
+        } else {
+            holder.fdTitle.setVisibility(View.GONE);
+        }
+    }
+
+    private void initLocation(ViewHolder holder) {
+        if (!holder.foodDeal.getTitle().isEmpty()) {
+            holder.fdLocation.setVisibility(View.VISIBLE);
+            holder.fdLocation.setText("Location: " + holder.foodDeal.getLocation() + "");
+        } else {
+            holder.fdLocation.setVisibility(View.GONE);
+        }
+    }
+
     private void initFoodDealLikeBtn(final ViewHolder holder) {
         holder.foodDealLikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +103,8 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
                 listener.onFoodDealLikeBtnClicked(holder.foodDeal.getId(), holder.foodDeal.getRating());
                 holder.foodDealLikeBtn.setImageResource(R.drawable.ic_thumb_up_blue_24dp);
                 holder.foodDealDislikeBtn.setImageResource(R.drawable.ic_thumb_down_black_24dp);
+                int rating = Integer.parseInt(holder.foodDealRating.getText().toString());
+                holder.foodDealRating.setText(String.valueOf(rating + 1));
             }
         });
     }
@@ -93,6 +116,8 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
                 listener.onFoodDealDislikeBtnClicked(holder.foodDeal.getId(), holder.foodDeal.getRating());
                 holder.foodDealLikeBtn.setImageResource(R.drawable.ic_thumb_up_black_24dp);
                 holder.foodDealDislikeBtn.setImageResource(R.drawable.ic_thumb_down_blue_24dp);
+                int rating = Integer.parseInt(holder.foodDealRating.getText().toString());
+                holder.foodDealRating.setText(String.valueOf(rating - 1));
             }
         });
     }
@@ -108,16 +133,16 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
 
     private void addEventLinkPlaceHolder(ViewHolder holder) {
         // Add hyper link icon to front of event links
-        if (holder.foodDeal.getCreatedBy().compareTo(FoodDeal.FACEBOOK) == 0) {
-            // event link to Facebook
-            if (holder.foodDeal.getEventLink().length() > 0) {
+        if (holder.foodDeal.getEventLink().length() > 0) {
+            if (holder.foodDeal.getCreatedBy().compareTo(FoodDeal.FACEBOOK) == 0) {
+                // event link to Facebook
                 holder.foodDealMessage.setText(addIconAtBeginning(holder.foodDealMessage.getText(),
                         R.drawable.hyper_link, holder.foodDealView.getContext()));
+            } else {
+                // event link not to Facebook
+                holder.foodDealMessage.setText(addIconAtBeginning(holder.foodDealMessage.getText(),
+                        R.drawable.internal_link, holder.foodDealView.getContext()));
             }
-        } else {
-            // event link not to Facebook
-            holder.foodDealMessage.setText(addIconAtBeginning(holder.foodDealMessage.getText(),
-                    R.drawable.internal_link, holder.foodDealView.getContext()));
         }
     }
 
@@ -143,6 +168,9 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
         public final ImageButton foodDealLikeBtn;
         public final ImageButton foodDealDislikeBtn;
         public final TextView foodDealRating;
+        public final TextView fdTitle;
+        public final TextView fdLocation;
+        public final TextView fdCreatedBy;
 
         public ViewHolder(View view) {
             super(view);
@@ -152,6 +180,9 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
             foodDealLikeBtn = view.findViewById(R.id.food_deal_like_btn);
             foodDealDislikeBtn = view.findViewById(R.id.food_deal_dislike_btn);
             foodDealRating = view.findViewById(R.id.food_deal_rating);
+            fdTitle = view.findViewById(R.id.fd_title);
+            fdLocation = view.findViewById(R.id.fd_location);
+            fdCreatedBy = view.findViewById(R.id.fd_created_by);
         }
     }
 

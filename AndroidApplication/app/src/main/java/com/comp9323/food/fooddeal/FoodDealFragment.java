@@ -1,6 +1,5 @@
 package com.comp9323.food.fooddeal;
 
-import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -31,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.Listener, NewFoodDealFormFragment.Listener {
+public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.Listener, FoodDealNewFormFragment.Listener {
     private static final String TAG = "FoodDealFragment";
 
     private FoodDealRvAdapter adapter;
@@ -92,7 +91,8 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-                NewFoodDealFormFragment foodDealFormFragment = new NewFoodDealFormFragment();
+                FoodDealNewFormFragment foodDealFormFragment = new FoodDealNewFormFragment();
+                foodDealFormFragment.setListener(this);
 //                foodDealFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
 //                foodDealFormFragment.show(getFragmentManager(), "FoodDealDialogFragment");
 //                transaction.show(foodDealFormFragment);
@@ -184,17 +184,13 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     }
 
     @Override
-    public void onSaveClicked(String title, String location, String message) {
-        FoodDeal newFoodDeal = new FoodDeal();
+    public void onSaveClicked(FoodDeal foodDeal) {
 //        Date date = new Date();
 //        newFoodDeal.setUpdatedDate(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date));
 //        newFoodDeal.setUpdatedTime(new SimpleDateFormat("HH:mm:ss", Locale.US).format(date));
-        newFoodDeal.setTitle(title);
-        newFoodDeal.setLocation(location);
-        newFoodDeal.setMessage(message);
-        newFoodDeal.setCreatedBy(DataHolder.getInstance().getUser().getUsername());
+        foodDeal.setCreatedBy(DataHolder.getInstance().getUser().getUsername());
 
-        FoodDealService.postFoodDeal(newFoodDeal, new Callback<FoodDeal>() {
+        FoodDealService.postFoodDeal(foodDeal, new Callback<FoodDeal>() {
             @Override
             public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
                 getFoodDeals();

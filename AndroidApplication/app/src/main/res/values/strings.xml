@@ -33,6 +33,9 @@
     <string name="inapp_rating">In-app Rating:</string>
     <string name="title_activity_maps">Map</string>
     <string name="user_pref">APP_USR_INFO</string>
+    <string name="fd_desc_hint">What is your food deal about?</string>
+    <string name="fd_title">Title</string>
+    <string name="fd_location">Location</string>
 
 </resources>
 
