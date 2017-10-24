@@ -199,7 +199,13 @@ class UserAPIView(CreateAPIView):
 @permission_classes((AllowAny,))
 class UsersAPIView(ListAPIView):
     queryset = User.objects.all()
-    serializer_class = UserUpdateSerializer
+    serializer_class = UserDetailSerializer
+
+
+@permission_classes((AllowAny,))
+class UserListAPIView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
 
 
 @permission_classes((AllowAny,))
