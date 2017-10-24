@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodDeal;
 import com.comp9323.main.R;
-import com.comp9323.restclient.api.FoodDealService;
+import com.comp9323.restclient.service.FoodDealService;
 
 import java.util.Collections;
 import java.util.List;

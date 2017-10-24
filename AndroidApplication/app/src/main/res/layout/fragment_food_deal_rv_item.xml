@@ -63,7 +63,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:gravity="end"
-                android:textAppearance="?attr/textAppearanceListItem"
                 android:textSize="14sp" />
         </LinearLayout>
 

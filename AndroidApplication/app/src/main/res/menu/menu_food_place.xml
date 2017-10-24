@@ -7,8 +7,7 @@
         android:id="@+id/karma_point"
         android:actionLayout="@layout/menu_karma_point_view"
         android:title="karma point"
-        app:showAsAction="always">
-    </item>
+        app:showAsAction="always"></item>
 
     <item
         android:id="@+id/add_food_place"
@@ -17,9 +16,9 @@
         app:showAsAction="collapseActionView" />
     <item
         android:id="@+id/food_place_sort_spinner"
+        android:background="#DDDDDD"
         android:title="@string/event_sort_prompt"
         app:actionViewClass="android.widget.Spinner"
-        android:background="#DDDDDD"
         app:showAsAction="collapseActionView" />
 
 </menu>

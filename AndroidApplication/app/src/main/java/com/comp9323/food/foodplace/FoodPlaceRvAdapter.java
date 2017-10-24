@@ -156,9 +156,9 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     }
 
     private void setGoogleRatingBar(ViewHolder holder) {
-        if (! holder.foodPlace.getGoogleRating().isEmpty()) {
+        if (!holder.foodPlace.getGoogleRating().isEmpty()) {
             holder.ratingView.setRating(Float.parseFloat(holder.foodPlace.getGoogleRating()));
-        }else{
+        } else {
             holder.ratingView.setRating(0);
         }
     }
@@ -213,18 +213,18 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
     }
 
     public interface Listener {
-        void onFoodPlaceLikeBtnClicked(ViewHolder holder,  int position);
+        void onFoodPlaceLikeBtnClicked(ViewHolder holder, int position);
 
-        void onFoodPlaceDislikeBtnClicked(ViewHolder holder, int position );
+        void onFoodPlaceDislikeBtnClicked(ViewHolder holder, int position);
     }
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
 
-    public void sort(int Type){
+    public void sort(int Type) {
         expandedList.clear();
-        switch(Type){
+        switch (Type) {
             case 0:
                 Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
                     @Override
@@ -245,9 +245,9 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
                 Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
                     @Override
                     public int compare(FoodPlace t1, FoodPlace t2) {
-                        float t1Rating = t1.getGoogleRating().isEmpty()? 0:Float.parseFloat(t1.getGoogleRating());
-                        float t2Rating = t2.getGoogleRating().isEmpty()? 0:Float.parseFloat(t2.getGoogleRating());
-                        return t1Rating > t2Rating? -1:1;
+                        float t1Rating = t1.getGoogleRating().isEmpty() ? 0 : Float.parseFloat(t1.getGoogleRating());
+                        float t2Rating = t2.getGoogleRating().isEmpty() ? 0 : Float.parseFloat(t2.getGoogleRating());
+                        return t1Rating > t2Rating ? -1 : 1;
                     }
                 });
                 break;
@@ -255,9 +255,9 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
                 Collections.sort(foodPlaces, new Comparator<FoodPlace>() {
                     @Override
                     public int compare(FoodPlace t1, FoodPlace t2) {
-                        float t1Rating = t1.getGoogleRating().isEmpty() ? 0:Float.parseFloat(t1.getGoogleRating());
-                        float t2Rating = t2.getGoogleRating().isEmpty() ? 0:Float.parseFloat(t2.getGoogleRating());
-                        return t1Rating > t2Rating? 1:-1;
+                        float t1Rating = t1.getGoogleRating().isEmpty() ? 0 : Float.parseFloat(t1.getGoogleRating());
+                        float t2Rating = t2.getGoogleRating().isEmpty() ? 0 : Float.parseFloat(t2.getGoogleRating());
+                        return t1Rating > t2Rating ? 1 : -1;
                     }
                 });
                 break;

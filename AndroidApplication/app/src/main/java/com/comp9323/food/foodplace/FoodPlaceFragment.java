@@ -3,6 +3,8 @@ package com.comp9323.food.foodplace;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,27 +19,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodPlace;
+import com.comp9323.food.fooddeal.FoodDealNewFormFragment;
 import com.comp9323.main.R;
-import com.comp9323.restclient.RestClient;
-import com.comp9323.restclient.api.FoodPlaceApi;
-import com.comp9323.restclient.api.FoodPlaceService;
+import com.comp9323.restclient.service.FoodPlaceService;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -85,12 +76,20 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.add_food_place:
-                NewFoodPlaceFormFragment foodDealFormFragment = new NewFoodPlaceFormFragment();
-                foodDealFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
-                foodDealFormFragment.show(getFragmentManager(), "Food Place Dialog Fragment");
+                NewFoodPlaceFormFragment foodPlaceFormFragment = new NewFoodPlaceFormFragment();
+//                foodDealFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
+//                foodDealFormFragment.show(getFragmentManager(), "Food Place Dialog Fragment");
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transaction.add(android.R.id.content, foodPlaceFormFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -193,7 +192,8 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
             }
         });
     }
-    public void setOnSpinnerSelectListener(Spinner spinner){
+
+    public void setOnSpinnerSelectListener(Spinner spinner) {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {

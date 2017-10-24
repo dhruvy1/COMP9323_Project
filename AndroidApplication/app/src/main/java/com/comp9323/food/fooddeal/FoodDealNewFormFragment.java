@@ -45,11 +45,6 @@ public class FoodDealNewFormFragment extends DialogFragment {
     private TextInputEditText startTime;
     private TextInputEditText endTime;
 
-    private TextInputLayout startDateLayout;
-    private TextInputLayout startTimeLayout;
-    private TextInputLayout endDateLayout;
-    private TextInputLayout endTimeLayout;
-
     private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d yyyy");
     private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mma");
 
@@ -86,13 +81,9 @@ public class FoodDealNewFormFragment extends DialogFragment {
         messageEt = view.findViewById(R.id.new_food_deal_message_et);
 
         startDate = view.findViewById(R.id.new_fd_startdate);
-        startDateLayout = view.findViewById(R.id.new_fd_startdate_layout);
         endDate = view.findViewById(R.id.new_fd_enddate);
-        endDateLayout = view.findViewById(R.id.new_fd_enddate_layout);
         startTime = view.findViewById(R.id.new_fd_starttime);
-        startTimeLayout = view.findViewById(R.id.new_fd_starttime_layout);
         endTime = view.findViewById(R.id.new_fd_endtime);
-        endTimeLayout = view.findViewById(R.id.new_fd_endtime_layout);
 
         initDates();
         setDateListeners();

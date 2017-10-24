@@ -1,15 +1,12 @@
-package com.comp9323.restclient.api;
+package com.comp9323.restclient.service;
 
-import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.Event;
 import com.comp9323.restclient.RestClient;
+import com.comp9323.restclient.api.EventApi;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by timta on 28/09/2017.

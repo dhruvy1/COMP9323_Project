@@ -2,24 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--<item-->
-    <!--android:id="@+id/search_food_deal"-->
-    <!--android:icon="@mipmap/ic_search"-->
-    <!--android:title="@string/search"-->
-    <!--app:showAsAction="always" />-->
-
-    <!--<item android:title="Sort by: "-->
-        <!--app:showAsAction="always"/>-->
-
-    <!--<item-->
-        <!--android:id="@+id/spinner"-->
-        <!--android:title="Spinner"-->
-        <!--app:actionViewClass="android.widget.Spinner"-->
-        <!--app:showAsAction="always" />-->
-
     <item
         android:id="@+id/add_food_deal"
         android:icon="@mipmap/ic_add"
         android:title="@string/add"
-        app:showAsAction="always" />
+        app:showAsAction="collapseActionView" />
 </menu>

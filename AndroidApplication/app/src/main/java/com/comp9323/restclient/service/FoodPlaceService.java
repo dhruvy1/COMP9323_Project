@@ -1,15 +1,12 @@
-package com.comp9323.restclient.api;
-
-import android.util.Log;
+package com.comp9323.restclient.service;
 
 import com.comp9323.data.beans.FoodPlace;
 import com.comp9323.restclient.RestClient;
+import com.comp9323.restclient.api.FoodPlaceApi;
 
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class FoodPlaceService {

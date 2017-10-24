@@ -51,7 +51,7 @@ public class FoodDealRvAdapter extends RecyclerView.Adapter<FoodDealRvAdapter.Vi
 
         holder.foodDealMessage.setText(holder.foodDeal.getMessage());
         holder.foodDealRating.setText(holder.foodDeal.getRating());
-        holder.fdCreatedBy.setText("Created by " + holder.foodDeal.getCreatedBy() + "");
+        holder.fdCreatedBy.setText("By " + holder.foodDeal.getCreatedBy() + "");
 
         loadFoodDealImage(holder);
 

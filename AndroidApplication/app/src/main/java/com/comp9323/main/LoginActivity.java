@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.User;
-import com.comp9323.restclient.api.UserService;
+import com.comp9323.restclient.service.UserService;
 
 import retrofit2.Call;
 import retrofit2.Callback;

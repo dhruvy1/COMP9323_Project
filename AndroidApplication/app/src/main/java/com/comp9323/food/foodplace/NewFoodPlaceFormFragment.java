@@ -24,6 +24,7 @@ import com.comp9323.main.R;
 
 public class NewFoodPlaceFormFragment extends DialogFragment {
     private static final String TAG = "FoodPlaceFragment";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class NewFoodPlaceFormFragment extends DialogFragment {
         setHasOptionsMenu(true);
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle("New Food Deal");
+        toolbar.setTitle("New Food Place");
         toolbar.getMenu().clear();
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -48,15 +49,6 @@ public class NewFoodPlaceFormFragment extends DialogFragment {
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-    }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
