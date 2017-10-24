@@ -8,9 +8,9 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 
 
-class MobileUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'device_id')
-admin.site.register(MobileUser, MobileUserAdmin)
+# class MobileUserAdmin(admin.ModelAdmin):
+#     list_display = ('username', 'device_id')
+# admin.site.register(MobileUser, MobileUserAdmin)
 
 
 class FoodPlaceAdmin(admin.ModelAdmin):
