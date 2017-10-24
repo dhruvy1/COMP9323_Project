@@ -55,16 +55,16 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
     class Meta:
         model = User
         fields = [
-            'username', 'karma_points', 'device_id'
+            'id', 'username', 'karma_points', 'device_id'
         ]
 
     def create(self, validated_data):
         print(validated_data)
         username = validated_data['username']
-        # email = validated_data['email']
         # password = validated_data['password']
         karma_points = validated_data['karma_points']
         device_id = validated_data['device_id']
@@ -77,7 +77,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         def_pwd = device_id
         user_obj.set_password(def_pwd)
         user_obj.save()
-        return validated_data
+        return user_obj
 
 
 # class MobileUserCreateSerializer(serializers.ModelSerializer):
