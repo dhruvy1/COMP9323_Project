@@ -2,9 +2,15 @@ from django.contrib import admin
 from .models import *
 
 
-class MobileUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'device_id')
-admin.site.register(MobileUser, MobileUserAdmin)
+class UserAdmin(admin.ModelAdmin):
+    list_display_links = ('id','username')
+    list_display = ('id','username', 'device_id', 'karma_points')
+admin.site.register(User, UserAdmin)
+
+
+# class MobileUserAdmin(admin.ModelAdmin):
+#     list_display = ('username', 'device_id')
+# admin.site.register(MobileUser, MobileUserAdmin)
 
 
 class FoodPlaceAdmin(admin.ModelAdmin):

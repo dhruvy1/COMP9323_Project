@@ -1,45 +1,45 @@
-from django.http import HttpResponse
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+from django.views.generic import View
 from rest_framework import status
 from rest_framework.decorators import permission_classes
 from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
 
 from .serializers import *
 
 
-def index(request):
-    return HttpResponse("Hello, world.")
-
-
-@permission_classes((AllowAny,))
-class MobileUserAPIView(ListAPIView):
-    queryset = MobileUser.objects.all()
-    serializer_class = MobileUserCreateSerializer
-
-
-@permission_classes((AllowAny,))
-class MobileUserCreateAPIView(CreateAPIView):
-    queryset = MobileUser.objects.all()
-    serializer_class = MobileUserSerializer
-
-
-@permission_classes((AllowAny,))
-class MobileUserDetailAPIView(RetrieveAPIView):
-    queryset = MobileUser.objects.all()
-    serializer_class = MobileUserSerializer
-
-
-@permission_classes((AllowAny,))
-class MobileUserUpdateAPIView(UpdateAPIView):
-    queryset = MobileUser.objects.all()
-    serializer_class = MobileUserSerializer
-
-
-@permission_classes((AllowAny,))
-class MobileUserDestroyAPIView(DestroyAPIView):
-    queryset = MobileUser.objects.all()
-    serializer_class = MobileUserSerializer
+# @permission_classes((AllowAny,))
+# class MobileUserAPIView(ListAPIView):
+#     queryset = MobileUser.objects.all()
+#     serializer_class = MobileUserCreateSerializer
+#
+#
+# @permission_classes((AllowAny,))
+# class MobileUserCreateAPIView(CreateAPIView):
+#     queryset = MobileUser.objects.all()
+#     serializer_class = MobileUserCreateSerializer
+#
+#
+# @permission_classes((AllowAny,))
+# class MobileUserDetailAPIView(RetrieveAPIView):
+#     queryset = MobileUser.objects.all()
+#     serializer_class = MobileUserSerializer
+#
+#
+# @permission_classes((AllowAny,))
+# class MobileUserUpdateAPIView(UpdateAPIView):
+#     queryset = MobileUser.objects.all()
+#     serializer_class = MobileUserSerializer
+#
+#
+# @permission_classes((AllowAny,))
+# class MobileUserDestroyAPIView(DestroyAPIView):
+#     queryset = MobileUser.objects.all()
+#     serializer_class = MobileUserSerializer
 
 
 # Events
@@ -81,7 +81,7 @@ class EventUpdateAPIView(UpdateAPIView):
 
 @permission_classes((AllowAny,))
 class EventDetailAPIView(RetrieveAPIView):
-    queryset = MobileUser.objects.all()
+    queryset = Event.objects.all()
     serializer_class = EventSerializer
 
 
@@ -189,3 +189,40 @@ class FoodPlaceDestroyAPIView(DestroyAPIView):
     serializer_class = FoodPlaceSerializer
 
 
+# User views
+@permission_classes((AllowAny,))
+class UserAPIView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserCreateSerializer
+
+
+@permission_classes((AllowAny,))
+class UsersAPIView(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
+
+
+@permission_classes((AllowAny,))
+class UserDetailAPIView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserDetailSerializer
+
+
+@permission_classes((AllowAny,))
+class UserUpdateAPIView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
+
+
+class UserLoginAPIView(APIView):
+    # permission_classes = [IsAu]
+    queryset = User.objects.all()
+    serializer_class = UserLoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        serializer = UserLoginSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            new_data = serializer.data
+            return Response(new_data, status=HTTP_200_OK)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

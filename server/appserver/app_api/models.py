@@ -1,10 +1,19 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-import datetime
 
-class MobileUser(models.Model):
-    username = models.CharField(max_length=200)
-    device_id = models.CharField(max_length=200)
-    karma_points = models.CharField(max_length=100, default='0')
+
+class User(AbstractUser):
+    device_id = models.CharField(max_length=200, default='0', blank=False, unique=True)
+    karma_points = models.CharField(max_length=100, default='0', blank=True)
+
+    def get_un(self):
+        return self.username
+
+
+# class MobileUser(models.Model):
+#     username = models.CharField(max_length=200)
+#     device_id = models.CharField(max_length=200)
+#     karma_points = models.CharField(max_length=100, default='0')
 
 
 class Event(models.Model):

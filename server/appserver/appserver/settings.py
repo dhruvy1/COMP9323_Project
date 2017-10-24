@@ -40,7 +40,29 @@ INSTALLED_APPS = (
     'app_api',
     'rest_framework',
     'rest_framework_swagger',
+    'qa',
+    'taggit',
+    'hitcount',
+    'crispy_forms',
+    'django_markdown',
 )
+
+QA_SETTINGS = {
+    'qa_messages': True,
+    'qa_description_optional': False,
+    'reputation': {
+        'CREATE_QUESTION': 0,
+        'CREATE_ANSWER': 0,
+        'CREATE_ANSWER_COMMENT': 0,
+        'CREATE_QUESTION_COMMENT': 0,
+        'ACCEPT_ANSWER': 0,
+        'UPVOTE_QUESTION': 0,
+        'UPVOTE_ANSWER': 0,
+        'DOWNVOTE_QUESTION': 0,
+        'DOWNVOTE_ANSWER': 0,
+    }
+}
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -71,12 +93,19 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'app_api.User'
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
+
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
         'rest_framework.permissions.DjangoModelPermissions',
-    ]
+    )
 }
 
 WSGI_APPLICATION = 'appserver.wsgi.application'
@@ -91,6 +120,11 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+SWAGGER_SETTINGS = {
+    "exclude_namespaces": ["internal_apis"],    #  List URL namespaces to ignore
+}
+
 
 
 # Internationalization
@@ -111,3 +145,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+
+# JWT_AUTH = {'JWT_AUTH_COOKIE': 'auth_token',}
