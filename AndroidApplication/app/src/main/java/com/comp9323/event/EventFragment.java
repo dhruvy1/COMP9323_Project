@@ -99,7 +99,7 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 if (response.isSuccessful()) {
-                    List<Event> events = new ArrayList<Event>();
+                    List<Event> events = new ArrayList<>();
                     Calendar cal = Calendar.getInstance();
                     for (Event e : response.body()) {
                         if (cal.before(e.getStartDate())) {

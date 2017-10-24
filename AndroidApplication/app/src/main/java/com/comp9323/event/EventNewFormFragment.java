@@ -31,8 +31,10 @@ import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
 import com.comp9323.restclient.service.EventService;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -249,7 +251,6 @@ public class EventNewFormFragment extends DialogFragment {
 
     /**
      * Checks if the user has input a location, if not, the user will be notified with error text
-     *
      * @return
      */
     private boolean validateLocation() {
@@ -267,12 +268,23 @@ public class EventNewFormFragment extends DialogFragment {
     private boolean validateDateRange() {
         String eventStart = startDate.getText().toString() + " " + startTime.getText().toString();
         String eventEnd = endDate.getText().toString() + " " + endTime.getText().toString();
+        Calendar cal = Calendar.getInstance();
+        Date checkStart = Calendar.getInstance().getTime();
+
+        try {
+            checkStart = dateFormat.parse(startDate.getText().toString());
+        } catch (ParseException e) {
+            Log.d(TAG, e.getMessage());
+        }
+
         if (DateTimeConverter.checkDateBefore(eventStart, eventEnd)) {
             startDateLayout.setErrorEnabled(false);
             startTimeLayout.setErrorEnabled(false);
             endDateLayout.setErrorEnabled(false);
             endTimeLayout.setErrorEnabled(false);
             return true;
+        } else if (!cal.before(checkStart)) {
+            startDateLayout.setError(getString(R.string.err_msg_start_date));
         } else {
             startDateLayout.setError(getString(R.string.err_msg_date));
             requestFocus(startDate);
