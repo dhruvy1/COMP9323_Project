@@ -23,13 +23,15 @@ import com.comp9323.data.beans.Event;
 import com.comp9323.main.R;
 import com.comp9323.restclient.service.EventService;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventFragment extends Fragment {
+public class EventFragment extends Fragment implements EventRvAdapter.Listener {
     private static final String TAG = "EventFragment";
     private EventRvAdapter adapter;
 
@@ -97,7 +99,14 @@ public class EventFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 if (response.isSuccessful()) {
-                    updateAdapter(response.body());
+                    List<Event> events = new ArrayList<Event>();
+                    Calendar cal = Calendar.getInstance();
+                    for (Event e : response.body()) {
+                        if (cal.before(e.getStartDate())) {
+                            events.add(e);
+                        }
+                    }
+                    updateAdapter(events);
                 }
             }
 
@@ -149,16 +158,16 @@ public class EventFragment extends Fragment {
     }
 
     @Override
-    public void onFoodDealDislikeBtnClicked(final Integer id, String rating) {
-        FoodDeal foodDeal = new FoodDeal();
-        foodDeal.setRating(Integer.toString(Integer.parseInt(rating) - 1));
-        FoodDealService.patchFoodDeal(id, foodDeal, new Callback<FoodDeal>() {
+    public void onEventDislikeBtnClicked(final Integer id, String rating) {
+        Event event = new Event();
+        event.setRating(Integer.toString(Integer.parseInt(rating) - 1));
+        EventService.patchEvent(id, event, new Callback<Event>() {
             @Override
-            public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
+            public void onResponse(Call<Event> call, Response<Event> response) {
             }
 
             @Override
-            public void onFailure(Call<FoodDeal> call, Throwable t) {
+            public void onFailure(Call<Event> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
         });
