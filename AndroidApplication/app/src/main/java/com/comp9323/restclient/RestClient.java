@@ -29,6 +29,7 @@ public class RestClient {
             .client(client)
             .build();
 
+    // get the client to make REST calls
     public static Retrofit getClient() {
         return retrofit;
     }
