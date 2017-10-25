@@ -26,8 +26,6 @@ public class QAWebView extends Fragment {
         View view = inflater.inflate(R.layout.fragment_qa, container, false);
 
         webView = view.findViewById(R.id.qa_web_view);
-        webView.setInitialScale(150);
-        webView.getSettings().setSupportZoom(true);
         //set starting url
         String url = "http://52.65.129.3:8000/qalogin?device=";
         url += DataHolder.getInstance().getUser().getDeviceId();
