@@ -6,6 +6,25 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * A Class that represent the Food Deal Object that used in the application
+ * This Class acts as bean class the allowing converting Database tuple into java Object
+ * @Field Integer id            Unique identify from the Database
+ * @Field String postId         Unique identify from the External resource
+ * @Field String message        Description of the Food Deal
+ * @Field String updatedTime    Last time stamp that update this Tuple
+ * @Field String photoLink      A URI to the photo
+ * @Field String eventLink      A URL to the original post
+ * @Field String updatedDate    Last Date stamp that update this Tuple
+ * @Field String rating         An In-app rating from this app user
+ * @Field String createdBy      creator of this food deal, or resource location
+ * @Field String title          Title of this food deal
+ * @Field String location       location of food deal holding
+ * @Field String startDate      food deal starting date
+ * @Field String startTime      food deal starting time
+ * @Field String endDate        food deal ending date
+ * @Field String endTime        food deal ending time
+ */
 public class FoodDeal implements Serializable {
     private final static long serialVersionUID = -8242576134588360110L;
 

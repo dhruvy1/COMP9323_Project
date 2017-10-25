@@ -5,9 +5,33 @@ from django.db import models
 class User(AbstractUser):
     device_id = models.CharField(max_length=200, default='0', blank=False, unique=True)
     karma_points = models.IntegerField(default=0)
+    app_points = models.IntegerField(default=0)
+    qa_points = models.IntegerField(default=0)
 
     def get_un(self):
         return self.username
+
+    def inc_app_points(self):
+        self.app_points += 1
+        self.save()
+        # Update total
+        self.karma_points = self.app_points + self.qa_points
+        self.save()
+
+    def dec_app_points(self):
+        self.app_points -= 1
+        self.save()
+        # Update total
+        self.karma_points = self.app_points + self.qa_points
+        self.save()
+
+    def sync_qa(self, num):
+        print('Called ' + str(num))
+        self.qa_points = num
+        self.save()
+        # Update total
+        self.karma_points = self.app_points + self.qa_points
+        self.save()
 
 
 # class MobileUser(models.Model):
