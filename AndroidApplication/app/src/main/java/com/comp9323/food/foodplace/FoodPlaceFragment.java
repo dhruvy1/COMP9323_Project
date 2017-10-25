@@ -1,7 +1,6 @@
 package com.comp9323.food.foodplace;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,7 +22,6 @@ import android.widget.TextView;
 
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodPlace;
-import com.comp9323.food.fooddeal.FoodDealNewFormFragment;
 import com.comp9323.main.R;
 import com.comp9323.restclient.service.FoodPlaceService;
 
@@ -65,7 +63,7 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
 
         View t = menu.findItem(R.id.karma_point).setActionView(R.layout.menu_karma_point_view).getActionView();
         TextView textView = t.findViewById(R.id.karma_point_view);
-        textView.setText(DataHolder.getInstance().getUser().getKarmarPoint());
+        textView.setText(DataHolder.getInstance().getUser().getKarmaPoint());
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.food_place_spinner_list_item_array, android.R.layout.simple_spinner_item);

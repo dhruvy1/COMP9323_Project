@@ -71,7 +71,7 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
 
         View t = menu.findItem(R.id.karma_point).setActionView(R.layout.menu_karma_point_view).getActionView();
         TextView textView = t.findViewById(R.id.karma_point_view);
-        textView.setText(DataHolder.getInstance().getUser().getKarmarPoint());
+        textView.setText(DataHolder.getInstance().getUser().getKarmaPoint());
 
         Spinner spinner = (Spinner) menu.findItem(R.id.event_spinner).getActionView();
         initSpinner(spinner);

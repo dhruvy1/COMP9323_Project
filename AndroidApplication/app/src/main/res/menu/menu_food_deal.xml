@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/karma_point"
+        android:actionLayout="@layout/menu_karma_point_view"
+        android:title="karma point"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/add_food_deal"
         android:icon="@mipmap/ic_add"
         android:title="@string/add"

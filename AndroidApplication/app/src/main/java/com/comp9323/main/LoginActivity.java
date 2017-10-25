@@ -79,17 +79,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         finish();
     }
 
-    private void setKarmaPoint(User user){
+    private void setKarmaPoint(User user) {
         UserService.getUser(user.getId(), new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                if(response.isSuccessful())
+                if (response.isSuccessful())
                     loginUser(response.body());
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.d(TAG ,t.getMessage());
+                Log.d(TAG, t.getMessage());
             }
         });
     }

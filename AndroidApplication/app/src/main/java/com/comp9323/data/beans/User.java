@@ -22,7 +22,7 @@ public class User implements Serializable {
 
     @SerializedName("karma_points")
     @Expose
-    private String karmarPoint;
+    private String karmaPoint;
 
     public User() {
     }
@@ -31,7 +31,7 @@ public class User implements Serializable {
         this.id = id;
         this.username = username;
         this.deviceId = deviceId;
-        this.karmarPoint = karma;
+        this.karmaPoint = karma;
     }
     public User(Integer id, String username, String deviceId) {
         this.id = id;
@@ -42,7 +42,7 @@ public class User implements Serializable {
     public User(String username, String deviceId, String karma) {
         this.username = username;
         this.deviceId = deviceId;
-        this.karmarPoint = karma;
+        this.karmaPoint = karma;
     }
 
     public User(String username, String deviceId) {
@@ -88,12 +88,12 @@ public class User implements Serializable {
         this.deviceId = deviceId;
         return this;
     }
-    public void setKarmarPoint(String karmarPoint){
-        this.karmarPoint = karmarPoint;
+    public void setKarmaPoint(String karmaPoint){
+        this.karmaPoint = karmaPoint;
     }
 
-    public String getKarmarPoint() {
-        return karmarPoint;
+    public String getKarmaPoint() {
+        return karmaPoint;
     }
 
     @Override
@@ -103,8 +103,8 @@ public class User implements Serializable {
             s += "user name: " + username;
         if (this.deviceId != null)
             s += " , deviceId: " + deviceId;
-        if (this.karmarPoint != null)
-            s += " , karmaPoint: " + karmarPoint;
+        if (this.karmaPoint != null)
+            s += " , karmaPoint: " + karmaPoint;
         return s;
     }
 }

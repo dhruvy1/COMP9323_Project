@@ -50,7 +50,7 @@ public class UserService {
 //            } else if (item.equals("deviceid")) {
 //                templateUser.setDeviceId(value);
 //            } else if (item.equals("karmaPoint")){
-//                templateUser.setKarmarPoint(item);
+//                templateUser.setKarmaPoint(item);
 //            }
 //        }
 //
@@ -67,7 +67,7 @@ public class UserService {
 
     public static void postUser(User user, Callback<User> callback) {
         user.setDeviceId(createUUID());
-        user.setKarmarPoint("0");
+        user.setKarmaPoint("0");
         api.postUser(user).enqueue(callback);
     }
 
