@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from .serializers import *
 
 
-# Events
+# Events views
 @permission_classes((AllowAny,))
 class EventListAPIView(ListAPIView):
     # List all events

@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
+# User model, extends AbstractUser for security purposes (password hashing)
 class User(AbstractUser):
     device_id = models.CharField(max_length=200, default='0', blank=False, unique=True)
     karma_points = models.IntegerField(default=0)
