@@ -44,4 +44,4 @@ sudo nohup COMP9323_Project/venv/bin/python3 COMP9323_Project/server/appserver/m
 ```
 
 ## Set up instruction for android project
-pleaseread this file "Getting_Started_Guide_on_Campus_Mate_app.pdf"
+Please read this file "Getting_Started_Guide_on_Campus_Mate_app.pdf"
