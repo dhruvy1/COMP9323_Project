@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodDeal;
@@ -81,6 +82,11 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_food_deal, menu);
+
+        View t = menu.findItem(R.id.karma_point).setActionView(R.layout.menu_karma_point_view).getActionView();
+        TextView textView = t.findViewById(R.id.karma_point_view);
+        textView.setText(DataHolder.getInstance().getUser().getKarmaPoint());
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -93,9 +99,6 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
 
                 FoodDealNewFormFragment foodDealFormFragment = new FoodDealNewFormFragment();
                 foodDealFormFragment.setListener(this);
-//                foodDealFormFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
-//                foodDealFormFragment.show(getFragmentManager(), "FoodDealDialogFragment");
-//                transaction.show(foodDealFormFragment);
 
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.add(android.R.id.content, foodDealFormFragment);
@@ -172,7 +175,6 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
             }
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.setPackage("com.android.chrome");
             try {
                 getContext().startActivity(intent);
             } catch (ActivityNotFoundException ex) {
@@ -185,9 +187,6 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
 
     @Override
     public void onSaveClicked(FoodDeal foodDeal) {
-//        Date date = new Date();
-//        newFoodDeal.setUpdatedDate(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date));
-//        newFoodDeal.setUpdatedTime(new SimpleDateFormat("HH:mm:ss", Locale.US).format(date));
         foodDeal.setCreatedBy(DataHolder.getInstance().getUser().getUsername());
 
         FoodDealService.postFoodDeal(foodDeal, new Callback<FoodDeal>() {

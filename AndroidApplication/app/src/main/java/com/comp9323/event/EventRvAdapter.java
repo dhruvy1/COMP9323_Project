@@ -117,7 +117,7 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
     public void sortEvents(int pos) {
         expandedList.clear();
 
-        switch(pos) {
+        switch (pos) {
             case 0:
                 Collections.sort(events, new Comparator<Event>() {
                     @Override

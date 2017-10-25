@@ -24,6 +24,7 @@ public class DateTimeConverter {
     /**
      * Converts date from the app to the date in the server
      * e.g. Wed, Oct 21 2017 to 2017-10-21
+     *
      * @param appDate
      * @return
      */
@@ -41,6 +42,7 @@ public class DateTimeConverter {
     /**
      * Converts time from the app to the time in the server
      * e.g. 12:31AM to 00:31:00
+     *
      * @param appTime
      * @return
      */
@@ -58,6 +60,7 @@ public class DateTimeConverter {
     /**
      * Converts date from the server to the date in the app
      * e.g. 2017-10-21 to Wed, Oct 21 2017
+     *
      * @param serverDate
      * @return
      */
@@ -75,6 +78,7 @@ public class DateTimeConverter {
     /**
      * Converts time from the server to the time in the app
      * e.g. 00:31:00 to 12:31AM
+     *
      * @param serverTime
      * @return
      */
@@ -93,6 +97,7 @@ public class DateTimeConverter {
      * Compares two dates and returns true if eventStart is before eventDate
      * e.g. eventStart = "Wed, Oct 21 2017 02:30PM"; eventEnd = "Tue, 20 2017 02:40PM";
      * returns false
+     *
      * @param eventStart
      * @param eventEnd
      * @return
@@ -114,6 +119,7 @@ public class DateTimeConverter {
      * Comparator function for two dates in server time format
      * returns -1,0,1 if start is before end, is equal to, or end before start
      * e.g. eventStart = eventEnd = "2017-10-07 19:00:00"; returns 0
+     *
      * @param eventStart
      * @param eventEnd
      * @return
@@ -134,6 +140,7 @@ public class DateTimeConverter {
 
     /**
      * Returns the start of the current day as a date
+     *
      * @return
      */
     public static Date getToday() {
