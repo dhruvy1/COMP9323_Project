@@ -19,6 +19,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * The Starting activity of the application
+ * which handle the user login and sign up logic
+ * It will automatically login user if they have created account from their phone
+ */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "LoginActivity";
 
@@ -45,11 +50,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    /**
+     * function that checking the existence of user preference
+     * @return true if find the user detail from the user preference
+     */
     private boolean isFirstLogin() {
         SharedPreferences sp = getSharedPreferences(getString(R.string.user_pref), Context.MODE_PRIVATE);
         return (!sp.contains("uuid"));
     }
 
+    /**
+     * function that use in Debug, that remove the stored user preference
+     * so that new account can be created
+     */
     private void deleteSharedPreferences() {
         SharedPreferences sp = getSharedPreferences(getString(R.string.user_pref), Context.MODE_PRIVATE);
         if (sp.contains("uuid")) {
@@ -57,6 +70,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    /**
+     * function that used to store user Instance into user preference
+     * @param user new user that created
+     */
     private void saveUser(User user) {
         SharedPreferences sp = getSharedPreferences(getString(R.string.user_pref), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
@@ -68,6 +85,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.apply();
     }
 
+    /**
+     * function that used login user
+     * which added user object into global storage
+     * and move to the main activity of the application
+     * @param user user Instance that will be login
+     */
     private void loginUser(User user) {
         DataHolder.getInstance().setUser(user);
 
@@ -79,6 +102,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         finish();
     }
 
+    /**
+     * function that collect the Karma point from database,
+     * it called will directly login user after call
+     * @param user user Instance created from the user preference
+     */
     private void setKarmaPoint(User user) {
         UserService.getUser(user.getId(), new Callback<User>() {
             @Override

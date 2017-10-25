@@ -12,6 +12,9 @@ import android.webkit.WebViewClient;
 import com.comp9323.data.DataHolder;
 import com.comp9323.main.R;
 
+/**
+ * fragment that display q and a session in web view
+ */
 public class QAWebView extends Fragment {
 
     private WebView webView;

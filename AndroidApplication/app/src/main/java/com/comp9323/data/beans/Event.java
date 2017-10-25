@@ -38,7 +38,7 @@ import com.google.gson.annotations.SerializedName;
  * @Field String state          Event holding state
  * @Field String street         Event holding street
  * @Field String zip            Event holding zip
- * @Field String coverId
+ * @Field String coverId        Facebook photo URI
  * @Field String sourceUrl      A URL to the original post
  * @Field String rating         An In-app rating from this app user
  * @Field String createdBy     creator of this food deal, or resource location
