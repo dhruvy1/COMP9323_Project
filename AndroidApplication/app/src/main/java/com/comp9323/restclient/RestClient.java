@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RestClient {
-    private static final String BASE_URL = "http://52.65.129.3:8000/api/";
+    private static final String BASE_URL = "http://52.65.129.3:8000/";
 
     // Logging for  HTTP requests and responses
     private static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor()

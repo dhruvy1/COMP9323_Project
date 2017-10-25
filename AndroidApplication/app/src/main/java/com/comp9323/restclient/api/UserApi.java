@@ -14,6 +14,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by thomas on 10/9/2017.
@@ -37,4 +38,10 @@ public interface UserApi {
 
     @PATCH("/api/users/{id}/")
     Call<User> patchUser(@Path("id") int id, @Body User user);
+
+    @GET("/voteadd/")
+    Call<Void> addKarma(@Query("device") String deviceId);
+
+    @GET("/votesub/")
+    Call<Void> subKarma(@Query("device") String deviceId);
 }
