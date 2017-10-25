@@ -18,21 +18,21 @@ import retrofit2.http.Path;
  */
 
 public interface EventApi {
-    @GET("events/{id}")
+    @GET("/api/events/{id}")
     Call<Event> getEvent(@Path("id") int eventId);
 
-    @GET("events/all/")
+    @GET("/api/events/all/")
     Call<List<Event>> getEvents();
 
-    @POST("events/")
+    @POST("/api/events/")
     Call<Event> postEvent(@Body Event event);
 
-    @DELETE("events/{id}")
+    @DELETE("/api/events/{id}")
     Call<Void> deleteEvent(@Path("id") int eventId);
 
-    @PUT("events/{id}")
+    @PUT("/api/events/{id}")
     Call<Event> putEvent(@Path("id") int eventId, @Body Event event);
 
-    @PATCH("events/{id}")
+    @PATCH("/api/events/{id}")
     Call<Event> patchEvent(@Path("id") int eventId, @Body Event event);
 }

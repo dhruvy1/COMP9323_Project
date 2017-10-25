@@ -21,8 +21,10 @@ import android.widget.TextView;
 
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.beans.FoodDeal;
+import com.comp9323.data.beans.User;
 import com.comp9323.main.R;
 import com.comp9323.restclient.service.FoodDealService;
+import com.comp9323.restclient.service.UserService;
 
 import java.util.Collections;
 import java.util.List;
@@ -154,13 +156,19 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
 
     @Override
     public void onFoodDealLikeBtnClicked(final Integer id, String rating) {
-        FoodDeal foodDeal = new FoodDeal();
+        final FoodDeal foodDeal = new FoodDeal();
         foodDeal.setRating(Integer.toString(Integer.parseInt(rating) + 1)); // increment the rating
         // patch the new food deal rating
         FoodDealService.patchFoodDeal(id, foodDeal, new Callback<FoodDeal>() {
             @Override
             public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
-                // we don't need to do anything if its successful
+                if (response.isSuccessful()) {
+                    FoodDeal updatedFoodDeal = response.body();
+                    if (!updatedFoodDeal.getCreatedBy().equals("Facebook")) {
+                        // if the food deal was not created by Facebook, then increment karma of the user
+                        updateKarmaPoints(updatedFoodDeal.getCreatedBy(), true);
+                    }
+                }
             }
 
             @Override
@@ -178,11 +186,58 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
         FoodDealService.patchFoodDeal(id, foodDeal, new Callback<FoodDeal>() {
             @Override
             public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
-                // we don't need to do anything if its successful
+                if (response.isSuccessful()) {
+                    FoodDeal updatedFoodDeal = response.body();
+                    if (!updatedFoodDeal.getCreatedBy().equals("Facebook")) {
+                        // if the food deal was not created by Facebook, then decrement karma of the user
+                        updateKarmaPoints(updatedFoodDeal.getCreatedBy(), false);
+                    }
+                }
             }
 
             @Override
             public void onFailure(Call<FoodDeal> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Update the karma points of the user that created the food deal post
+     *
+     * @param username        the user name of the user
+     * @param shouldIncrement whether we should increment or decrement the karma points of the user
+     */
+    public void updateKarmaPoints(final String username, final boolean shouldIncrement) {
+        // get all the user
+        UserService.getUsers(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful()) {
+                    List<User> users = response.body();
+                    for (User user : users) {
+                        // find the user of the food deal post
+                        if (user.getUsername().equals(username)) {
+                            User currentUser = DataHolder.getInstance().getUser();
+                            int karmaPoints = Integer.parseInt(currentUser.getKarmaPoint());
+                            if (shouldIncrement) {
+                                // increment the karma of the user
+                                UserService.addKarma(user.getDeviceId());
+                                karmaPoints = karmaPoints + 1;
+                            } else {
+                                // decrement the karma of the user
+                                UserService.decrementKarma(user.getDeviceId());
+                                karmaPoints = karmaPoints - 1;
+                            }
+                            currentUser.setKarmaPoint(String.valueOf(karmaPoints));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
         });

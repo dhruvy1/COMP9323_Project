@@ -1,5 +1,7 @@
 package com.comp9323.restclient.service;
 
+import android.util.Log;
+
 import com.comp9323.data.beans.User;
 import com.comp9323.restclient.RestClient;
 import com.comp9323.restclient.api.UserApi;
@@ -7,7 +9,9 @@ import com.comp9323.restclient.api.UserApi;
 import java.util.List;
 import java.util.UUID;
 
+import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class UserService {
@@ -76,6 +80,44 @@ public class UserService {
      */
     public static void patchUser(int id, User user, Callback<User> callback) {
         api.patchUser(id, user).enqueue(callback);
+    }
+
+    /**
+     * Increment the karma point of the user
+     *
+     * @param deviceId of the user
+     */
+    public static void addKarma(String deviceId) {
+        api.addKarma(deviceId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                // We don't need to do anything with the response
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Decrement the karma point of the user
+     *
+     * @param deviceId of the user
+     */
+    public static void decrementKarma(String deviceId) {
+        api.subKarma(deviceId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                // We don't need to do anything with the response
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     /**
