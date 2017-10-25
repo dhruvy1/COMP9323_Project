@@ -4,10 +4,13 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework.serializers import ValidationError
 
+# This file contains JSON Serializers for DB objects
+
 User = get_user_model()
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
+    #
     class Meta:
         model = User
         fields = [
@@ -26,6 +29,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
+    # Make id read only
     id = serializers.ReadOnlyField()
 
     class Meta:
@@ -35,9 +39,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        # Validate data
         print(validated_data)
         username = validated_data['username']
-        # password = validated_data['password']
         karma_points = validated_data['karma_points']
         device_id = validated_data['device_id']
         user_obj = User(
@@ -46,6 +50,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             device_id=device_id,
             is_staff=True
         )
+        # Save the data
         def_pwd = device_id
         user_obj.set_password(def_pwd)
         user_obj.save()

@@ -12,39 +12,10 @@ from rest_framework.views import APIView
 from .serializers import *
 
 
-# @permission_classes((AllowAny,))
-# class MobileUserAPIView(ListAPIView):
-#     queryset = MobileUser.objects.all()
-#     serializer_class = MobileUserCreateSerializer
-#
-#
-# @permission_classes((AllowAny,))
-# class MobileUserCreateAPIView(CreateAPIView):
-#     queryset = MobileUser.objects.all()
-#     serializer_class = MobileUserCreateSerializer
-#
-#
-# @permission_classes((AllowAny,))
-# class MobileUserDetailAPIView(RetrieveAPIView):
-#     queryset = MobileUser.objects.all()
-#     serializer_class = MobileUserSerializer
-#
-#
-# @permission_classes((AllowAny,))
-# class MobileUserUpdateAPIView(UpdateAPIView):
-#     queryset = MobileUser.objects.all()
-#     serializer_class = MobileUserSerializer
-#
-#
-# @permission_classes((AllowAny,))
-# class MobileUserDestroyAPIView(DestroyAPIView):
-#     queryset = MobileUser.objects.all()
-#     serializer_class = MobileUserSerializer
-
-
 # Events
 @permission_classes((AllowAny,))
 class EventListAPIView(ListAPIView):
+    # List all events
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
@@ -141,7 +112,7 @@ class FoodDealDestroyAPIView(DestroyAPIView):
     serializer_class = FoodDealSerializer
 
 
-# Food Place
+# Food Place Views
 @permission_classes((AllowAny,))
 class FoodPlaceListAPIView(ListAPIView):
     queryset = FoodPlace.objects.all()

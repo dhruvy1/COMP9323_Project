@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.views.generic import View
 from django.http import HttpResponse
 
+
 class index(View):
 
     def get(self, request):
@@ -27,7 +28,7 @@ class index(View):
 
 
 class inc(View):
-
+    # Increment Karma for a user
     def get(self, request):
         dev_id = request.GET["device"]
         print(str(dev_id))
@@ -46,7 +47,7 @@ class inc(View):
 
 
 class dec(View):
-
+    # Decrement Karma for user
     def get(self, request):
         dev_id = request.GET["device"]
         print(str(dev_id))
