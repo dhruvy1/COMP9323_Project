@@ -48,3 +48,6 @@ python manage.py runserver
 # From ~/
 sudo nohup COMP9323_Project/venv/bin/python3 COMP9323_Project/server/appserver/manage.py runserver 0:8000
 ```
+
+## Set up instruction for android project
+Please read this file "Getting_Started_Guide_on_Campus_Mate_app.pdf"
