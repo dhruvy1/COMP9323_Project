@@ -10,7 +10,7 @@
         android:id="@+id/karma_point_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_karma_point"
+        android:drawableStart="@drawable/ic_karma_point_icon"
         android:gravity="center_vertical|center"
         android:text="-1"
         android:textSize="18sp"
