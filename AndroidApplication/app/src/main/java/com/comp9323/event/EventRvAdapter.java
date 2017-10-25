@@ -44,10 +44,10 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.event = events.get(position);
-
         holder.evNameView.setText(holder.event.getName());
-        holder.evLocationView.setText(holder.event.getPlaceName() + ", " + holder.event.getStreet());
         holder.evTimeView.setText(holder.event.getEventTime());
+        holder.evRating.setText(holder.event.getRating());
+        holder.evCreatedBy.setText("By " + holder.event.getCreatedBy());
 
         if (holder.event.getSourceUrl().length() > 0) {
             Glide.with(holder.evImage.getContext()).load(holder.event.getSourceUrl()).into(holder.evImage);
@@ -66,6 +66,7 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         });
 
         showEventDetails(holder, position);
+        initLocation(holder);
         initEventLikeBtn(holder);
         initEventDislikeBtn(holder);
     }
@@ -86,6 +87,17 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
 
     private void initEventDetails(final ViewHolder holder, final int position) {
         holder.evDescription.setText(holder.event.getDescription());
+    }
+
+    private void initLocation(final ViewHolder holder) {
+        if (holder.event.getPlaceName().isEmpty() && holder.event.getStreet().isEmpty()) {
+            holder.evLocationView.setVisibility(View.GONE);
+            holder.evLocationPin.setVisibility(View.GONE);
+        } else if (holder.event.getPlaceName().isEmpty() || holder.event.getStreet().isEmpty()) {
+            holder.evLocationView.setText(holder.event.getPlaceName() + holder.event.getStreet());
+        } else {
+            holder.evLocationView.setText(holder.event.getPlaceName() + ", " + holder.event.getStreet());
+        }
     }
 
     private void initEventLikeBtn(final ViewHolder holder) {
@@ -188,6 +200,7 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         public final TextView evTimeView;
         public final TextView evDescription;
         public final ImageView evImage;
+        public final ImageView evLocationPin;
         public final ImageButton evLikeBtn;
         public final ImageButton evDislikeBtn;
         public final TextView evRating;
@@ -204,6 +217,7 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
             evTimeView = view.findViewById(R.id.event_time_frame);
             evDescription = view.findViewById(R.id.event_description);
             evImage = view.findViewById(R.id.event_photo);
+            evLocationPin = view.findViewById(R.id.event_location_pin);
             evDetailsContainer = view.findViewById(R.id.event_details_container);
             evLikeBtn = view.findViewById(R.id.ev_like_btn);
             evDislikeBtn = view.findViewById(R.id.ev_dislike_btn);

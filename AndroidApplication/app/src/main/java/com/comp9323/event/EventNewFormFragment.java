@@ -338,7 +338,7 @@ public class EventNewFormFragment extends DialogFragment {
         String eventEndD = endDate.getText().toString();
         String eventStartT = startTime.getText().toString();
         String eventEndT = endTime.getText().toString();
-        String eventUser = DataHolder.getInstance().getUser().getDeviceId();
+        String eventUser = DataHolder.getInstance().getUser().getUsername();
 
         eventStartD = DateTimeConverter.convertA2SDate(eventStartD);
         eventEndD = DateTimeConverter.convertA2SDate(eventEndD);
