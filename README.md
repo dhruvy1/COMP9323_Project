@@ -10,6 +10,12 @@ Key code files for the server backend are:
 * (JSON parsers) server/appserver/app_api/serializers.py
 * (Q&A files) venv/lib/python3.4/site-packages/qa/
 
+Main files for the application:
+* (Event Page) AndroidApplication/app/src/main/java/com/comp9323/event/*
+* (Food Places/Deals) AndroidApplication/app/src/main/java/com/comp9323/food/*
+* (Q&A) AndroidApplication/app/src/main/java/com/comp9323/qa/*
+* (Rest Client Calls) AndroidApplication/app/src/main/java/com/comp9323/restclient/*
+
 #### Instructions on how to use the Android app are avaliable in `Getting_Started_Guide_on_Campus_Mate_app.pdf`
 ---
 Instructions to deploy the server locally are specfied below (This will create a local version of the app with no data in the DB):
