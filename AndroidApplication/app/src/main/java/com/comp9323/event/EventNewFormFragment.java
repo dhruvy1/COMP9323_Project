@@ -185,7 +185,7 @@ public class EventNewFormFragment extends DialogFragment {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
-            actionBar.setHomeAsUpIndicator(android.R.drawable.ic_menu_close_clear_cancel);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         }
         setHasOptionsMenu(true);
     }
@@ -251,6 +251,7 @@ public class EventNewFormFragment extends DialogFragment {
 
     /**
      * Checks if the user has input a location, if not, the user will be notified with error text
+     *
      * @return
      */
     private boolean validateLocation() {

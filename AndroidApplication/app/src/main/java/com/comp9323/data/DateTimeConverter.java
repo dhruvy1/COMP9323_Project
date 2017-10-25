@@ -11,6 +11,9 @@ import java.util.Date;
  * Created by timta on 14/10/2017.
  */
 
+/**
+ * A global functional class that convert to the readable Time string
+ */
 public class DateTimeConverter {
 
     private final String TAG = "DateTimeConverter";

@@ -16,6 +16,9 @@ import com.comp9323.food.fooddeal.FoodDealFragment;
 import com.comp9323.food.foodplace.FoodPlaceFragment;
 import com.comp9323.main.R;
 
+/**
+ * Container fragment that hold the food segment
+ */
 public class FoodContainer extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -26,7 +29,7 @@ public class FoodContainer extends Fragment implements BottomNavigationView.OnNa
 
         BottomNavigationView navigation = view.findViewById(R.id.food_navigation);
         navigation.setOnNavigationItemSelectedListener(this);
-        openFoodDealAtFirstPlace();
+        openFoodDealAtFirstDeal();
 
         return view;
     }
@@ -36,7 +39,10 @@ public class FoodContainer extends Fragment implements BottomNavigationView.OnNa
         menu.clear();
     }
 
-    private void openFoodDealAtFirstPlace() {
+    /**
+     * auto load up food deal when this fragment is created
+     */
+    private void openFoodDealAtFirstDeal() {
         FoodDealFragment newFragment = new FoodDealFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.food_deal_placeholder, newFragment);

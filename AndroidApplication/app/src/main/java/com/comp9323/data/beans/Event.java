@@ -19,6 +19,30 @@ import java.util.Date;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * A Class that represent the Event Object that used in the application
+ * This Class acts as bean class the allowing converting Database tuple into java Object
+ * @Field Integer id            Unique identify from the Database
+ * @Field String name           Event title or given name
+ * @Field String description    Description of the Event
+ * @Field String startTime      Event starting time
+ * @Field String facebookId     Unique identify from the External resource
+ * @Field String startDate      Event starting date
+ * @Field String endDate        Event ending date
+ * @Field String endTime        Event ending time
+ * @Field String placeName      Event holding location
+ * @Field String city           Event holding city
+ * @Field String country        Event holding country
+ * @Field String latitude       Event holding GPS latitude
+ * @Field String longitude      Event holding GPS longitude
+ * @Field String state          Event holding state
+ * @Field String street         Event holding street
+ * @Field String zip            Event holding zip
+ * @Field String coverId        Facebook photo URI
+ * @Field String sourceUrl      A URL to the original post
+ * @Field String rating         An In-app rating from this app user
+ * @Field String createdBy     creator of this food deal, or resource location
+ */
 public class Event {
 
     @SerializedName("id")
@@ -256,6 +280,10 @@ public class Event {
         this.createdBy = createdBy;
     }
 
+    /**
+     * Create readable time String from time and date detail in the Event
+     * @return TimeString that ready to display on screen
+     */
     public String getEventTime() {
         DateFormat oTimeFormat = new SimpleDateFormat("HH:mm");
         DateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd");

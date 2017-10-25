@@ -32,6 +32,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Adapter class that handle recycle view of food place
+ */
 public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.ViewHolder> {
     private static final String TAG = "FoodPlaceRvAdapter";
     private static final int SORT_NULL = 0;
@@ -72,6 +75,11 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         showFoodPlaceDetails(holder, position);
     }
 
+    /**
+     * function that handle onclick on recycle view which expand or collapse the food deal view holder
+     * @param holder view holder that will be change
+     * @param position position of view holder in the recycle list
+     */
     private void showFoodPlaceDetails(ViewHolder holder, int position) {
         if (expandedList.contains(position)) {
             holder.foodPlaceItemDetailContainer.setVisibility(View.VISIBLE);
@@ -81,6 +89,11 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         }
     }
 
+    /**
+     * fill up view holder
+     * @param holder view holder will be change
+     * @param position position of the view in the recycle list
+     */
     private void initFoodPlaceDetails(final ViewHolder holder, final int position) {
         // set image
         if (holder.foodPlace.getPhotoLink().length() > 0) {
@@ -109,6 +122,10 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         initMap(holder);
     }
 
+    /**
+     * set Google map in the view
+     * @param holder view holder that will be change
+     */
     private void initMap(final ViewHolder holder) {
         MapView mapview = holder.mapView;
         mapview.getMapAsync(new OnMapReadyCallback() {
@@ -141,6 +158,11 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         return foodPlaces.size();
     }
 
+    /**
+     * initialize the onclick listener
+     * @param holder
+     * @param position
+     */
     private void initFoodPlaceViewClick(final ViewHolder holder, final int position) {
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +177,10 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         });
     }
 
+    /**
+     * function that set google Google Rating bar
+     * @param holder view that will be change
+     */
     private void setGoogleRatingBar(ViewHolder holder) {
         if (!holder.foodPlace.getGoogleRating().isEmpty()) {
             holder.ratingView.setRating(Float.parseFloat(holder.foodPlace.getGoogleRating()));
@@ -167,19 +193,37 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         this.savedInstance = savedInstance;
     }
 
+    /**
+     * replace the entire food place list
+     * @param foodPlaces new food place list
+     */
     public void setFoodPlaces(List<FoodPlace> foodPlaces) {
         this.foodPlaces = foodPlaces;
     }
 
+    /**
+     * function that update the recycle view order
+     * @param itemPos new position of the food place
+     * @param foodPlace food place the will change
+     */
     public void updateFoodPlace(int itemPos, FoodPlace foodPlace) {
         foodPlaces.set(itemPos, foodPlace);
     }
 
+    /**
+     * function that redraw like count,
+     * should be called when like or dislike button click
+     * @param holder view that will be change
+     * @param rating increase or decrease of rating
+     */
     public void updateLikeDraw(FoodPlaceRvAdapter.ViewHolder holder, String rating) {
         holder.appRatingView.setText(rating);
         holder.appRatingView.invalidate();
     }
 
+    /**
+     * Recycle view holder of Food Place
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public FoodPlace foodPlace;
         public final View view;
@@ -214,7 +258,6 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
 
     public interface Listener {
         void onFoodPlaceLikeBtnClicked(ViewHolder holder, int position);
-
         void onFoodPlaceDislikeBtnClicked(ViewHolder holder, int position);
     }
 
@@ -222,6 +265,10 @@ public class FoodPlaceRvAdapter extends RecyclerView.Adapter<FoodPlaceRvAdapter.
         this.listener = listener;
     }
 
+    /**
+     * helper function that used handle sorting
+     * @param Type sorting type
+     */
     public void sort(int Type) {
         expandedList.clear();
         switch (Type) {
