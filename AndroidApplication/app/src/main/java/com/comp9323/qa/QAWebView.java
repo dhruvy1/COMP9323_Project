@@ -9,6 +9,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.comp9323.data.DataHolder;
 import com.comp9323.main.R;
 
 public class QAWebView extends Fragment {
@@ -23,7 +24,9 @@ public class QAWebView extends Fragment {
         webView = view.findViewById(R.id.qa_web_view);
 
         //set starting url
-        webView.loadUrl("http://52.65.129.3:8080/questions/");
+        String url = "http://52.65.129.3:8000/qalogin?device=";
+        url += DataHolder.getInstance().getUser().getDeviceId();
+        webView.loadUrl(url);
 
         //set allow js in this web foodDealView
         webView.getSettings().setJavaScriptEnabled(true);

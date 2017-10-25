@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Button button = findViewById(R.id.login_sign_up_btn);
         button.setOnClickListener(this);
 
-        //deleteSharedPreferences(); // DEBUG USE
+            //deleteSharedPreferences(); // DEBUG USE
 
         if (isFirstLogin()) {
             // first login
