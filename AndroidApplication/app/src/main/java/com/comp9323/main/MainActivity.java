@@ -17,6 +17,8 @@ import com.comp9323.food.FoodContainer;
  */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private static boolean FIRST_START_UP =true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +28,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         BottomNavigationView navigation = findViewById(R.id.main_bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(this);
 
-        // Load up events on startup
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_placeholder, new EventFragment());
-        transaction.commit();
+        if (FIRST_START_UP) {
+            FIRST_START_UP = false;
+            // Load up events on startup
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_placeholder, new EventFragment());
+            transaction.commit();
+        }
     }
 
     @Override
