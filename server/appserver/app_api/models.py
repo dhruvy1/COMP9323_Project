@@ -9,9 +9,11 @@ class User(AbstractUser):
     qa_points = models.IntegerField(default=0)
 
     def get_un(self):
+        # Return the username of the current user
         return self.username
 
     def inc_app_points(self):
+        # Increment the app_points
         self.app_points += 1
         self.save()
         # Update total
@@ -19,6 +21,7 @@ class User(AbstractUser):
         self.save()
 
     def dec_app_points(self):
+        # Decrement the app_points
         self.app_points -= 1
         self.save()
         # Update total
@@ -26,18 +29,13 @@ class User(AbstractUser):
         self.save()
 
     def sync_qa(self, num):
+        # Synchronize QA points with current model
         print('Called ' + str(num))
         self.qa_points = num
         self.save()
         # Update total
         self.karma_points = self.app_points + self.qa_points
         self.save()
-
-
-# class MobileUser(models.Model):
-#     username = models.CharField(max_length=200)
-#     device_id = models.CharField(max_length=200)
-#     karma_points = models.CharField(max_length=100, default='0')
 
 
 class Event(models.Model):

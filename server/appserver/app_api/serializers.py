@@ -7,35 +7,6 @@ from rest_framework.serializers import ValidationError
 User = get_user_model()
 
 
-class UserLoginSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=True)
-    token = serializers.CharField(allow_blank=True, read_only=True)
-    class Meta:
-        model = User
-        fields = [
-            'username', 'password', 'token'
-        ]
-        extra_kwargs = {"password": {"write_only": True}}
-
-    def validate(self, data):
-        user_obj = None
-        password = data["password"]
-        username = data.get("username")
-        user = User.objects.filter(
-            Q(username=username)
-        )
-        if user.exists() and user.count() == 1:
-            user_obj = user.first()
-        else:
-            raise ValidationError("This username is not valid")
-
-        if user_obj:
-            if not user_obj.check_password(password):
-                raise ValidationError("Incorrect password")
-        data["token"] = "ASDFASDFASDFASDFASDF"
-        return data
-
-
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -56,6 +27,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 class UserCreateSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
+
     class Meta:
         model = User
         fields = [
@@ -80,18 +52,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
         return user_obj
 
 
-# class MobileUserCreateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = MobileUser
-#         fields = ['username', 'device_id', 'karma_points']
-#
-#
-# class MobileUserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = MobileUser
-#         fields = ['id', 'username', 'device_id', 'karma_points']
-
-
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
@@ -111,23 +71,57 @@ class EventCreateUpdateSerializer(serializers.ModelSerializer):
 class FoodDealSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodDeal
-        fields = ['id', 'post_id', 'message', 'updated_time', 'photo_link', 'event_link', 'updated_date', 'rating', 'title', 'start_date', 'end_date', 'start_time', 'end_time', 'created_by', 'location']
+        fields = ['id', 'post_id', 'message', 'updated_time', 'photo_link', 'event_link', 'updated_date', 'rating',
+                  'title', 'start_date', 'end_date', 'start_time', 'end_time', 'created_by', 'location']
 
 
 class FoodDealCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodDeal
-        fields = ['post_id', 'message', 'updated_time', 'photo_link', 'event_link', 'updated_date', 'rating', 'title', 'start_date', 'end_date', 'start_time', 'end_time', 'created_by','location']
+        fields = ['post_id', 'message', 'updated_time', 'photo_link', 'event_link', 'updated_date', 'rating', 'title',
+                  'start_date', 'end_date', 'start_time', 'end_time', 'created_by', 'location']
 
 
 # Food Place
 class FoodPlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodPlace
-        fields = ['id', 'name', 'location', 'price_level', 'google_rating', 'latitude', 'longitude', 'photo_link', 'rating', 'created_by']
+        fields = ['id', 'name', 'location', 'price_level', 'google_rating', 'latitude', 'longitude', 'photo_link',
+                  'rating', 'created_by']
 
 
 class FoodPlaceCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodPlace
-        fields = ['name', 'location', 'price_level', 'google_rating', 'latitude', 'longitude', 'photo_link', 'rating', 'created_by']
+        fields = ['name', 'location', 'price_level', 'google_rating', 'latitude', 'longitude', 'photo_link', 'rating',
+                  'created_by']
+
+
+class UserLoginSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=True)
+    token = serializers.CharField(allow_blank=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'username', 'password', 'token'
+        ]
+        extra_kwargs = {"password": {"write_only": True}}
+
+    def validate(self, data):
+        user_obj = None
+        password = data["password"]
+        username = data.get("username")
+        user = User.objects.filter(
+            Q(username=username)
+        )
+        if user.exists() and user.count() == 1:
+            user_obj = user.first()
+        else:
+            raise ValidationError("This username is not valid")
+
+        if user_obj:
+            if not user_obj.check_password(password):
+                raise ValidationError("Incorrect password")
+        data["token"] = "Test_token"
+        return data
