@@ -123,7 +123,7 @@
                     android:layout_weight="1"
                     android:foregroundGravity="top|bottom"
                     android:gravity="top|bottom"
-                    android:text="can add more info here"
+                    android:text=""
                     android:textAlignment="center" />
             </LinearLayout>
 
