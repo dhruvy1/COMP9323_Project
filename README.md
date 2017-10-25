@@ -2,6 +2,7 @@
 
 #### The API of this project can be viewed at (AWS Hosted): http://52.65.129.3:8000/api/
 Feel free to use Swagger to test the API. e.g. http://52.65.129.3:8000/api/#!/food_deals/food_deals_all_list 
+QA section can be seen here: 52.65.129.3:8000/qalogin?device=777 
 
 Key code files for the server backend are:
 * (Project URLs) server/appserver/app_api/urls.py
