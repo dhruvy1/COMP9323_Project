@@ -31,6 +31,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * view that display food fragment on screen
+ */
 public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Listener {
     private static final String TAG = "FoodPlaceFragment";
 
@@ -94,18 +97,31 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
         }
     }
 
+    /**
+     * create adapter for the recycle view
+     * @param savedInstance saved Instance
+     */
     private void initRvAdapter(Bundle savedInstance) {
         adapter = new FoodPlaceRvAdapter(getContext());
         adapter.setListener(this);
         adapter.setBundle(savedInstance);
     }
 
+    /**
+     * create recycle list view
+     * @param view view that will be created
+     */
     private void initRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.food_place_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * setup swipe refresh layout
+     * @param view view that will be change
+     * @param savedInstanceState saved instance
+     */
     private void initSwipeRefreshLayout(View view, final Bundle savedInstanceState) {
         swipeRefreshLayout = view.findViewById(R.id.food_place_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -118,6 +134,9 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
         });
     }
 
+    /**
+     * function that get food place from database
+     */
     private void getFoodPlaces() {
         FoodPlaceService.getFoodPlaces(new Callback<List<FoodPlace>>() {
             @Override
@@ -138,6 +157,10 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
         });
     }
 
+    /**
+     * function that reset the food place list
+     * @param foodPlaces food place list that will be reset
+     */
     private void updateAdapter(List<FoodPlace> foodPlaces) {
         adapter.setFoodPlaces(foodPlaces);
         adapter.sort(0);
@@ -191,6 +214,10 @@ public class FoodPlaceFragment extends Fragment implements FoodPlaceRvAdapter.Li
         });
     }
 
+    /**
+     * function that create sorting spinner on click action
+     * @param spinner spinner that will be change
+     */
     public void setOnSpinnerSelectListener(Spinner spinner) {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

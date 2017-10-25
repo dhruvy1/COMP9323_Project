@@ -11,6 +11,10 @@ import com.comp9323.event.EventFragment;
 import com.comp9323.qa.QAWebView;
 import com.comp9323.food.FoodContainer;
 
+/**
+ * Main logic controller of the application,
+ * this Activity will stay until the application is close
+ */
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     @Override

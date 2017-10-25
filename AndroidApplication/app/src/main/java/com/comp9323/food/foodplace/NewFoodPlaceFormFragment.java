@@ -19,6 +19,7 @@ import android.widget.EditText;
 import com.comp9323.main.R;
 
 /**
+ * a pop up Dialog fragment that created by user when the "add" button is clicked
  * Created by thomas on 18/10/2017.
  */
 
