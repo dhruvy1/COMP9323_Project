@@ -5,6 +5,14 @@ import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * A Class that represent the User Object that used in the application
+ * This Class acts as bean class the allowing converting Database tuple into java Object
+ * @Field Integer id        Unique identify from the Database
+ * @Field String username   user name that created by user
+ * @Field String deviceId   uuid that created by the device
+ * @Field String karmaPoint user point that they gain when they interact with this app
+ */
 public class User implements Serializable {
     private final static long serialVersionUID = 3137907275006527167L;
 

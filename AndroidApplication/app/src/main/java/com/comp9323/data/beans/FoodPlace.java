@@ -5,6 +5,20 @@ import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * A Class that represent the Food Place or Food Location( i.e. restaurant) Object that used in the application
+ * This Class acts as bean class the allowing converting Database tuple into java Object
+ * @Field Integer id            Unique identify from the Database
+ * @Field String name           Food Location name
+ * @Field String location       Food Location full address
+ * @Field String priceLevel     Food Location price level
+ * @Field String googleRating   Google rating
+ * @Field String latitude       Food Location GPS latitude
+ * @Field String longitude      Food Location GPS longitude
+ * @Field String photoLink      URI to the Food Location photo
+ * @Field String rating         In-app rating
+ * @Field String createdBy      creator of this food deal, or resource location
+ */
 public class FoodPlace implements Serializable {
     private final static long serialVersionUID = -8731275924963347679L;
 

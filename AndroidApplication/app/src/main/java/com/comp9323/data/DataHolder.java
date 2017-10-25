@@ -4,6 +4,7 @@ import com.comp9323.data.beans.User;
 
 /**
  * NOTE: Everything store in this class  WILL BE GONE when the application is kill
+ * A Global variable that store current user detail which be accessed by all parts(ie. fragment,activity) of the application
  * Created by thomas on 11/9/2017.
  */
 
