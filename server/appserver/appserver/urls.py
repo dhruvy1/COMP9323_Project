@@ -23,4 +23,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^qa/', include('qa.urls')),
     url(r'^qalogin/', index.as_view(), name='index'),
+    url(r'^voteadd/', inc.as_view(), name='increment'),
+    url(r'^votesub/', dec.as_view(), name='decrement'),
+
 ]
