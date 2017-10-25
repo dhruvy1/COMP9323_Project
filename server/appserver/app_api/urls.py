@@ -10,7 +10,7 @@ urlpatterns = [
     # url(r'mobile_users/all/$', MobileUserAPIView.as_view(), name='list'),
     # User urls
     url(r'users/$', UserAPIView.as_view(), name='create'),
-    url(r'users/all/$', UsersAPIView.as_view(), name='list'),
+    url(r'users/all/$', UserListAPIView.as_view(), name='list'),
     url(r'users/(?P<pk>[0-9]+)$', UserUpdateAPIView.as_view(), name='update'),
     url(r'users/(?P<pk>[0-9]+)/$', UserDetailAPIView.as_view(), name='detail'),
 

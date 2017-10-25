@@ -4,7 +4,7 @@ from django.db import models
 
 class User(AbstractUser):
     device_id = models.CharField(max_length=200, default='0', blank=False, unique=True)
-    karma_points = models.CharField(max_length=100, default='0', blank=True)
+    karma_points = models.IntegerField(default=0)
 
     def get_un(self):
         return self.username
