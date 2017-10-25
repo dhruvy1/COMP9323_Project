@@ -54,26 +54,39 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
         return view;
     }
 
+    /**
+     * Initialise the Food Deal Recycler View adapter
+     */
     private void initRvAdapter() {
         adapter = new FoodDealRvAdapter();
         adapter.setListener(this);
     }
 
+    /**
+     * Initialise the Food Deal Recycler View
+     *
+     * @param view the parent layout
+     */
     private void initRecyclerView(View view) {
-        recyclerView = view.findViewById(R.id.food_deal_rv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        recyclerView.setAdapter(adapter);
+        recyclerView = view.findViewById(R.id.food_deal_rv); // find the rv in the parent layout
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext())); // set its orientation
+        recyclerView.setAdapter(adapter); // set where is gets the items to display on the screen
     }
 
+    /**
+     * Initialise the Swipe to Refresh the list feature
+     *
+     * @param view the parent layout
+     */
     private void initSwipeRefreshLayout(View view) {
-        swipeRefreshLayout = view.findViewById(R.id.food_deal_swipe_refresh);
+        swipeRefreshLayout = view.findViewById(R.id.food_deal_swipe_refresh); // find the view in the parent layout
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 // reset the whole adapter
-                initRvAdapter();
-                recyclerView.setAdapter(adapter);
-                getFoodDeals();
+                initRvAdapter(); // remake the recycler view adapter
+                recyclerView.setAdapter(adapter); // refresh the items in the recycler view
+                getFoodDeals(); // get the new food deals
             }
         });
     }
@@ -83,17 +96,17 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
         menu.clear();
         inflater.inflate(R.menu.menu_food_deal, menu);
 
+        // initialise the karma points
         View t = menu.findItem(R.id.karma_point).setActionView(R.layout.menu_karma_point_view).getActionView();
         TextView textView = t.findViewById(R.id.karma_point_view);
         textView.setText(DataHolder.getInstance().getUser().getKarmaPoint());
-
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_food_deal:
+                // show the posting new food deal fragment
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
 
@@ -104,25 +117,30 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
                 transaction.add(android.R.id.content, foodDealFormFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    /**
+     * Retrieves the latest food deals from the server
+     */
     private void getFoodDeals() {
+        // make a REST api call to get food deals
         FoodDealService.getFoodDeals(new Callback<List<FoodDeal>>() {
             @Override
             public void onResponse(Call<List<FoodDeal>> call, Response<List<FoodDeal>> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful()) { // check if we got the food deals successfully
                     // update adapter
                     List<FoodDeal> foodDeals = response.body();
-                    Collections.reverse(foodDeals);
+                    Collections.reverse(foodDeals); // reverse the food deals
                     adapter.setFoodDeals(foodDeals);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged(); // refresh the items in the recycler view
                     // turn off refresh animation on swipe ups, if its on
                     if (swipeRefreshLayout.isRefreshing()) {
-                        swipeRefreshLayout.setRefreshing(false);
+                        swipeRefreshLayout.setRefreshing(false); // hide refreshing animation
                     }
                 }
             }
@@ -137,10 +155,12 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     @Override
     public void onFoodDealLikeBtnClicked(final Integer id, String rating) {
         FoodDeal foodDeal = new FoodDeal();
-        foodDeal.setRating(Integer.toString(Integer.parseInt(rating) + 1));
+        foodDeal.setRating(Integer.toString(Integer.parseInt(rating) + 1)); // increment the rating
+        // patch the new food deal rating
         FoodDealService.patchFoodDeal(id, foodDeal, new Callback<FoodDeal>() {
             @Override
             public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
+                // we don't need to do anything if its successful
             }
 
             @Override
@@ -153,10 +173,12 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     @Override
     public void onFoodDealDislikeBtnClicked(final Integer id, String rating) {
         FoodDeal foodDeal = new FoodDeal();
-        foodDeal.setRating(Integer.toString(Integer.parseInt(rating) - 1));
+        foodDeal.setRating(Integer.toString(Integer.parseInt(rating) - 1)); // decrement the rating
+        // patch the new food deal rating
         FoodDealService.patchFoodDeal(id, foodDeal, new Callback<FoodDeal>() {
             @Override
             public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
+                // we don't need to do anything if its successful
             }
 
             @Override
@@ -168,17 +190,18 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
 
     @Override
     public void onFoodDealViewClicked(FoodDeal foodDeal) {
-        String link = foodDeal.getEventLink();
+        String link = foodDeal.getEventLink(); // get the food deal link
         if (link.length() > 0) {
             if (!link.startsWith("http")) {
-                link = "http://" + link;
+                link = "http://" + link; // append http to if it is missing it
             }
+            // start a new intent to open the chrome browser
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 getContext().startActivity(intent);
             } catch (ActivityNotFoundException ex) {
-                // Chrome browser presumably not installed so allow user to choose instead
+                // Chrome browser not installed so allow user to choose another browser instead
                 intent.setPackage(null);
                 getContext().startActivity(intent);
             }
@@ -189,10 +212,13 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
     public void onSaveClicked(FoodDeal foodDeal) {
         foodDeal.setCreatedBy(DataHolder.getInstance().getUser().getUsername());
 
+        // post the food deal
         FoodDealService.postFoodDeal(foodDeal, new Callback<FoodDeal>() {
             @Override
             public void onResponse(Call<FoodDeal> call, Response<FoodDeal> response) {
-                getFoodDeals();
+                if (response.isSuccessful()) { // if the post was successful
+                    getFoodDeals(); // update the food deals list
+                }
             }
 
             @Override

@@ -15,75 +15,75 @@ public class UserService {
 
     private static final UserApi api = RestClient.getClient().create(UserApi.class);
 
-//    public static boolean postUser(String username) {
-//        return postUser(new User(username, createUUID()));
-//    }
-
-//    public static boolean deleteUser() {
-//        return deleteUser(DataHolder.getInstance().getUser().getId());
-//    }
-//
-//    public static boolean putUser(HashMap<String, String> couples) {
-//        //load user
-//        User userSelf = DataHolder.getInstance().getUser();
-//        //set fields
-//        for (String item : couples.keySet()) {
-//            String value = couples.get(item);
-//            if (item.equals("username")) {
-//                userSelf.setUsername(value);
-//            } else if (item.equals("deviceid")) {
-//                userSelf.setDeviceId(value);
-//            }
-//        }
-//
-//        return putUser(userSelf.getId(), userSelf);
-//    }
-//
-//    public static boolean patchUser(HashMap<String, String> couples) {
-//        //create new user template
-//        int Id = DataHolder.getInstance().getUser().getId();
-//        User templateUser = new User();
-//        for (String item : couples.keySet()) {
-//            String value = couples.get(item);
-//            if (item.equals("username")) {
-//                templateUser.setUsername(value);
-//            } else if (item.equals("deviceid")) {
-//                templateUser.setDeviceId(value);
-//            } else if (item.equals("karmaPoint")){
-//                templateUser.setKarmaPoint(item);
-//            }
-//        }
-//
-//        return patchUser(Id, templateUser, callback);
-//    }
-
+    /**
+     * Get a user from the server
+     *
+     * @param id
+     * @param callback the callback where the response of the server will be returned
+     */
     public static void getUser(int id, Callback<User> callback) {
         api.getUser(id).enqueue(callback);
     }
 
+    /**
+     * Get all users from the server
+     *
+     * @param callback the callback where the response of the server will be returned
+     */
     public static void getUsers(Callback<List<User>> callback) {
         api.getUsers().enqueue(callback);
     }
 
+    /**
+     * Create a new user into the server
+     *
+     * @param user     the new user
+     * @param callback the callback where the response of the server will be returned
+     */
     public static void postUser(User user, Callback<User> callback) {
-        user.setDeviceId(createUUID());
+        user.setDeviceId(getUUID());
         user.setKarmaPoint("0");
         api.postUser(user).enqueue(callback);
     }
 
+    /**
+     * Delete an existing user from the server
+     *
+     * @param id       the id of the user
+     * @param callback the callback where the response of the server will be returned
+     */
     public static void deleteUser(int id, Callback<Void> callback) {
         api.deleteUser(id).enqueue(callback);
     }
 
+    /**
+     * Put a new user into the server
+     *
+     * @param id       the id of the user
+     * @param user     the user to be put
+     * @param callback the callback where the response of the server will be returned
+     */
     public static void putUser(int id, User user, Callback<User> callback) {
         api.putUser(id, user).enqueue(callback);
     }
 
+    /**
+     * Patch a user into the server
+     *
+     * @param id       the id of the user
+     * @param user     the fields of the user to be patched
+     * @param callback the callback where the response of the server will be returned
+     */
     public static void patchUser(int id, User user, Callback<User> callback) {
         api.patchUser(id, user).enqueue(callback);
     }
 
-    private static String createUUID() {
+    /**
+     * Gets the UUID of the device
+     *
+     * @return the UUID of the device
+     */
+    private static String getUUID() {
         return UUID.randomUUID().toString();
     }
 }

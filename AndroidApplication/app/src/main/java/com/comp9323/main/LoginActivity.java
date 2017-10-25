@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             SharedPreferences sp = getSharedPreferences(getString(R.string.user_pref), Context.MODE_PRIVATE);
             User user = new User(sp.getInt("id", -1), sp.getString("username", null), sp.getString("uuid", null));
             setKarmaPoint(user);
-            //loginUser(user);
         }
     }
 
