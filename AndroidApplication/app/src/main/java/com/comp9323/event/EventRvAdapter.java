@@ -76,6 +76,12 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         return events.size();
     }
 
+    /**
+     * Show event details when event card is clicked and if the event details are hidden
+     * Hides the event details when event card is clicked
+     * @param holder
+     * @param position
+     */
     private void showEventDetails(ViewHolder holder, int position) {
         if (expandedList.contains(position)) {
             holder.evDetailsContainer.setVisibility(View.VISIBLE);
@@ -89,6 +95,10 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         holder.evDescription.setText(holder.event.getDescription());
     }
 
+    /**
+     * Checks if there is a location for the event, otherwise it is hidden from view
+     * @param holder
+     */
     private void initLocation(final ViewHolder holder) {
         if (holder.event.getPlaceName().isEmpty() && holder.event.getStreet().isEmpty()) {
             holder.evLocationView.setVisibility(View.GONE);
@@ -100,6 +110,10 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         }
     }
 
+    /**
+     * Upvotes and shows it on screen as a blue thumbs up
+     * @param holder
+     */
     private void initEventLikeBtn(final ViewHolder holder) {
         holder.evLikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +127,10 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         });
     }
 
+    /**
+     * Downvotes and shows it on the screen as a blue thumbs down
+     * @param holder
+     */
     private void initEventDislikeBtn(final ViewHolder holder) {
         holder.evDislikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +144,11 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
         });
     }
 
+    /**
+     * Gets the position of the selected item on the spinner and performs sort according the
+     * selection (refer to @strings/sort_array to see items in spinner)
+     * @param pos
+     */
     public void sortEvents(int pos) {
         expandedList.clear();
 
@@ -228,8 +251,20 @@ public class EventRvAdapter extends RecyclerView.Adapter<EventRvAdapter.ViewHold
     }
 
     public interface Listener {
+        /**
+         * When a user clicks the like button, it rates the event up, sending the downvote to the
+         * database
+         * @param id
+         * @param rating
+         */
         void onEventLikeBtnClicked(Integer id, String rating);
 
+        /**
+         * When a user clicks the dislike button, it rates the event down, sending the downvote
+         * to the database
+         * @param id
+         * @param rating
+         */
         void onEventDislikeBtnClicked(Integer id, String rating);
     }
 

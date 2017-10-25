@@ -6,7 +6,7 @@
         android:id="@+id/karma_point"
         android:actionLayout="@layout/menu_karma_point_view"
         android:title="karma point"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/add_event"

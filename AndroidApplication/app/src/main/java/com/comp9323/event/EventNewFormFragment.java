@@ -60,6 +60,7 @@ public class EventNewFormFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_event_new_form, container, false);
 
+        // linking the variables to the layout items
         name = rootView.findViewById(R.id.new_event_name);
         nameLayout = rootView.findViewById(R.id.new_event_name_layout);
         loc = rootView.findViewById(R.id.new_event_location);
@@ -116,6 +117,9 @@ public class EventNewFormFragment extends DialogFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Setup listeners for the date fields so that a datepickerdialog pops up when clicked
+     */
     private void setDateListeners() {
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +139,9 @@ public class EventNewFormFragment extends DialogFragment {
         });
     }
 
+    /**
+     * Setup listeners for the time fields so that a timepickerdialog pops up when clicked
+     */
     private void setTimeListeners() {
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +161,11 @@ public class EventNewFormFragment extends DialogFragment {
         });
     }
 
+    /**
+     * Setup the datepickerdialog listener for a textfield, initialises it at the current time
+     * @param dateText
+     * @return
+     */
     private DatePickerDialog.OnDateSetListener getOnDateSetListener(final TextInputEditText dateText) {
         return (new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -164,6 +176,11 @@ public class EventNewFormFragment extends DialogFragment {
         });
     }
 
+    /**
+     * Setup a timepickerdialog listener for a textfield, initialises it at the current time
+     * @param dateText
+     * @return
+     */
     private TimePickerDialog.OnTimeSetListener getOnTimeSetListener(final TextInputEditText dateText) {
         return (new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -175,6 +192,9 @@ public class EventNewFormFragment extends DialogFragment {
         });
     }
 
+    /**
+     * Setup the toolbar for the form
+     */
     private void setToolbar() {
         toolbar.setTitle("New Event");
 
@@ -190,6 +210,9 @@ public class EventNewFormFragment extends DialogFragment {
         setHasOptionsMenu(true);
     }
 
+    /**
+     * Initialise the date fields for the form
+     */
     private void initDates() {
         mDate = Calendar.getInstance();
         year = mDate.get(Calendar.YEAR);
@@ -204,10 +227,18 @@ public class EventNewFormFragment extends DialogFragment {
         endTime.setText(timeFormat.format(mDate.getTime()));
     }
 
+    /**
+     * Validation check for the new event form
+     * @return
+     */
     private boolean validateFields() {
         return (validateName() && validateDateRange());
     }
 
+    /**
+     * Validation check for name
+     * @return
+     */
     private boolean validateName() {
         if (name.getText().toString().trim().isEmpty()) {
             nameLayout.setError(getString(R.string.err_msg_name));
@@ -218,35 +249,6 @@ public class EventNewFormFragment extends DialogFragment {
         }
 
         return true;
-    }
-
-    /**
-     * Adds a Listener which checks if the user has selected "all-day" event and will disable
-     * date/time selecting functionality until unselected. Will also modify endDate to be the same
-     * day as startDate and set start and end times to be start and end of the day
-     */
-    private void setCheckboxClickListener() {
-        dateCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (dateCheckbox.isChecked()) {
-                    startDate.setEnabled(false);
-                    startTime.setEnabled(false);
-                    endDate.setEnabled(false);
-                    endTime.setEnabled(false);
-
-                    // set fields on the screen to reflect all-day selection
-                    endDate.setText(startDate.getText().toString());
-                    startTime.setText(DAY_START);
-                    endTime.setText(DAY_END);
-                } else {
-                    startDate.setEnabled(true);
-                    startTime.setEnabled(true);
-                    endDate.setEnabled(true);
-                    endTime.setEnabled(true);
-                }
-            }
-        });
     }
 
     /**
@@ -266,6 +268,11 @@ public class EventNewFormFragment extends DialogFragment {
         return true;
     }
 
+    /**
+     * Validation check for date
+     * Checks if the end date is before the start date, if start date is before the current date
+     * @return
+     */
     private boolean validateDateRange() {
         String eventStart = startDate.getText().toString() + " " + startTime.getText().toString();
         String eventEnd = endDate.getText().toString() + " " + endTime.getText().toString();
@@ -302,12 +309,48 @@ public class EventNewFormFragment extends DialogFragment {
         }
     }
 
+    /**
+     * If the user inputs data that is invalid, this makes the error message visible
+     * @param view
+     */
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 
+    /**
+     * Adds a Listener which checks if the user has selected "all-day" event and will disable
+     * date/time selecting functionality until unselected. Will also modify endDate to be the same
+     * day as startDate and set start and end times to be start and end of the day
+     */
+    private void setCheckboxClickListener() {
+        dateCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dateCheckbox.isChecked()) {
+                    startDate.setEnabled(false);
+                    startTime.setEnabled(false);
+                    endDate.setEnabled(false);
+                    endTime.setEnabled(false);
+
+                    // set fields on the screen to reflect all-day selection
+                    endDate.setText(startDate.getText().toString());
+                    startTime.setText(DAY_START);
+                    endTime.setText(DAY_END);
+                } else {
+                    startDate.setEnabled(true);
+                    startTime.setEnabled(true);
+                    endDate.setEnabled(true);
+                    endTime.setEnabled(true);
+                }
+            }
+        });
+    }
+
+    /**
+     * Post the event to the database
+     */
     private void callPostEvent() {
         EventService.postEvent(createEventBean(), new Callback<Event>() {
             @Override

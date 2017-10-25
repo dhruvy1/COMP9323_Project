@@ -24,8 +24,10 @@ import android.widget.TextView;
 import com.comp9323.data.DataHolder;
 import com.comp9323.data.DateTimeConverter;
 import com.comp9323.data.beans.Event;
+import com.comp9323.data.beans.User;
 import com.comp9323.main.R;
 import com.comp9323.restclient.service.EventService;
+import com.comp9323.restclient.service.UserService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,6 +71,7 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
         menu.clear();
         inflater.inflate(R.menu.menu_events, menu);
 
+        // Changes the karma item look to a ribbon + point score
         View t = menu.findItem(R.id.karma_point).setActionView(R.layout.menu_karma_point_view).getActionView();
         TextView textView = t.findViewById(R.id.karma_point_view);
         textView.setText(DataHolder.getInstance().getUser().getKarmaPoint());
@@ -107,12 +110,17 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
         rvAdapter = new EventRvAdapter();
         rvAdapter.setListener(this);
     }
+
     private void initRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.event_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(rvAdapter);
     }
 
+    /**
+     * Refreshes the event page
+     * @param view
+     */
     private void initSwipeRefreshLayout(View view) {
         swipeRefreshLayout = view.findViewById(R.id.event_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -126,6 +134,11 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
         });
     }
 
+    /**
+     * Setup the spinner so that the spinner has items/choices in it
+     * Then links the options in the spinner to some sort of sort
+     * @param spinner
+     */
     private void initSpinner(Spinner spinner) {
         final ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(
                 this.getContext(), R.array.sort_array, R.layout.spinner_item);
@@ -191,6 +204,7 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
         EventService.patchEvent(id, event, new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
+                updateKarmaPoints(response.body().getCreatedBy(), true);
             }
 
             @Override
@@ -207,6 +221,7 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
         EventService.patchEvent(id, event, new Callback<Event>() {
             @Override
             public void onResponse(Call<Event> call, Response<Event> response) {
+                updateKarmaPoints(response.body().getCreatedBy(), true);
             }
 
             @Override
@@ -216,5 +231,38 @@ public class EventFragment extends Fragment implements EventRvAdapter.Listener {
         });
     }
 
+    private void updateKarmaPoints(final String username, final boolean shouldIncrement) {
+        // get all the user
+        UserService.getUsers(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (response.isSuccessful()) {
+                    List<User> users = response.body();
+                    for (User user : users) {
+                        // find the user of the food deal post
+                        if (user.getUsername().equals(username)) {
+                            User currentUser = DataHolder.getInstance().getUser();
+                            int karmaPoints = Integer.parseInt(currentUser.getKarmaPoint());
+                            if (shouldIncrement) {
+                                // increment the karma of the user
+                                UserService.addKarma(user.getDeviceId());
+                                karmaPoints = karmaPoints + 1;
+                            } else {
+                                // decrement the karma of the user
+                                UserService.decrementKarma(user.getDeviceId());
+                                karmaPoints = karmaPoints - 1;
+                            }
+                            currentUser.setKarmaPoint(String.valueOf(karmaPoints));
+                            break;
+                        }
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
 }

@@ -90,6 +90,7 @@
                 android:background="#8888"
                 android:textColor="#FFF" />
         </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

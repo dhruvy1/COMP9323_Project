@@ -208,7 +208,7 @@ public class FoodDealFragment extends Fragment implements FoodDealRvAdapter.List
      * @param username        the user name of the user
      * @param shouldIncrement whether we should increment or decrement the karma points of the user
      */
-    public void updateKarmaPoints(final String username, final boolean shouldIncrement) {
+    private void updateKarmaPoints(final String username, final boolean shouldIncrement) {
         // get all the user
         UserService.getUsers(new Callback<List<User>>() {
             @Override
